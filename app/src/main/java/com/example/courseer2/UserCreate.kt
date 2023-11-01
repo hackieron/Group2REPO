@@ -41,7 +41,7 @@ class UserCreate : AppCompatActivity() {
         setContentView(R.layout.activity_user_create)
 
         option = findViewById(R.id.strands)
-        val strands = arrayOf("ABM", "HUMSS", "ICT", "GAS","STEM","HE")
+        val strands = arrayOf("ABM", "HUMSS", "ICT", "GAS","STEM","HE","Arts and Design")
         option.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, strands)
 
         val submit = findViewById<Button>(R.id.submit1)
