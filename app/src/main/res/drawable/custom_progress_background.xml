@@ -1,0 +1,9 @@
+<!-- res/drawable/custom_progress_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="10dp"/>
+            <solid android:color="#C0C0C0"/> <!-- Background color -->
+        </shape>
+    </item>
+</layer-list>

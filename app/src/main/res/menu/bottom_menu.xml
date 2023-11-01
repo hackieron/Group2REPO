@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+    <item
+        android:id="@+id/bottom_prof"
+        android:title="User Profile"
+        android:icon="@drawable/account"/>
+    <item
+        android:id="@+id/bottom_apt"
+        android:title="Aptitude Test"
+        android:icon="@drawable/apt"/>
+    <item
+        android:title=""
+        android:enabled="false"/>
+    <item
+        android:id="@+id/bottom_recom"
+        android:title="Recommendation"
+        android:icon="@drawable/award"/>
+    <item
+        android:id="@+id/bottom_fav"
+        android:title="Favorites"
+        android:icon="@drawable/favorite"/>
+
+
+</menu>

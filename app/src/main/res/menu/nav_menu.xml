@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_programs"
+            android:icon="@drawable/education"
+            android:title="Program Catalog"/>
+        <item
+            android:id="@+id/nav_scholarship"
+            android:icon="@drawable/scholarship"
+            android:title="Scholarship Archive"/>
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/rating"
+            android:title="Feedback"/>
+        <item
+            android:id="@+id/nav_faqs"
+            android:icon="@drawable/information"
+            android:title="FAQs"/>
+    </group>
+
+</menu>

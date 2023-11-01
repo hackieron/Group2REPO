@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">CourSeer</string>
+    <string name="nav_open">CourSeer</string>
+    <string name="nav_close">CourSeer</string>
+
+    <string name="userName">Name</string>
+    <string name="next">NEXT</string>
+    <string-array name="strands_array">
+        <item>ABM</item>
+        <item>HUMSS</item>
+        <item>STEM</item>
+        <item>GAS</item>
+        <item>ICT</item>
+        <item>AFA</item>
+        <item>HE</item>
+        <item>IA</item>
+    </string-array>
+    <string name="title_activity_user_profile">UserProfile</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_user_view">UserView</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="user_profile">User Profile</string>
+    <string name="aptitude_test">Aptitude Test</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="favorites">Favorites</string>
+    <string name="title_activity_side_nav">SideNav</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="faqs">FAQs</string>
+    <string name="feedback">Feedback</string>
+    <string name="scholarship_archive">Scholarship Archive</string>
+    <string name="program_catalog">Program Catalog</string>
+    <string name="username">TextView</string>
+    <string name="userstrand">TextView</string>
+</resources>
