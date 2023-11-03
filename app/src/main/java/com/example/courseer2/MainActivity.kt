@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             redirectToUserView()
         }
+
+
     }
     override fun onDestroy() {
         super.onDestroy()
