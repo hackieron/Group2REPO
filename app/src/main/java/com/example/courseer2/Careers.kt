@@ -1,13 +1,7 @@
 package com.example.courseer2
 
 
-import android.animation.ObjectAnimator
 import android.content.Context
-import android.view.LayoutInflater
-import android.widget.ProgressBar
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Request
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -15,11 +9,12 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -36,7 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONException
 import java.io.IOException
@@ -526,9 +521,13 @@ class Careers : AppCompatActivity() {
 
         // Populate ChipGroup with matching words
         for (word in matchingWords) {
-            val chip = createChip(word, true) // true indicates it's a database tag
-            chipGroup.addView(chip)
+            // Check if the word is not already in the selected chip group
+            if (!selectedTags.contains(word)) {
+                val chip = createChip(word, true) // true indicates it's a database tag
+                chipGroup.addView(chip)
+            }
         }
+
         val closeButton = dialogView.findViewById<Button>(R.id.buttonCloseDialog)
         closeButton.setOnClickListener {
             dialog.dismiss()
@@ -566,7 +565,7 @@ class Careers : AppCompatActivity() {
                 val filteredTags = preExistingTagsFromDB.filter { normalizedSynonyms.contains(it) }
                 // Show the dialog with matching words from the database
                 runOnUiThread {
-                    showMatchingWordsDialog(filteredTags, tag)
+                    showMatchingWordsDialog(filteredTags.toSet().toList(), tag)
                 }
             } else {
                 // No matching word found
