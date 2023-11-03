@@ -6,10 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -42,57 +48,66 @@ class Recommend : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_recommend, container, false)
+
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView)
 
-        val csvData = readCSVFileFromAssets(requireContext())
 
-        programs = parseCSVData(csvData)
-        val dataBaseHandler = DataBaseHandler(requireContext())
-        basisValues = dataBaseHandler.getAllBasisValues() as MutableList<String>
-
-        // Sort all programs based on the scores in descending order
-        allPrograms = programs.sortedByDescending { program ->
-            calculateProgramScore(program)
-        }
-
-        // Filter programs with a score of 4 or higher
-        val localFilteredPrograms = allPrograms.filter { program ->
-            calculateProgramScore(program) >= 3 &&
-                    basisValues.firstOrNull { value ->
-                        program.strand.contains(value, ignoreCase = true)
-                    } != null
-        }
-
-        adapter = RProgramAdapter(localFilteredPrograms as MutableList<RProgram>, object : RProgramAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                // Handle item click if needed
-            }
-        })
-
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
+        lifecycleScope.launch {
+            val csvData = withContext(Dispatchers.IO) {
+                readCSVFileFromAssets(requireContext())
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val filteredList = filterPrograms(newText)
-                val sortedList = filteredList.filter { program ->
-                    calculateProgramScore(program) >= 3 &&
-                            basisValues.firstOrNull { value ->
-                                program.strand.contains(value, ignoreCase = true)
-                            } != null
-                }.sortedByDescending { program ->
-                    calculateProgramScore(program)
+            programs = parseCSVData(csvData)
+            val dataBaseHandler = DataBaseHandler(requireContext())
+            basisValues = dataBaseHandler.getAllBasisValues() as MutableList<String>
+
+            // Sort all programs based on the scores in descending order
+            allPrograms = programs.sortedByDescending { program ->
+                calculateProgramScore(program)
+            }
+
+            // Filter programs with a score of 4 or higher
+            val localFilteredPrograms = allPrograms.filter { program ->
+                calculateProgramScore(program) >= 3 &&
+                        basisValues.firstOrNull { value ->
+                            program.strand.contains(value, ignoreCase = true)
+                        } != null
+            }
+
+            adapter = RProgramAdapter(
+                localFilteredPrograms as MutableList<RProgram>,
+                object : RProgramAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        // Handle item click if needed
+                    }
+                })
+
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
                 }
-                adapter.updatePrograms(sortedList)
-                return true
-            }
-        })
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    val filteredList = filterPrograms(newText)
+                    val sortedList = filteredList.filter { program ->
+                        calculateProgramScore(program) >= 3 &&
+                                basisValues.firstOrNull { value ->
+                                    program.strand.contains(value, ignoreCase = true)
+                                } != null
+                    }.sortedByDescending { program ->
+                        calculateProgramScore(program)
+                    }
+                    adapter.updatePrograms(sortedList)
+                    return true
+                }
+            })
+
+        }
 
         return rootView
     }
