@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
+
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.courseer2.databinding.FragmentUserProfileBinding
@@ -37,7 +37,9 @@ class UserProfile : Fragment() {
         val interestChips: ChipGroup = view.findViewById(R.id.interestChips)
         val careerChips: ChipGroup = view.findViewById(R.id.careerChips)
         dataBaseHandler = DataBaseHandler(requireContext())// Use requireContext() to get the context
-
+        var marginBottom = 1
+        interestChips.chipSpacingVertical = -marginBottom // Adjust the value as needed
+        careerChips.chipSpacingVertical = -marginBottom
         // Load and display the image from the database
         loadImageAndUserDataFromDatabase()
         val database: SQLiteDatabase = dataBaseHandler.readableDatabase
@@ -62,8 +64,15 @@ class UserProfile : Fragment() {
                 // Create a new Chip with the "keyname" value
                 val chip = Chip(requireContext())
                 chip.text = keyname
+                chip.textSize = resources.getDimension(R.dimen.chip_text_size)
+                chip.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
 
-                // Add the Chip to the ChipGroup
+
+
+                chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 interestChips.addView(chip)
             } while (cursor.moveToNext())
         }
@@ -93,8 +102,17 @@ class UserProfile : Fragment() {
                 // Create a new Chip with the "keyname1" value
                 val chip2 = Chip(requireContext())
                 chip2.text = keyname1
-
+                chip2.textSize = resources.getDimension(R.dimen.chip_text_size)
+                chip2.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 // Add the Chip to the ChipGroup
+
+
+
+                chip2.setPadding(-8, 0, -8, 0)
+                chip2.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 careerChips.addView(chip2)
             } while (cursor2.moveToNext())
         }

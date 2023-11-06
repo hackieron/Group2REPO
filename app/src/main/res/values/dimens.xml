@@ -10,5 +10,9 @@
     <dimen name="expanded_card_corner_radius">15dp</dimen>
     <dimen name="collapsed_card_corner_radius">0dp</dimen>
     <dimen name="dialog_fixed_height">300dp</dimen>
+    <dimen name="chip_text_size">5.5sp</dimen>
+    <dimen name="chip_negative_margin_bottom">1dp</dimen>
+    <dimen name="bottom_nav_icon_size">39dp</dimen>
+
 
 </resources>

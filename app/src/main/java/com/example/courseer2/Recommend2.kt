@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -40,50 +42,52 @@ class Recommend2 : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_recommend2, container, false)
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView2)
+        lifecycleScope.launch {
+            val csvData = readCSVFileFromAssets(requireContext())
 
-        val csvData = readCSVFileFromAssets(requireContext())
+            programs1 = parseCSVData(csvData)
+            val dataBaseHandler = DataBaseHandler(requireContext())
+            basisValues = dataBaseHandler.getAllBasisValues() as MutableList<String>
 
-        programs1 = parseCSVData(csvData)
-        val dataBaseHandler = DataBaseHandler(requireContext())
-        basisValues = dataBaseHandler.getAllBasisValues() as MutableList<String>
-
-        // Sort all programs based on the scores in descending order
-        allPrograms = programs1.sortedByDescending { program1 ->
-            calculateProgramScore(program1)
-        }
-
-        // Filter programs with a score of 4 or higher
-        val localFilteredPrograms = allPrograms.filter { program1 ->
-            calculateProgramScore(program1) >= 2
-        }
-
-        adapter2 = RProgramAdapter2(localFilteredPrograms as MutableList<Rprograms>, object : RProgramAdapter2.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                // Handle item click if needed
-            }
-        })
-
-        recyclerView.adapter = adapter2
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
+            // Sort all programs based on the scores in descending order
+            allPrograms = programs1.sortedByDescending { program1 ->
+                calculateProgramScore(program1)
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                val filteredList = filterPrograms(newText)
-                val sortedList = filteredList.filter { program ->
-                    calculateProgramScore(program) >= 2
-                }.sortedByDescending { program ->
-                    calculateProgramScore(program)
+            // Filter programs with a score of 4 or higher
+            val localFilteredPrograms = allPrograms.filter { program1 ->
+                calculateProgramScore(program1) >= 2
+            }
+
+            adapter2 = RProgramAdapter2(
+                localFilteredPrograms as MutableList<Rprograms>,
+                object : RProgramAdapter2.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        // Handle item click if needed
+                    }
+                })
+
+            recyclerView.adapter = adapter2
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
                 }
-                adapter2.updatePrograms(sortedList)
-                return true
-            }
-        })
 
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    val filteredList = filterPrograms(newText)
+                    val sortedList = filteredList.filter { program ->
+                        calculateProgramScore(program) >= 2
+                    }.sortedByDescending { program ->
+                        calculateProgramScore(program)
+                    }
+                    adapter2.updatePrograms(sortedList)
+                    return true
+                }
+            })
+        }
         return rootView
     }
 
