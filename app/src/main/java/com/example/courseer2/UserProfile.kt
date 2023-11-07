@@ -152,4 +152,3 @@ class UserProfile : Fragment() {
 
 }
 
-

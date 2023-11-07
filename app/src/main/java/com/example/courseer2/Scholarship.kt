@@ -14,6 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.File
 
 
 class Scholarship : Fragment() {
@@ -34,10 +40,17 @@ class Scholarship : Fragment() {
         recyclerView = rootView.findViewById(R.id.scholarshipRecyclerView)
 
 
-        val csvData = readCSVFileFromAssets(requireContext())
-        scholarship = parseCSVData(csvData)
-        allScholarships = parseCSVData(csvData)
-        filteredScholarships = allScholarships
+        if (isInternetAvailable(requireContext())) {
+            // If internet is available, download the CSV from Firebase Storage
+            downloadCSVFromFirebase()
+        } else {
+            // If no internet, use the default CSV from assets
+            val csvData = readCSVFileFromAssets(requireContext())
+            scholarship = parseCSVData(csvData)
+            allScholarships = parseCSVData(csvData)
+            filteredScholarships = allScholarships
+            initializeAdapter()
+        }
         adapter = CategorySAdapter(
             groupScholarshipsByCategory(filteredScholarships),
             object : ScholarshipAdapter.OnItemClickListener {
@@ -64,7 +77,51 @@ class Scholarship : Fragment() {
         return rootView
     }
 
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val activeNetwork =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
+        }
+    }
+    private fun downloadCSVFromFirebase() {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val csvRef = storageRef.child("csv_files/Scholarships.csv")
+
+        // Download the CSV file to local storage
+        val localFile = File(requireContext().filesDir, "Scholarships.csv")
+
+        csvRef.getFile(localFile)
+            .addOnSuccessListener {
+                // File downloaded successfully, parse and use it
+                val csvData = localFile.readText()
+                scholarship = parseCSVData(csvData)
+                allScholarships = parseCSVData(csvData)
+                filteredScholarships = allScholarships
+                initializeAdapter()
+            }
+            .addOnFailureListener {
+                // Handle failure, use default CSV from assets
+                val csvData = readCSVFileFromAssets(requireContext())
+                scholarship = parseCSVData(csvData)
+                allScholarships = parseCSVData(csvData)
+                filteredScholarships = allScholarships
+                initializeAdapter()
+            }
+    }
     private fun readCSVFileFromAssets(context: Context): String {
         val fileName = "Scholarships.csv"
         val inputStream = context.assets.open(fileName)
@@ -88,6 +145,18 @@ class Scholarship : Fragment() {
         }
 
         return stringBuilder.toString()
+    }
+    private fun initializeAdapter() {
+        adapter = CategorySAdapter(
+            groupScholarshipsByCategory(filteredScholarships),
+            object : ScholarshipAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    // Handle item click if needed
+                }
+            }
+        )
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun parseCSVData(csvData: String): List<Scholarships1> {

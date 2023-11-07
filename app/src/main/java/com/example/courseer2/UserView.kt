@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -188,8 +189,9 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                 selectedNavItem = R.id.nav_faqs
             }
             R.id.nav_admin -> {
-                openFragment(AdminFragment())
+
                 selectedNavItem = R.id.nav_admin
+                showAdminLoginDialog()
             }
             R.id.menu_item_close_app -> {
                 exitProcess(0)
@@ -285,6 +287,48 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         scaleUp.start()
     }
+    private fun showAdminLoginDialog() {
+        val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_admin_login, null)
+
+        // Initialize UI elements in the dialogView
+        val usernameEditText = dialogView.findViewById<EditText>(R.id.usernameEditText)
+        val passwordEditText = dialogView.findViewById<EditText>(R.id.passwordEditText)
+
+        builder.setView(dialogView)
+            .setTitle("Admin Login")
+            .setPositiveButton("Login") { _, _ ->
+                val username = usernameEditText.text.toString()
+                val password = passwordEditText.text.toString()
+
+                // Perform your admin login validation here
+                if (isValidAdminLogin(username, password)) {
+                    // If login is successful, open AdminFragment
+                    openFragment(AdminFragment())
+                    selectedNavItem = R.id.nav_admin
+                } else {
+                    // Show an error message or handle invalid login
+                    Toast.makeText(this, "Invalid admin credentials", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+    private fun isValidAdminLogin(username: String, password: String): Boolean {
+        // Implement your admin login validation logic here
+
+        // Example: Check if the username is "admin" and the password is "admin123"
+        return username == "admin" && password == "admin123"
+
+        // Replace the example logic with your actual admin login validation
+        // For a production app, you should use a secure authentication mechanism
+        // such as Firebase Authentication, OAuth, or your own server-based authentication.
+    }
+
 
 
 
