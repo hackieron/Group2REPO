@@ -187,8 +187,11 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                 openFragment(FAQs())
                 selectedNavItem = R.id.nav_faqs
             }
+            R.id.nav_admin -> {
+                openFragment(AdminFragment())
+                selectedNavItem = R.id.nav_admin
+            }
             R.id.menu_item_close_app -> {
-
                 exitProcess(0)
                 return true
             }

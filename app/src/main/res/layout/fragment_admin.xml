@@ -1,0 +1,56 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="60dp">
+
+
+    <EditText
+        android:id="@+id/scholarshipNameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Scholarship Name"/>
+
+    <EditText
+        android:id="@+id/shortDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Short Description"/>
+
+    <EditText
+        android:id="@+id/longDescriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Long Description"/>
+
+    <EditText
+        android:id="@+id/linkEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Link"/>
+
+    <EditText
+        android:id="@+id/categoryEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Category"/>
+
+    <EditText
+        android:id="@+id/cityEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="City"/>
+
+    <!-- Button to add a new row -->
+    <Button
+        android:id="@+id/addRowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Row"/>
+    <Button
+        android:id="@+id/uploadCsvButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload CSV"/>
+</LinearLayout>

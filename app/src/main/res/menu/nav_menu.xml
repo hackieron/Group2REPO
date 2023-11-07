@@ -24,6 +24,10 @@
             android:icon="@drawable/information"
             android:title="FAQs"/>
         <item
+            android:id="@+id/nav_admin"
+            android:title="ADMIN MODE"
+            android:icon="@drawable/admin"/>
+        <item
             android:id="@+id/menu_item_close_app"
             android:title="CLOSE APP"
             android:icon="@drawable/exit"

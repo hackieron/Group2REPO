@@ -56,7 +56,7 @@ class Recommend2 : Fragment() {
 
             // Filter programs with a score of 4 or higher
             val localFilteredPrograms = allPrograms.filter { program1 ->
-                calculateProgramScore(program1) >= 2
+                calculateProgramScore(program1) >= 3
             }
 
             adapter2 = RProgramAdapter2(
@@ -79,7 +79,7 @@ class Recommend2 : Fragment() {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     val filteredList = filterPrograms(newText)
                     val sortedList = filteredList.filter { program ->
-                        calculateProgramScore(program) >= 2
+                        calculateProgramScore(program) >= 3
                     }.sortedByDescending { program ->
                         calculateProgramScore(program)
                     }
