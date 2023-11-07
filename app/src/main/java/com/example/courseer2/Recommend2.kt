@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +28,9 @@ class Recommend2 : Fragment() {
             return fragment
         }
     }
+    private var THRESHOLD = 2
+    private lateinit var seekBar: SeekBar
+    private lateinit var seekBarLabel: TextView
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter2: RProgramAdapter2
@@ -42,6 +47,29 @@ class Recommend2 : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_recommend2, container, false)
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView2)
+        seekBarLabel = rootView.findViewById<TextView>(R.id.seekBarLabel)
+        seekBar = rootView.findViewById<SeekBar>(R.id.seekBar)
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                THRESHOLD = progress
+                updateRecyclerView()
+
+                // Update label based on progress
+                when {
+                    progress <= 2 -> seekBarLabel.text = "BROAD"
+                    progress > 2 && progress <= 5 -> seekBarLabel.text = "NEUTRAL"
+                    progress > 5 -> seekBarLabel.text = "NARROW"
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Handle tracking touch if needed
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                // Handle stop tracking touch if needed
+            }
+        })
         lifecycleScope.launch {
             val csvData = readCSVFileFromAssets(requireContext())
 
@@ -56,7 +84,7 @@ class Recommend2 : Fragment() {
 
             // Filter programs with a score of 4 or higher
             val localFilteredPrograms = allPrograms.filter { program1 ->
-                calculateProgramScore(program1) >= 3
+                calculateProgramScore(program1) >= THRESHOLD
             }
 
             adapter2 = RProgramAdapter2(
@@ -79,7 +107,7 @@ class Recommend2 : Fragment() {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     val filteredList = filterPrograms(newText)
                     val sortedList = filteredList.filter { program ->
-                        calculateProgramScore(program) >= 3
+                        calculateProgramScore(program) >= THRESHOLD
                     }.sortedByDescending { program ->
                         calculateProgramScore(program)
                     }
@@ -155,6 +183,15 @@ class Recommend2 : Fragment() {
                     program1.category.contains(query.orEmpty(), ignoreCase = true)||
                     program1.keywords.contains(query.orEmpty(), ignoreCase = true)
         }
+    }
+    private fun updateRecyclerView() {
+        val filteredList = filterPrograms(searchView.query.toString())
+        val sortedList = filteredList.filter { program ->
+            calculateProgramScore(program) >= THRESHOLD
+        }.sortedByDescending { program ->
+            calculateProgramScore(program)
+        }
+        adapter2.updatePrograms(sortedList)
     }
 }
 data class Rprograms(

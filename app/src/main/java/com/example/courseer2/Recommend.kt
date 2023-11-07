@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -30,7 +31,7 @@ class Recommend : Fragment() {
             return fragment
         }
     }
-
+    private var THRESHOLD = 2
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
 
@@ -39,7 +40,8 @@ class Recommend : Fragment() {
     private lateinit var programs: List<RProgram>
     private lateinit var allPrograms: List<RProgram>
     private var filteredPrograms: List<RProgram> = emptyList()
-
+    private lateinit var seekBar: SeekBar
+    private lateinit var seekBarLabel: TextView
     private var basisValues = mutableListOf<String>()
 
     @SuppressLint("MissingInflatedId")
@@ -48,11 +50,31 @@ class Recommend : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_recommend, container, false)
-
+        seekBarLabel = rootView.findViewById<TextView>(R.id.seekBarLabel)
+        seekBar = rootView.findViewById<SeekBar>(R.id.seekBar)
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView)
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                THRESHOLD = progress
+                updateRecyclerView()
 
+                // Update label based on progress
+                when {
+                    progress <= 2 -> seekBarLabel.text = "BROAD"
+                    progress > 2 && progress <= 5 -> seekBarLabel.text = "NEUTRAL"
+                    progress > 5 -> seekBarLabel.text = "NARROW"
+                }
+            }
 
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Handle tracking touch if needed
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                // Handle stop tracking touch if needed
+            }
+        })
         lifecycleScope.launch {
             val csvData = withContext(Dispatchers.IO) {
                 readCSVFileFromAssets(requireContext())
@@ -69,7 +91,7 @@ class Recommend : Fragment() {
 
             // Filter programs with a score of 4 or higher
             val localFilteredPrograms = allPrograms.filter { program ->
-                calculateProgramScore(program) >= 3 &&
+                calculateProgramScore(program) >= THRESHOLD &&
                         basisValues.firstOrNull { value ->
                             program.strand.contains(value, ignoreCase = true)
                         } != null
@@ -95,7 +117,7 @@ class Recommend : Fragment() {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     val filteredList = filterPrograms(newText)
                     val sortedList = filteredList.filter { program ->
-                        calculateProgramScore(program) >= 3 &&
+                        calculateProgramScore(program) >= THRESHOLD &&
                                 basisValues.firstOrNull { value ->
                                     program.strand.contains(value, ignoreCase = true)
                                 } != null
@@ -180,12 +202,25 @@ class Recommend : Fragment() {
         // Filter programs based on title or fullDescription containing the query and the first value of basisValues
         return programs.filter { program ->
             program.title.contains(query.orEmpty(), ignoreCase = true) ||
-                    program.fullDescription.contains(query.orEmpty(), ignoreCase = true) ||
+                    program.category.contains(query.orEmpty(), ignoreCase = true) || program.keywords.contains(query.orEmpty(), ignoreCase = true) || program.strand.contains(query.orEmpty(), ignoreCase = true) || program.fullDescription.contains(query.orEmpty(), ignoreCase = true) || program.shortDescription.contains(query.orEmpty(), ignoreCase = true) ||program.subcar.contains(query.orEmpty(), ignoreCase = true) ||
                     basisValues.firstOrNull { value ->
                         program.fullDescription.contains(value, ignoreCase = true)
                     } != null
         }
     }
+    private fun updateRecyclerView() {
+        val filteredList = filterPrograms(searchView.query.toString())
+        val sortedList = filteredList.filter { program ->
+            calculateProgramScore(program) >= THRESHOLD &&
+                    basisValues.firstOrNull { value ->
+                        program.strand.contains(value, ignoreCase = true)
+                    } != null
+        }.sortedByDescending { program ->
+            calculateProgramScore(program)
+        }
+        adapter.updatePrograms(sortedList)
+    }
+
 }
 data class RProgram(
     val title: String,

@@ -322,7 +322,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         // Implement your admin login validation logic here
 
         // Example: Check if the username is "admin" and the password is "admin123"
-        return username == "admin" && password == "admin123"
+        return username == "1" && password == "1"
 
         // Replace the example logic with your actual admin login validation
         // For a production app, you should use a secure authentication mechanism

@@ -6,7 +6,6 @@
     android:layout_gravity="center|center_horizontal|center_vertical"
     android:gravity="center|center_horizontal">
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/searchCardView"
         android:layout_width="334dp"
@@ -39,6 +38,22 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:padding="8dp" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:max="6"
+            android:progress="2" />
+
+        <TextView
+            android:id="@+id/seekBarLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:labelFor="@id/seekBar"
+            android:text="NEUTRAL" />
+
 
     </androidx.cardview.widget.CardView>
 
