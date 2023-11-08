@@ -269,10 +269,8 @@ class DataBaseHandler(context: Context) :
                 tags.add(tagName)
             } while (cursor.moveToNext())
         }
-
         cursor?.close()
         db.close()
-
         return tags
     }
 
@@ -288,10 +286,8 @@ class DataBaseHandler(context: Context) :
                 tags.add(tagName)
             } while (cursor.moveToNext())
         }
-
         cursor?.close()
         db.close()
-
         return tags
     }
 }
