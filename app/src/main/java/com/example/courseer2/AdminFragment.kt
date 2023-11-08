@@ -316,7 +316,6 @@ class AdminFragment : Fragment() {
                         // Keep the other rows unchanged
                         updatedContent.append(row).append("|")
                     }
-                    clearInputFields()
                 }
 
                 // Log the updated CSV content
@@ -328,6 +327,9 @@ class AdminFragment : Fragment() {
 
                 // Clear the selected scholarship after updating
                 selectedScholarship = ""
+
+                // Clear input fields after processing all rows
+                clearInputFields()
             },
             onFailure = {
                 // Handle failure to fetch CSV content
