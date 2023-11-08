@@ -1,13 +1,7 @@
 package com.example.courseer2
 
 
-import android.animation.ObjectAnimator
 import android.content.Context
-import android.view.LayoutInflater
-import android.widget.ProgressBar
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Request
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -15,11 +9,12 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -31,11 +26,12 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONException
 import java.io.IOException
@@ -59,10 +55,13 @@ class Careers : AppCompatActivity() {
     private val allPreExistingTags = mutableListOf<String>()
     private val selectedTags = mutableSetOf<String>()
     private val preExistingTags = mutableListOf<String>()
-
+    private var initialChipCount = 0
+    private lateinit var searchProgressBar: ProgressBar
+    private var searchJob: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_careers)
+        searchProgressBar = findViewById(R.id.searchProgressBar)
         loadingDialog = createLoadingDialog()
         searchView = findViewById(R.id.searchView)
         progressBar = findViewById(R.id.progressBar)
@@ -178,7 +177,7 @@ class Careers : AppCompatActivity() {
                     progressCallback(progress)
                 }
 
-                delay(50) // Simulate loading delay, replace this with your actual loading logic
+                delay(10) // Simulate loading delay, replace this with your actual loading logic
             }
 
             // Load your data from the database here outside the repeat block
@@ -236,39 +235,92 @@ class Careers : AppCompatActivity() {
     private fun hideLoadingProgressBar() {
         progressBar.visibility = View.GONE
     }
-    private fun animateProgressBar() {
-        runOnUiThread {
-            // Your animation code here
-            val animator = ObjectAnimator.ofInt(progressBar, "progress", 0, 100)
-            animator.duration = 1000 // Adjust the duration as needed
-            animator.start()
-        }
-    }
+
 
 
     private fun setupChips() {
         showLoadingDialog()
+
         // Clear the chipGroup to start fresh
         chipGroup.removeAllViews()
-        searchView = findViewById(R.id.searchView)
 
+        // Load the initial 50 chips
+        loadChips()
+
+        // Load the rest of the chips in the background
+        lifecycleScope.launch {
+            loadRemainingChips()
+        }
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    val searchText = it.trim().lowercase(Locale.getDefault())
+                    searchTags(searchText)
+                }
+                return true
+            }
+        })
+    }
+    private fun searchTags(query: String) {
+        // Cancel the previous search job if it exists
+        searchJob?.cancel()
+
+        // Hide the chipGroup while searching
+        chipGroup.visibility = View.GONE
+
+        // Show loading indicator
+        searchProgressBar.visibility = View.VISIBLE
+
+        // Start a new coroutine for the search operation
+        searchJob = lifecycleScope.launch {
+
+            delay(30)
+
+            chipGroup.children.forEach { view ->
+                if (view is Chip) {
+                    val chip = view as Chip
+                    chip.visibility = if (chip.text.contains(query, ignoreCase = true)) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                }
+            }
+
+            // Show the chipGroup again after the search is done
+            chipGroup.visibility = View.VISIBLE
+
+            // Hide loading indicator
+            searchProgressBar.visibility = View.GONE
+        }
+    }
+    private fun loadChips() {
+        // Load 50 chips initially
         val databaseHandler = DataBaseHandler(this)
         val allTagsFromDatabase = databaseHandler.getFirst20Tags2()
-
-        val unselectedTags = mutableListOf<String>() // Store unselected tags
-        val selectedTagsList = mutableListOf<String>() // Store selected tags
+        val unselectedTags = mutableListOf<String>()
 
         for (tag in allTagsFromDatabase) {
             if (selectedTags.contains(tag)) {
-                selectedTagsList.add(tag)
+                // Skip if the tag is already selected
+                continue
             } else {
                 unselectedTags.add(tag)
+                initialChipCount++
+
+                if (initialChipCount >= 50) {
+                    // Stop loading after the initial 50 chips
+                    break
+                }
             }
         }
 
         // Sort tags alphabetically
         unselectedTags.sort()
-        selectedTagsList.sort()
 
         // Add unselected tags first, removing duplicates
         val uniqueUnselectedTags = unselectedTags.toSet().toList()
@@ -278,45 +330,49 @@ class Careers : AppCompatActivity() {
             displayedTags.add(tag)
         }
 
-        // Add selected tags last, removing duplicates
-        val uniqueSelectedTagsList = selectedTagsList.toSet().toList()
-        for (tag in uniqueSelectedTagsList) {
-            val chip = createChip(tag, false) // false indicates it's a selected tag
-            chipGroup.addView(chip)
-        }
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    val searchText = it.trim().lowercase(Locale.getDefault())
-                    filterChips(searchText)
-                }
-                return true
-            }
-        })
-        // Check if selected tags count reaches 5
-        checkSelectedTagsCount()
         hideLoadingDialog()
     }
-    private fun filterChips(searchText: String) {
-        chipGroup.children.forEach { view ->
-            if (view is Chip) {
-                val chip = view as Chip
-                chip.visibility = if (chip.text.contains(searchText, ignoreCase = true)) {
-                    View.VISIBLE
+    private suspend fun loadRemainingChips() {
+        withContext(Dispatchers.Default) {
+            val databaseHandler = DataBaseHandler(this@Careers)
+            val allTagsFromDatabase = databaseHandler.getFirst20Tags2()
+            val unselectedTags = mutableListOf<String>()
+
+            for (tag in allTagsFromDatabase) {
+                if (selectedTags.contains(tag) || displayedTags.contains(tag)) {
+                    // Skip if the tag is already selected or displayed
+                    continue
                 } else {
-                    View.GONE
+                    unselectedTags.add(tag)
+                }
+            }
+
+            // Sort tags alphabetically
+            unselectedTags.sort()
+
+            // Add remaining unselected tags, removing duplicates
+            val uniqueUnselectedTags = unselectedTags.toSet().toList()
+            for (tag in uniqueUnselectedTags) {
+                val chip = createChip(tag, true) // true indicates it's a database tag
+                displayedTags.add(tag)
+
+                // Add chip to the UI on the main thread
+                withContext(Dispatchers.Main) {
+                    // Check if the chip is not part of search results
+                    if (!searchView.query.isNullOrEmpty() && !tag.contains(searchView.query.toString(), ignoreCase = true)) {
+                        if (chip != null) {
+                            chip.visibility = View.GONE
+                        }
+                    }
+                    chipGroup.addView(chip as View)
                 }
             }
         }
 
-        // Check if selected tags count reaches 5
-        checkSelectedTagsCount()
+        // Hide loading dialog on the main thread
+        withContext(Dispatchers.Main) {
+            hideLoadingDialog()
+        }
     }
 
 
@@ -465,9 +521,13 @@ class Careers : AppCompatActivity() {
 
         // Populate ChipGroup with matching words
         for (word in matchingWords) {
-            val chip = createChip(word, true) // true indicates it's a database tag
-            chipGroup.addView(chip)
+            // Check if the word is not already in the selected chip group
+            if (!selectedTags.contains(word)) {
+                val chip = createChip(word, true) // true indicates it's a database tag
+                chipGroup.addView(chip)
+            }
         }
+
         val closeButton = dialogView.findViewById<Button>(R.id.buttonCloseDialog)
         closeButton.setOnClickListener {
             dialog.dismiss()
@@ -505,7 +565,7 @@ class Careers : AppCompatActivity() {
                 val filteredTags = preExistingTagsFromDB.filter { normalizedSynonyms.contains(it) }
                 // Show the dialog with matching words from the database
                 runOnUiThread {
-                    showMatchingWordsDialog(filteredTags, tag)
+                    showMatchingWordsDialog(filteredTags.toSet().toList(), tag)
                 }
             } else {
                 // No matching word found

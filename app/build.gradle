@@ -10,6 +10,7 @@ buildscript {
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -47,6 +48,9 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+    implementation 'com.google.firebase:firebase-storage:20.3.0'
+    implementation("com.google.firebase:firebase-analytics")
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'androidx.fragment:fragment:1.6.1'
@@ -70,6 +74,12 @@ dependencies {
     implementation "com.github.doyaaaaaken:kotlin-csv-jvm:0.14.0"
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-livedata:2.6.2"
+    implementation 'com.github.bumptech.glide:glide:4.12.0' // Replace with the latest version
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
 
 
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
     <group
@@ -9,19 +10,29 @@
         <item
             android:id="@+id/nav_programs"
             android:icon="@drawable/education"
-            android:title="Program Catalog"/>
+            android:title="PROGRAM CATALOG"/>
         <item
             android:id="@+id/nav_scholarship"
             android:icon="@drawable/scholarship"
-            android:title="Scholarship Archive"/>
+            android:title="SCHOLARSHIP ARCHIVE"/>
         <item
             android:id="@+id/nav_feedback"
             android:icon="@drawable/rating"
-            android:title="Feedback"/>
+            android:title="FEEDBACK"/>
         <item
             android:id="@+id/nav_faqs"
             android:icon="@drawable/information"
             android:title="FAQs"/>
+        <item
+            android:id="@+id/nav_admin"
+            android:title="ADMIN MODE"
+            android:icon="@drawable/admin"/>
+        <item
+            android:id="@+id/menu_item_close_app"
+            android:title="CLOSE APP"
+            android:icon="@drawable/exit"
+            app:showAsAction="always"/>
     </group>
+
 
 </menu>

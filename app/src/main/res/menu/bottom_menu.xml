@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
     <item
         android:id="@+id/bottom_prof"
-        android:title="User Profile"
-        android:icon="@drawable/account"/>
+        android:title=""
+        android:icon="@drawable/account"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.ImageView"
+
+      />
     <item
         android:id="@+id/bottom_apt"
-        android:title="Aptitude Test"
-        android:icon="@drawable/apt"/>
+        android:title=""
+        android:icon="@drawable/apt"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.ImageView"
+
+     />
     <item
         android:title=""
-        android:enabled="false"/>
+        android:enabled="false"
+       />
     <item
         android:id="@+id/bottom_recom"
-        android:title="Recommendation"
-        android:icon="@drawable/award"/>
+        android:title=""
+        android:icon="@drawable/award"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.ImageView"
+
+        />
     <item
         android:id="@+id/bottom_fav"
-        android:title="Favorites"
-        android:icon="@drawable/favorite"/>
+        android:title=""
+        android:icon="@drawable/favorite"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.ImageView"
+
+     />
 
 
 </menu>

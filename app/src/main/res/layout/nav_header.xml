@@ -1,18 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- nav_header.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
+    android:layout_height="match_parent"
     android:gravity="top"
     android:padding="16dp"
-    android:background="#CBCECF"
+    android:background="@color/white"
     android:theme="@style/ThemeOverlay.AppCompat">
-    
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:src="@drawable/courseer"
-        android:scaleType="fitCenter"/>
 
+    <include layout="@layout/user_profile_layout" />
 </LinearLayout>

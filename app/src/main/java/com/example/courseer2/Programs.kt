@@ -11,7 +11,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

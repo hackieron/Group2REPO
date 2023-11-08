@@ -26,7 +26,7 @@ class ScholarshipAdapter(
         fun bind(program: Scholarships1) {
             binding.titleTextView.text = program.title
             binding.shortDescriptionTextView.text = program.shortDescription
-            
+
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 binding.titleTextView.setOnClickListener {
@@ -83,4 +83,3 @@ class ScholarshipAdapter(
         notifyDataSetChanged()
     }
 }
-
