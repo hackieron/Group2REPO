@@ -33,7 +33,6 @@ class Programs : Fragment() {
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView)
 
-
         val csvData = readCSVFileFromAssets(requireContext())
         programs = parseCSVData(csvData)
         allPrograms = parseCSVData(csvData)
