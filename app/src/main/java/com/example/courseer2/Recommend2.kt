@@ -2,6 +2,9 @@ package com.example.courseer2
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +16,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Firebase
+import com.google.firebase.storage.storage
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
+import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 
@@ -116,7 +122,33 @@ class Recommend2 : Fragment() {
                 }
             })
         }
+        if (isInternetAvailable(requireContext())) {
+            // If internet is available, download the CSV from Firebase Storage
+            downloadCSVFromFirebase()
+        } else {
+            // If no internet, use the default CSV from assets
+            loadProgramsFromAssets()
+        }
         return rootView
+    }
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val activeNetwork =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
+        }
     }
 
     private fun readCSVFileFromAssets(context: Context): String {
@@ -171,6 +203,31 @@ class Recommend2 : Fragment() {
             ).count()
             occurrences2
         }
+    }
+    private fun loadProgramsFromAssets() {
+        val csvData = readCSVFileFromAssets(requireContext())
+        programs1 = parseCSVData(csvData)
+
+    }
+    private fun downloadCSVFromFirebase() {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val csvRef = storageRef.child("csv_files/Programs.csv")
+
+        // Download the CSV file to local storage
+        val localFile = File(requireContext().filesDir, "Programs.csv")
+
+        csvRef.getFile(localFile)
+            .addOnSuccessListener {
+                // File downloaded successfully, parse and use it
+                val csvData = localFile.readText()
+                programs1 = parseCSVData(csvData)
+
+            }
+            .addOnFailureListener {
+                // Handle failure, use default CSV from assets
+                loadProgramsFromAssets()
+            }
     }
 
     private fun filterPrograms(query: String?): List<Rprograms> {

@@ -26,6 +26,8 @@ import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,7 +36,9 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONException
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStreamReader
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -60,6 +64,9 @@ class Interests : AppCompatActivity() {
     private var searchJob: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val storage = FirebaseStorage.getInstance()
+        val storageRef: StorageReference = storage.getReferenceFromUrl("gs://courseer-3555d.appspot.com/")
+        val csvFileRef: StorageReference = storageRef.child("csv_files/Keywords.csv")
 
 
 
@@ -76,14 +83,17 @@ class Interests : AppCompatActivity() {
         nextButton = findViewById<Button>(R.id.next)
         tagCountTextView = findViewById(R.id.textViewTagCount)
         val dataBaseHandler = DataBaseHandler(this)
-        val preExistingTags =
-            dataBaseHandler.getFirst20Tags().map { it.lowercase(Locale.getDefault()) }
-        lifecycleScope.launch {
-            showLoadingProgressBar()
-            loadData { progress ->
-                progressBar.progress = progress
+        readCsvFile(csvFileRef) { tags ->
+            lifecycleScope.launch {
+                showLoadingProgressBar()
+                loadData { progress ->
+                    progressBar.progress = progress
+                }
+                hideLoadingProgressBar()
             }
-            hideLoadingProgressBar()
+
+            allPreExistingTags.addAll(tags)
+
         }
 
 
@@ -173,6 +183,27 @@ class Interests : AppCompatActivity() {
 
     }
 
+    private fun readCsvFile(csvFileRef: StorageReference, callback: (List<String>) -> Unit) {
+        csvFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+            val csvContent = String(bytes)
+            val tags = parseCsvContent(csvContent)
+            callback(tags)
+        }.addOnFailureListener {
+            // Handle failure to read CSV file
+            // You can show a message or log the error
+            it.printStackTrace()
+        }
+    }
+    private fun parseCsvContent(csvContent: String): List<String> {
+        val tags = mutableListOf<String>()
+        val reader = BufferedReader(InputStreamReader(csvContent.byteInputStream()))
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            // Assuming each line in the CSV file represents a tag
+            tags.add(line!!.trim())
+        }
+        return tags.sorted()
+    }
     private suspend fun loadData(progressCallback: (Int) -> Unit) {
         withContext(Dispatchers.IO) {
             val totalCount = 100
@@ -196,16 +227,59 @@ class Interests : AppCompatActivity() {
     private suspend fun loadDataFromDatabase() {
         // Load your data from the database
         // Example: Replace this with your actual database loading logic
-        val databaseHandler = DataBaseHandler(this@Interests)
-        val preExistingTags =
-            databaseHandler.getFirst20Tags().map { it.lowercase(Locale.getDefault()) }
 
+        // Comment out or remove the following line
+        // val databaseHandler = DataBaseHandler(this@Interests)
+        // val preExistingTags = databaseHandler.getFirst20Tags().map { it.lowercase(Locale.getDefault()) }
+
+        // Replace with the following line to use tags from the CSV file
+        val preExistingTags = allPreExistingTags.map { it.lowercase(Locale.getDefault()) }
 
         allPreExistingTags.addAll(preExistingTags)
 
         withContext(Dispatchers.Main) {
             setupChips()
         }
+    }
+
+    private fun loadChips() {
+        // Load 50 chips initially
+        // Comment out or remove the following lines
+        // val databaseHandler = DataBaseHandler(this)
+        // val allTagsFromDatabase = databaseHandler.getFirst20Tags()
+
+        // Replace with the following line to use tags from the CSV file
+        val allTagsFromDatabase = allPreExistingTags
+
+        val unselectedTags = mutableListOf<String>()
+
+        for (tag in allTagsFromDatabase) {
+            if (selectedTags.contains(tag)) {
+                // Skip if the tag is already selected
+                continue
+            } else {
+                unselectedTags.add(tag)
+                initialChipCount++
+
+                if (initialChipCount >= 50) {
+                    // Stop loading after the initial 50 chips
+                    break
+                }
+            }
+        }
+
+        // Sort tags alphabetically
+        unselectedTags.sort()
+
+        // Add unselected tags first, removing duplicates
+        val uniqueUnselectedTags = unselectedTags.toSet().toList()
+        for (tag in uniqueUnselectedTags) {
+            val chip = createChip(tag, true) // true indicates it's a database tag
+            chipGroup.addView(chip)
+            displayedTags.add(tag)
+        }
+
+        hideLoadingDialog()
     }
 
 
@@ -311,44 +385,15 @@ class Interests : AppCompatActivity() {
             searchProgressBar.visibility = View.GONE
         }
     }
-    private fun loadChips() {
-        // Load 50 chips initially
-        val databaseHandler = DataBaseHandler(this)
-        val allTagsFromDatabase = databaseHandler.getFirst20Tags()
-        val unselectedTags = mutableListOf<String>()
-
-        for (tag in allTagsFromDatabase) {
-            if (selectedTags.contains(tag)) {
-                // Skip if the tag is already selected
-                continue
-            } else {
-                unselectedTags.add(tag)
-                initialChipCount++
-
-                if (initialChipCount >= 50) {
-                    // Stop loading after the initial 50 chips
-                    break
-                }
-            }
-        }
-
-        // Sort tags alphabetically
-        unselectedTags.sort()
-
-        // Add unselected tags first, removing duplicates
-        val uniqueUnselectedTags = unselectedTags.toSet().toList()
-        for (tag in uniqueUnselectedTags) {
-            val chip = createChip(tag, true) // true indicates it's a database tag
-            chipGroup.addView(chip)
-            displayedTags.add(tag)
-        }
-
-        hideLoadingDialog()
-    }
     private suspend fun loadRemainingChips() {
         withContext(Dispatchers.Default) {
-            val databaseHandler = DataBaseHandler(this@Interests)
-            val allTagsFromDatabase = databaseHandler.getFirst20Tags()
+            // Comment out or remove the following line
+            // val databaseHandler = DataBaseHandler(this@Interests)
+            // val allTagsFromDatabase = databaseHandler.getFirst20Tags()
+
+            // Replace with the following line to use tags from the CSV file
+            val allTagsFromDatabase = allPreExistingTags
+
             val unselectedTags = mutableListOf<String>()
 
             for (tag in allTagsFromDatabase) {
@@ -429,6 +474,7 @@ class Interests : AppCompatActivity() {
     }
 
     private fun createChip(tag: String, isDatabaseTag: Boolean = true): Chip? {
+
         val existingChip = chipGroup.findViewWithTag<Chip>(tag)
         if (existingChip != null) {
             return null // Skip creating a new chip
@@ -622,8 +668,12 @@ class Interests : AppCompatActivity() {
 
     private fun getPreExistingTagsFromDB(): List<String> {
         hideLoadingDialog()
-        val dataBaseHandler = DataBaseHandler(this)
-        return dataBaseHandler.getFirst20Tags()
+        // Comment out or remove the following line
+        // val dataBaseHandler = DataBaseHandler(this)
+        // return dataBaseHandler.getFirst20Tags()
+
+        // Replace with the following line to use tags from the CSV file
+        return allPreExistingTags
     }
 
     private fun slowLoading() {

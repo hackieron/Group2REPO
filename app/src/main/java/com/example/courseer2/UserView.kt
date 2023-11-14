@@ -305,7 +305,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                 // Perform your admin login validation here
                 if (isValidAdminLogin(username, password)) {
                     // If login is successful, open AdminFragment
-                    openFragment(AdminFragment())
+                    openFragment(CombinedFragment())
                     selectedNavItem = R.id.nav_admin
                 } else {
                     // Show an error message or handle invalid login

@@ -2,6 +2,8 @@ package com.example.courseer2
 
 
 import android.content.Context
+import android.view.LayoutInflater
+import okhttp3.Request
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -9,7 +11,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -25,16 +26,19 @@ import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.json.JSONArray
 import org.json.JSONException
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStreamReader
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -60,7 +64,14 @@ class Careers : AppCompatActivity() {
     private var searchJob: Job? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val storage = FirebaseStorage.getInstance()
+        val storageRef: StorageReference = storage.getReferenceFromUrl("gs://courseer-3555d.appspot.com/")
+        val csvFileRef: StorageReference = storageRef.child("csv_files/Keywords2.csv")
+
+
+
         setContentView(R.layout.activity_careers)
+        progressBar = findViewById(R.id.progressBar)
         searchProgressBar = findViewById(R.id.searchProgressBar)
         loadingDialog = createLoadingDialog()
         searchView = findViewById(R.id.searchView)
@@ -71,18 +82,21 @@ class Careers : AppCompatActivity() {
         buttonAddTag = findViewById(R.id.buttonAddTag)
         nextButton = findViewById<Button>(R.id.next)
         tagCountTextView = findViewById(R.id.textViewTagCount)
-
         val dataBaseHandler = DataBaseHandler(this)
-        val preExistingTags =
-            dataBaseHandler.getFirst20Tags2().map { it.lowercase(Locale.getDefault())}
-        lifecycleScope.launch {
-            showLoadingProgressBar()
-            loadData { progress ->
-                // Update the progress bar with the loading state percentage
-                progressBar.progress = progress
+        readCsvFile(csvFileRef) { tags ->
+            lifecycleScope.launch {
+                showLoadingProgressBar()
+                loadData { progress ->
+                    progressBar.progress = progress
+                }
+                hideLoadingProgressBar()
             }
-            hideLoadingProgressBar()
+
+            allPreExistingTags.addAll(tags)
+
         }
+
+
         allPreExistingTags.addAll(preExistingTags)
         buttonAddTag.setOnClickListener {
             showLoadingDialog()
@@ -141,6 +155,7 @@ class Careers : AppCompatActivity() {
 
 
 
+
         nextButton.setOnClickListener {
             val selectedTagsList =
                 chipGroupSelectedTags.children.map { (it as? Chip)?.text.toString() }
@@ -166,6 +181,28 @@ class Careers : AppCompatActivity() {
         }
 
     }
+
+    private fun readCsvFile(csvFileRef: StorageReference, callback: (List<String>) -> Unit) {
+        csvFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+            val csvContent = String(bytes)
+            val tags = parseCsvContent(csvContent)
+            callback(tags)
+        }.addOnFailureListener {
+            // Handle failure to read CSV file
+            // You can show a message or log the error
+            it.printStackTrace()
+        }
+    }
+    private fun parseCsvContent(csvContent: String): List<String> {
+        val tags = mutableListOf<String>()
+        val reader = BufferedReader(InputStreamReader(csvContent.byteInputStream()))
+        var line: String?
+        while (reader.readLine().also { line = it } != null) {
+            // Assuming each line in the CSV file represents a tag
+            tags.add(line!!.trim())
+        }
+        return tags.sorted()
+    }
     private suspend fun loadData(progressCallback: (Int) -> Unit) {
         withContext(Dispatchers.IO) {
             val totalCount = 100
@@ -184,13 +221,18 @@ class Careers : AppCompatActivity() {
             loadDataFromDatabase()
         }
     }
+
+
     private suspend fun loadDataFromDatabase() {
         // Load your data from the database
         // Example: Replace this with your actual database loading logic
-        val databaseHandler = DataBaseHandler(this@Careers)
-        val preExistingTags =
-            databaseHandler.getFirst20Tags2().map { it.lowercase(Locale.getDefault()) }
 
+        // Comment out or remove the following line
+        // val databaseHandler = DataBaseHandler(this@Interests)
+        // val preExistingTags = databaseHandler.getFirst20Tags().map { it.lowercase(Locale.getDefault()) }
+
+        // Replace with the following line to use tags from the CSV file
+        val preExistingTags = allPreExistingTags.map { it.lowercase(Locale.getDefault()) }
 
         allPreExistingTags.addAll(preExistingTags)
 
@@ -198,11 +240,54 @@ class Careers : AppCompatActivity() {
             setupChips()
         }
     }
+
+    private fun loadChips() {
+        // Load 50 chips initially
+        // Comment out or remove the following lines
+        // val databaseHandler = DataBaseHandler(this)
+        // val allTagsFromDatabase = databaseHandler.getFirst20Tags()
+
+        // Replace with the following line to use tags from the CSV file
+        val allTagsFromDatabase = allPreExistingTags
+
+        val unselectedTags = mutableListOf<String>()
+
+        for (tag in allTagsFromDatabase) {
+            if (selectedTags.contains(tag)) {
+                // Skip if the tag is already selected
+                continue
+            } else {
+                unselectedTags.add(tag)
+                initialChipCount++
+
+                if (initialChipCount >= 50) {
+                    // Stop loading after the initial 50 chips
+                    break
+                }
+            }
+        }
+
+        // Sort tags alphabetically
+        unselectedTags.sort()
+
+        // Add unselected tags first, removing duplicates
+        val uniqueUnselectedTags = unselectedTags.toSet().toList()
+        for (tag in uniqueUnselectedTags) {
+            val chip = createChip(tag, true) // true indicates it's a database tag
+            chipGroup.addView(chip)
+            displayedTags.add(tag)
+        }
+
+        hideLoadingDialog()
+    }
+
+
     private fun createLoadingDialog(): AlertDialog {
         val inflater = LayoutInflater.from(this)
         val view = inflater.inflate(R.layout.custom_loading_dialog, null)
 
-
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBar)
+        val textViewLoading = view.findViewById<TextView>(R.id.textViewLoading)
 
         val dialog = AlertDialog.Builder(this)
             .setView(view)
@@ -226,6 +311,7 @@ class Careers : AppCompatActivity() {
     private fun hideLoadingDialog() {
         loadingDialog.dismiss()
     }
+
     private fun showLoadingProgressBar() {
         progressBar.visibility = View.VISIBLE
         progressBar.progress = 0
@@ -298,44 +384,15 @@ class Careers : AppCompatActivity() {
             searchProgressBar.visibility = View.GONE
         }
     }
-    private fun loadChips() {
-        // Load 50 chips initially
-        val databaseHandler = DataBaseHandler(this)
-        val allTagsFromDatabase = databaseHandler.getFirst20Tags2()
-        val unselectedTags = mutableListOf<String>()
-
-        for (tag in allTagsFromDatabase) {
-            if (selectedTags.contains(tag)) {
-                // Skip if the tag is already selected
-                continue
-            } else {
-                unselectedTags.add(tag)
-                initialChipCount++
-
-                if (initialChipCount >= 50) {
-                    // Stop loading after the initial 50 chips
-                    break
-                }
-            }
-        }
-
-        // Sort tags alphabetically
-        unselectedTags.sort()
-
-        // Add unselected tags first, removing duplicates
-        val uniqueUnselectedTags = unselectedTags.toSet().toList()
-        for (tag in uniqueUnselectedTags) {
-            val chip = createChip(tag, true) // true indicates it's a database tag
-            chipGroup.addView(chip)
-            displayedTags.add(tag)
-        }
-
-        hideLoadingDialog()
-    }
     private suspend fun loadRemainingChips() {
         withContext(Dispatchers.Default) {
-            val databaseHandler = DataBaseHandler(this@Careers)
-            val allTagsFromDatabase = databaseHandler.getFirst20Tags2()
+            // Comment out or remove the following line
+            // val databaseHandler = DataBaseHandler(this@Interests)
+            // val allTagsFromDatabase = databaseHandler.getFirst20Tags()
+
+            // Replace with the following line to use tags from the CSV file
+            val allTagsFromDatabase = allPreExistingTags
+
             val unselectedTags = mutableListOf<String>()
 
             for (tag in allTagsFromDatabase) {
@@ -376,9 +433,11 @@ class Careers : AppCompatActivity() {
     }
 
 
-    private fun updateSelectedTagsChips() {
-        chipGroupSelectedTags.removeAllViews()
 
+
+    private fun updateSelectedTagsChips() {
+        hideLoadingDialog()
+        chipGroupSelectedTags.removeAllViews()
         val selectedTagsList = mutableListOf<String>() // Store selected tags
 
         for (tag in selectedTags) {
@@ -392,7 +451,9 @@ class Careers : AppCompatActivity() {
             val chip = createChip(tag)
             chipGroupSelectedTags.addView(chip)
         }
+
     }
+
 
     private fun enableChips(chipGroup: ChipGroup) {
         for (i in 0 until chipGroup.childCount) {
@@ -412,6 +473,7 @@ class Careers : AppCompatActivity() {
     }
 
     private fun createChip(tag: String, isDatabaseTag: Boolean = true): Chip? {
+
         val existingChip = chipGroup.findViewWithTag<Chip>(tag)
         if (existingChip != null) {
             return null // Skip creating a new chip
@@ -490,6 +552,7 @@ class Careers : AppCompatActivity() {
         return chip
     }
 
+
     private fun checkSelectedTagsCount() {
         val totalTags = selectedTags.size
 
@@ -499,6 +562,7 @@ class Careers : AppCompatActivity() {
             enableChips(chipGroup)
         }
     }
+
     private fun showMatchingWordsDialog(matchingWords: List<String>, originalTag: String) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_matching_words, null)
         val dialogBuilder = AlertDialog.Builder(this)
@@ -536,7 +600,6 @@ class Careers : AppCompatActivity() {
     }
 
 
-
     private fun showAddSynonymDialog(tag: String) {
         hideLoadingDialog()
         fetchSynonyms(tag.lowercase()) { synonyms ->
@@ -564,17 +627,17 @@ class Careers : AppCompatActivity() {
                 // Filter pre-existing tags based on synonyms
                 val filteredTags = preExistingTagsFromDB.filter { normalizedSynonyms.contains(it) }
                 // Show the dialog with matching words from the database
+                // Show the dialog with matching words from the database
                 runOnUiThread {
                     showMatchingWordsDialog(filteredTags.toSet().toList(), tag)
                 }
+
             } else {
                 // No matching word found
                 showNoMatchingWordDialog(tag)
             }
         }
     }
-
-
 
     // Add this function to show a dialog when there's no matching word found
     private fun showNoMatchingWordDialog(tag: String) {
@@ -599,14 +662,19 @@ class Careers : AppCompatActivity() {
 
     // Extension function to normalize tags
     private fun String.normalizeTag(): String {
-        return this.replace("[^a-zA-Z0-9]".toRegex(), "").toLowerCase()
+        return this.replace("[^a-zA-Z0-9]".toRegex(), "").lowercase(Locale.ROOT)
     }
 
     private fun getPreExistingTagsFromDB(): List<String> {
         hideLoadingDialog()
-        val dataBaseHandler = DataBaseHandler(this)
-        return dataBaseHandler.getFirst20Tags2()
+        // Comment out or remove the following line
+        // val dataBaseHandler = DataBaseHandler(this)
+        // return dataBaseHandler.getFirst20Tags()
+
+        // Replace with the following line to use tags from the CSV file
+        return allPreExistingTags
     }
+
     private fun slowLoading() {
         hideLoadingDialog()
         runOnUiThread {
@@ -701,6 +769,7 @@ class Careers : AppCompatActivity() {
     private fun runOnUiThread(action: () -> Unit) {
         Handler(Looper.getMainLooper()).post(action)
     }
+
     private fun parseSynonyms(responseData: String?): List<String> {
         hideLoadingDialog()
         val synonyms = mutableListOf<String>()

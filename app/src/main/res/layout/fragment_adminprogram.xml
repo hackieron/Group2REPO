@@ -1,0 +1,110 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp">
+
+        <Spinner
+            android:id="@+id/programDropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/select_program"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/programTitleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Program Title" />
+
+        <EditText
+            android:id="@+id/categoryEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Category"/>
+
+        <EditText
+            android:id="@+id/shortDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Short Description"/>
+
+        <EditText
+            android:id="@+id/fullDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Description"/>
+
+        <EditText
+            android:id="@+id/subjectsEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Subjects"/>
+
+        <EditText
+            android:id="@+id/strandEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Strand"/>
+
+        <EditText
+            android:id="@+id/keywordsEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Keywords"/>
+
+        <!-- Button to add a new row -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="102dp"
+            android:layout_margin="10dp">
+
+            <Button
+                android:id="@+id/addRowButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Row" />
+
+            <Button
+                android:id="@+id/uploadCsvButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="-3dp"
+                android:text="Clear Text" />
+
+            <Button
+                android:id="@+id/updateRowButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="6dp"
+                android:text="Update Row" />
+
+            <Button
+                android:id="@+id/deleteRowButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="242dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="6dp"
+                android:text="Delete Row" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>
