@@ -2,6 +2,9 @@ package com.example.courseer2
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.File
 
 
 class Programs : Fragment() {
@@ -33,21 +39,17 @@ class Programs : Fragment() {
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView)
 
-        val csvData = readCSVFileFromAssets(requireContext())
-        programs = parseCSVData(csvData)
-        allPrograms = parseCSVData(csvData)
-
-        filteredPrograms = allPrograms
-        adapter = CategoryAdapter(
-            groupProgramsByCategory(filteredPrograms),
-            object : ProgramAdapter.OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    // Handle item click if needed
-                }
-            }
-        )
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        if (isInternetAvailable(requireContext())) {
+            // If internet is available, download the CSV from Firebase Storage
+            downloadCSVFromFirebase()
+        } else {
+            // If no internet, use the default CSV from assets
+            val csvData = readCSVFileFromAssets(requireContext())
+            programs = parseCSVData(csvData)
+            allPrograms = parseCSVData(csvData)
+            filteredPrograms = allPrograms
+            initializeAdapter()
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -64,7 +66,32 @@ class Programs : Fragment() {
         return rootView
     }
 
+    private fun downloadCSVFromFirebase() {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val csvRef = storageRef.child("csv_files/Programs.csv")
 
+        // Download the CSV file to local storage
+        val localFile = File(requireContext().filesDir, "Programs.csv")
+
+        csvRef.getFile(localFile)
+            .addOnSuccessListener {
+                // File downloaded successfully, parse and use it
+                val csvData = localFile.readText()
+                programs = parseCSVData(csvData)
+                allPrograms = parseCSVData(csvData)
+                filteredPrograms = allPrograms
+                initializeAdapter()
+            }
+            .addOnFailureListener {
+                // Handle failure, use default CSV from assets
+                val csvData = readCSVFileFromAssets(requireContext())
+                programs = parseCSVData(csvData)
+                allPrograms = parseCSVData(csvData)
+                filteredPrograms = allPrograms
+                initializeAdapter()
+            }
+    }
     private fun readCSVFileFromAssets(context: Context): String {
         val fileName = "Programs.csv"
         val inputStream = context.assets.open(fileName)
@@ -90,6 +117,38 @@ class Programs : Fragment() {
         return stringBuilder.toString()
     }
 
+    private fun initializeAdapter() {
+        adapter = CategoryAdapter(
+            groupProgramsByCategory(filteredPrograms),
+            object : ProgramAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    // Handle item click if needed
+                }
+            }
+        )
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val activeNetwork =
+                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
+        }
+    }
+
     private fun parseCSVData(csvData: String): List<Program> {
         val programs = mutableListOf<Program>()
         val lines = csvData.split('|')
@@ -107,7 +166,21 @@ class Programs : Fragment() {
         }
         return programs
     }
+    private fun readCSVFileFromFirebaseStorage(fileName: String, callback: (String) -> Unit) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference.child("csv_files/$fileName")
 
+        val stringBuilder = StringBuilder()
+
+        storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+            val csvData = String(bytes)
+            stringBuilder.append(csvData)
+            callback(stringBuilder.toString()) // Invoke the callback with the CSV data
+        }.addOnFailureListener {
+            // Handle the error
+            callback("") // Invoke the callback with an empty string or handle the error differently
+        }
+    }
     private fun groupProgramsByCategory(programs: List<Program>): Map<String, List<Program>> {
         return programs.groupBy { it.category }
     }

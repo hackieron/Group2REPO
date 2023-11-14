@@ -81,8 +81,3 @@ class MainActivity : AppCompatActivity() {
         const val EXTRA_FIRST_RUN = "extraFirstRun"
     }
 }
-
-
-
-
-
