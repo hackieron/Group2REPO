@@ -52,8 +52,10 @@ class Interests : AppCompatActivity() {
     private lateinit var chipGroupSelectedTags: ChipGroup
     private lateinit var chipGroup: ChipGroup
     private lateinit var editTextTag: EditText
+
     private lateinit var buttonAddTag: Button
     private lateinit var nextButton: Button
+    private lateinit var skipButton: Button
     private lateinit var tagCountTextView: TextView
     private val displayedTags = mutableListOf<String>()
     private val allPreExistingTags = mutableListOf<String>()
@@ -81,8 +83,9 @@ class Interests : AppCompatActivity() {
         editTextTag = findViewById(R.id.editTextTag)
         buttonAddTag = findViewById(R.id.buttonAddTag)
         nextButton = findViewById<Button>(R.id.next)
+        skipButton = findViewById<Button>(R.id.skip)
         tagCountTextView = findViewById(R.id.textViewTagCount)
-        val dataBaseHandler = DataBaseHandler(this)
+
         readCsvFile(csvFileRef) { tags ->
             lifecycleScope.launch {
                 showLoadingProgressBar()
@@ -96,14 +99,17 @@ class Interests : AppCompatActivity() {
 
         }
 
+        skipButton.setOnClickListener{
+            val intent = Intent(this, Careers::class.java)
+            startActivity(intent)
+        }
 
-        allPreExistingTags.addAll(preExistingTags)
         buttonAddTag.setOnClickListener {
             showLoadingDialog()
             val userInputTag = editTextTag.text.toString().trim().lowercase(Locale.getDefault())
 
             if (userInputTag.isNotEmpty() && selectedTags.size < 5 && !selectedTags.contains(userInputTag)) {
-                if (preExistingTags.contains(userInputTag.lowercase(Locale.getDefault()))) {
+                if (allPreExistingTags.contains(userInputTag.lowercase(Locale.getDefault()))) {
                     Log.d("removed0", "removeddddd")
 
                     // Find the matching chip
@@ -202,7 +208,7 @@ class Interests : AppCompatActivity() {
             // Assuming each line in the CSV file represents a tag
             tags.add(line!!.trim())
         }
-        return tags.sorted()
+        return tags.map { it.lowercase(Locale.getDefault()) }.sorted()
     }
     private suspend fun loadData(progressCallback: (Int) -> Unit) {
         withContext(Dispatchers.IO) {
@@ -225,17 +231,6 @@ class Interests : AppCompatActivity() {
 
 
     private suspend fun loadDataFromDatabase() {
-        // Load your data from the database
-        // Example: Replace this with your actual database loading logic
-
-        // Comment out or remove the following line
-        // val databaseHandler = DataBaseHandler(this@Interests)
-        // val preExistingTags = databaseHandler.getFirst20Tags().map { it.lowercase(Locale.getDefault()) }
-
-        // Replace with the following line to use tags from the CSV file
-        val preExistingTags = allPreExistingTags.map { it.lowercase(Locale.getDefault()) }
-
-        allPreExistingTags.addAll(preExistingTags)
 
         withContext(Dispatchers.Main) {
             setupChips()
@@ -243,12 +238,7 @@ class Interests : AppCompatActivity() {
     }
 
     private fun loadChips() {
-        // Load 50 chips initially
-        // Comment out or remove the following lines
-        // val databaseHandler = DataBaseHandler(this)
-        // val allTagsFromDatabase = databaseHandler.getFirst20Tags()
 
-        // Replace with the following line to use tags from the CSV file
         val allTagsFromDatabase = allPreExistingTags
 
         val unselectedTags = mutableListOf<String>()
@@ -409,22 +399,27 @@ class Interests : AppCompatActivity() {
             unselectedTags.sort()
 
             // Add remaining unselected tags, removing duplicates
+            // Add remaining unselected tags, removing duplicates
             val uniqueUnselectedTags = unselectedTags.toSet().toList()
             for (tag in uniqueUnselectedTags) {
-                val chip = createChip(tag, true) // true indicates it's a database tag
-                displayedTags.add(tag)
+                val normalizedTag = tag.lowercase(Locale.getDefault())
+                if (!displayedTags.contains(normalizedTag)) {
+                    val chip = createChip(tag, true) // true indicates it's a database tag
+                    displayedTags.add(normalizedTag)
 
-                // Add chip to the UI on the main thread
-                withContext(Dispatchers.Main) {
-                    // Check if the chip is not part of search results
-                    if (!searchView.query.isNullOrEmpty() && !tag.contains(searchView.query.toString(), ignoreCase = true)) {
-                        if (chip != null) {
-                            chip.visibility = View.GONE
+                    // Add chip to the UI on the main thread
+                    withContext(Dispatchers.Main) {
+                        // Check if the chip is not part of search results
+                        if (!searchView.query.isNullOrEmpty() && !normalizedTag.contains(searchView.query.toString().lowercase(), ignoreCase = true)) {
+                            if (chip != null) {
+                                chip.visibility = View.GONE
+                            }
                         }
+                        chipGroup.addView(chip as View)
                     }
-                    chipGroup.addView(chip as View)
                 }
             }
+
         }
 
         // Hide loading dialog on the main thread
@@ -480,7 +475,7 @@ class Interests : AppCompatActivity() {
             return null // Skip creating a new chip
         }
         val chip = Chip(this)
-        chip.text = tag
+        chip.text = tag.lowercase(Locale.getDefault())
         chip.isCheckable = true
 
         // Check if the tag is in selectedTags (previously selected) and not an entered tag

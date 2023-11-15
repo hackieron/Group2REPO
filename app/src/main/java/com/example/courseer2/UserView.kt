@@ -1,5 +1,9 @@
 package com.example.courseer2
 
+import android.content.BroadcastReceiver
+
+import android.content.IntentFilter
+
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
@@ -20,10 +24,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.content.ContextCompat
-
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
@@ -34,6 +36,10 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import kotlin.system.exitProcess
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import androidx.appcompat.app.AlertDialog
 
 
 class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -45,10 +51,23 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     private lateinit var imageView: ImageView
     private lateinit var nameTextView: TextView
     private lateinit var strandTextView: TextView
-
+    private val connectivityReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (!isInternetAvailable()) {
+                // If no internet, show a dialog and go back to MainActivity
+                showNoInternetDialog()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        registerConnectivityReceiver()
+        if (!isInternetAvailable()) {
+            // If no internet, show a dialog and go back to MainActivity
+            showNoInternetDialog()
+            return
+        }
         binding = ActivityUserViewBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
@@ -159,6 +178,16 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         bottomNavigationView.itemIconTintList = iconTintList
 
     }
+    private fun registerConnectivityReceiver() {
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        registerReceiver(connectivityReceiver, filter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(connectivityReceiver)
+    }
+
     private fun clearDatabase() {
         // Perform the database clearing logic here
         val dataBaseHandler = DataBaseHandler(this)
@@ -204,8 +233,29 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         return true
     }
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
 
+        // Check if there is a network connection and it has internet capabilities
+        return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+    }
+
+    private fun showNoInternetDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("No Internet Detected")
+            .setMessage("Please check your internet connection and try again.")
+            .setPositiveButton("OK") { _, _ ->
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+            .setCancelable(false)
+            .create()
+            .show()
+    }
 
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {

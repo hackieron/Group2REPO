@@ -1,0 +1,39 @@
+<!-- res/layout/fragment_result.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resultLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Result Screen -->
+    <LinearLayout
+        android:id="@+id/resultScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Add your UI elements for displaying the result here -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Top 3 Categories"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Assuming you have a ChipGroup with the id "resultChipGroup" -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/resultChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <Button
+            android:id="@+id/recommend"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:text="Proceed to Recommendation" />
+
+
+    </LinearLayout>
+</RelativeLayout>

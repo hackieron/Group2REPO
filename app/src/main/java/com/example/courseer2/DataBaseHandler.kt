@@ -38,6 +38,11 @@ val COL_PROG_CAREERS = "careers"
 val TABLE_PREFERENCES = "Preferences"
 val COL_PREFERENCE_ID = "preferenceid"
 val COL_BASIS = "basis"
+val TABLE_TESTKEYS = "Table_testkeys"
+val COL_TESTKEYS_ID = "testkeyid"
+val COL_TESTKEYS = "testkeys"
+val TABLE_SETTINGS = "settings"
+val COLUMN_CURRENT_QUESTION_INDEX = "current_question_index"
 
 class DataBaseHandler(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -56,9 +61,15 @@ class DataBaseHandler(context: Context) :
                 "$COL_PREFERENCE_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_BASIS TEXT)"
 
+        val createTableTestKeys = "CREATE TABLE $TABLE_TESTKEYS (" +
+                "$COL_TESTKEYS_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "$COL_TESTKEYS TEXT)"
+
         val createTableKeywords = "CREATE TABLE $TABLE_KEYWORDS (" +
                 "$COL_KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_KEY_NAME TEXT)"
+
+
 
         val createTableKeywords1 = "CREATE TABLE $TABLE_KEYWORDS1 (" +
                 "$COL_KEY_ID1 INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -69,11 +80,12 @@ class DataBaseHandler(context: Context) :
                 "$COL_IMAGE BLOB," +
                 "$COL_NAME VARCHAR(256)," +
                 "$COL_STRAND VARCHAR(256))"
-
-
+        val createSettingsTable = "CREATE TABLE $TABLE_SETTINGS ($COLUMN_CURRENT_QUESTION_INDEX INTEGER)"
+        db?.execSQL(createSettingsTable)
         db?.execSQL(createTable)
 
         db?.execSQL(createTableKeywords)
+        db?.execSQL(createTableTestKeys)
         db?.execSQL(createTableKeywords1)
         db?.execSQL(createTablePreferences)
         db?.execSQL(createTablePrograms)
@@ -83,6 +95,87 @@ class DataBaseHandler(context: Context) :
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         onCreate(db)
+    }
+
+
+    fun setCurrentQuestionIndex(index: Int) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_CURRENT_QUESTION_INDEX, index)
+        }
+
+        db.insertWithOnConflict(TABLE_SETTINGS, null, values, SQLiteDatabase.CONFLICT_REPLACE)
+        db.close()
+    }
+
+    // Function to retrieve the current question index
+    fun getCurrentQuestionIndex(): Int {
+        val db = this.readableDatabase
+        val query = "SELECT MAX($COLUMN_CURRENT_QUESTION_INDEX) FROM $TABLE_SETTINGS"
+        val cursor = db.rawQuery(query, null)
+        var currentIndex = 0
+
+        if (cursor.moveToFirst()) {
+            currentIndex = cursor.getInt(0)
+        }
+
+        cursor.close()
+        db.close()
+
+        return currentIndex
+    }
+
+    fun insertTestKeys(keywords: List<String>): Boolean {
+        val db = this.writableDatabase
+        db.beginTransaction()
+
+        try {
+            for (keyword in keywords) {
+                val cv = ContentValues()
+                val cv2 = ContentValues()
+                cv.put(COL_TESTKEYS, keyword)
+                cv2.put(COL_BASIS, keyword)
+
+                // Insert each keyword into the TABLE_TESTKEYS
+                val result = db.insert(TABLE_TESTKEYS, null, cv)
+                val result2 = db.insert(TABLE_PREFERENCES, null, cv2)
+                if (result == -1L && result2 == -1L) {
+                    // If insertion fails, rollback the transaction and return false
+                    db.endTransaction()
+                    return false
+                }
+            }
+
+            // All insertions were successful, so commit the transaction
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+
+        // Transaction completed successfully
+        db.close()
+        return true
+    }
+    // Inside DataBaseHandler class
+    fun insertPreferences(selectedChips: List<String>) {
+        val db = this.writableDatabase
+        db.beginTransaction()
+
+        try {
+            for (chip in selectedChips) {
+                val values = ContentValues()
+                values.put(COL_BASIS, chip)
+
+                // Insert the chip into the TABLE_PREFERENCES
+                db.insert(TABLE_PREFERENCES, null, values)
+            }
+            db.setTransactionSuccessful()
+        } catch (e: Exception) {
+            // Handle any exceptions
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
     }
 
     fun getAllBasisValues(): List<String> {
@@ -202,6 +295,7 @@ class DataBaseHandler(context: Context) :
         db.delete(TABLE_PREFERENCES, null, null)
         db.delete(TABLE_KEYWORDS, null, null)
         db.delete(TABLE_KEYWORDS1, null, null)
+        db.delete(TABLE_TESTKEYS, null, null)
         db.close()
     }
 

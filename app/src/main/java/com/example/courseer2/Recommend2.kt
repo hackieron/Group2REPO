@@ -219,14 +219,68 @@ class Recommend2 : Fragment() {
 
         csvRef.getFile(localFile)
             .addOnSuccessListener {
+                // Check if the fragment is added to an activity before proceeding
+                if (!isAdded) {
+                    return@addOnSuccessListener
+                }
+
                 // File downloaded successfully, parse and use it
                 val csvData = localFile.readText()
                 programs1 = parseCSVData(csvData)
+                allPrograms = parseCSVData(csvData)
 
+                // Update filteredPrograms with the filtered data
+                filteredPrograms = allPrograms.filter { program1 ->
+                    calculateProgramScore(program1) >= THRESHOLD
+                }
+
+                // Initialize the adapter if null
+                if (!::adapter2.isInitialized) {
+                    adapter2 = RProgramAdapter2(
+                        filteredPrograms as MutableList<Rprograms>,
+                        object : RProgramAdapter2.OnItemClickListener {
+                            override fun onItemClick(position: Int) {
+                                // Handle item click if needed
+                            }
+                        })
+
+                    recyclerView.adapter = adapter2
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                }
+
+                // Update the RecyclerView with the new data
+                updateRecyclerView()
             }
             .addOnFailureListener {
+                // Check if the fragment is added to an activity before proceeding
+                if (!isAdded) {
+                    return@addOnFailureListener
+                }
+
                 // Handle failure, use default CSV from assets
                 loadProgramsFromAssets()
+
+                // Update filteredPrograms with the filtered data
+                filteredPrograms = allPrograms.filter { program1 ->
+                    calculateProgramScore(program1) >= THRESHOLD
+                }
+
+                // Initialize the adapter if null
+                if (!::adapter2.isInitialized) {
+                    adapter2 = RProgramAdapter2(
+                        filteredPrograms as MutableList<Rprograms>,
+                        object : RProgramAdapter2.OnItemClickListener {
+                            override fun onItemClick(position: Int) {
+                                // Handle item click if needed
+                            }
+                        })
+
+                    recyclerView.adapter = adapter2
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                }
+
+                // Update the RecyclerView with the default data
+                updateRecyclerView()
             }
     }
 

@@ -40,7 +40,7 @@ class Recommend : Fragment() {
     private var THRESHOLD = 2
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
-
+    private var localFilteredPrograms: List<RProgram> = emptyList()
     private lateinit var adapter: RProgramAdapter
 
     private lateinit var programs: List<RProgram>
@@ -114,7 +114,6 @@ class Recommend : Fragment() {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return true
@@ -155,15 +154,74 @@ class Recommend : Fragment() {
 
         csvRef.getFile(localFile)
             .addOnSuccessListener {
+                // Check if the fragment is added to an activity before proceeding
+                if (!isAdded) {
+                    return@addOnSuccessListener
+                }
+
                 // File downloaded successfully, parse and use it
                 val csvData = localFile.readText()
                 programs = parseCSVData(csvData)
                 allPrograms = parseCSVData(csvData)
 
+                // Update localFilteredPrograms with the filtered data
+                localFilteredPrograms = allPrograms.filter { program ->
+                    calculateProgramScore(program) >= THRESHOLD &&
+                            basisValues.firstOrNull { value ->
+                                program.strand.contains(value, ignoreCase = true)
+                            } != null
+                }
+
+                // Initialize the adapter if null
+                if (!::adapter.isInitialized) {
+                    adapter = RProgramAdapter(
+                        localFilteredPrograms as MutableList<RProgram>,
+                        object : RProgramAdapter.OnItemClickListener {
+                            override fun onItemClick(position: Int) {
+                                // Handle item click if needed
+                            }
+                        })
+
+                    recyclerView.adapter = adapter
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                }
+
+                // Update the RecyclerView with the new data
+                updateRecyclerView()
             }
             .addOnFailureListener {
+                // Check if the fragment is added to an activity before proceeding
+                if (!isAdded) {
+                    return@addOnFailureListener
+                }
+
                 // Handle failure, use default CSV from assets
                 loadProgramsFromAssets()
+
+                // Update localFilteredPrograms with the filtered data
+                localFilteredPrograms = allPrograms.filter { program ->
+                    calculateProgramScore(program) >= THRESHOLD &&
+                            basisValues.firstOrNull { value ->
+                                program.strand.contains(value, ignoreCase = true)
+                            } != null
+                }
+
+                // Initialize the adapter if null
+                if (!::adapter.isInitialized) {
+                    adapter = RProgramAdapter(
+                        localFilteredPrograms as MutableList<RProgram>,
+                        object : RProgramAdapter.OnItemClickListener {
+                            override fun onItemClick(position: Int) {
+                                // Handle item click if needed
+                            }
+                        })
+
+                    recyclerView.adapter = adapter
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                }
+
+                // Update the RecyclerView with the default data
+                updateRecyclerView()
             }
     }
     private fun loadProgramsFromAssets() {

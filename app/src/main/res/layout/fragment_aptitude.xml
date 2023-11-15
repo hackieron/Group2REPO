@@ -1,17 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- res/layout/fragment_aptitude.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Aptitude">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Start Screen -->
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="409dp"
+        android:layout_height="669dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="-120dp"
+        android:layout_marginBottom="-120dp"
+        android:visibility="visible">
+        <!-- This container will hold your fragments. Initially set to gone -->
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/startScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Aptitude"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:textAlignment="center"/>
+        android:orientation="vertical"
+        android:gravity="center">
 
-</FrameLayout>
+        <!-- Add your start screen UI elements here -->
+        <Button
+            android:id="@+id/proceedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Proceed" />
+    </LinearLayout>
+
+    <!-- Question Screen -->
+    <LinearLayout
+        android:id="@+id/questionScreen"
+        android:layout_width="377dp"
+        android:layout_height="574dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <!-- Add your RecyclerView for displaying questions here -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="509dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:foregroundGravity="center_vertical|center|center_horizontal" />
+
+        <!-- Add any other UI elements related to the question screen here -->
+    </LinearLayout>
+
+</RelativeLayout>

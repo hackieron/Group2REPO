@@ -11,31 +11,70 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.*
+import android.app.Application
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import androidx.appcompat.app.AlertDialog
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var progressBar: ProgressBar
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         progressBar = findViewById(R.id.progressBar)
 
         val isFirstRun = isFirstRun()
         val isCalledByIntent = intent.hasExtra(EXTRA_FIRST_RUN)
 
-        if (isFirstRun || isCalledByIntent) {
-            coroutineScope.launch {
-                preloadActivities()
-                redirectToUserCreate()
-            }
+        if (!isNetworkConnected()) {
+            showNoInternetDialog()
         } else {
-            redirectToUserView()
+            if (isFirstRun || isCalledByIntent) {
+                coroutineScope.launch {
+                    preloadActivities()
+                    redirectToUserCreate()
+                }
+            } else {
+                redirectToUserView()
+            }
+        }
+    }
+    private fun isNetworkConnected(): Boolean {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        val networkInfo = connectivityManager?.activeNetworkInfo
+        return networkInfo?.isConnectedOrConnecting == true
+    }
+
+    private fun redirectToUserCreate() {
+        val redirectIntent = Intent(this, UserCreate::class.java)
+        startActivity(redirectIntent)
+        finish()
+    }
+    private fun restartMainActivityWithExtraFirstRun() {
+        val restartIntent = Intent(this, MainActivity::class.java)
+        startActivity(restartIntent)
+        finish()
+    }
+    private fun showNoInternetDialog() {
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle("No Internet Detected")
+        builder.setMessage("Please check your internet connection.")
+
+        // Set up the button
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+            // Restart MainActivity with EXTRA_FIRST_RUN
+            restartMainActivityWithExtraFirstRun()
         }
 
-
+        // Show the AlertDialog
+        builder.show()
     }
     override fun onDestroy() {
         super.onDestroy()
@@ -53,11 +92,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun redirectToUserCreate() {
-        val redirectIntent = Intent(this, UserCreate::class.java)
-        startActivity(redirectIntent)
-        finish()
-    }
 
     private fun redirectToUserView() {
         val redirectIntent = Intent(this, UserView::class.java)
