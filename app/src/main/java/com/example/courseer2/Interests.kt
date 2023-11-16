@@ -22,10 +22,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.common.io.Resources
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
@@ -264,7 +266,15 @@ class Interests : AppCompatActivity() {
         // Add unselected tags first, removing duplicates
         val uniqueUnselectedTags = unselectedTags.toSet().toList()
         for (tag in uniqueUnselectedTags) {
-            val chip = createChip(tag, true) // true indicates it's a database tag
+            val chip = createChip(tag, true)
+            if(chip != null) {
+                chip.setTextColor(ContextCompat.getColor(this, R.color.black))
+                chip.setChipBackgroundColorResource(R.color.white)
+                chip.chipStrokeWidth =
+                    resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                chip.setChipStrokeColorResource(R.color.gray)
+            }
+            // true indicates it's a database tag
             chipGroup.addView(chip)
             displayedTags.add(tag)
         }
@@ -404,7 +414,9 @@ class Interests : AppCompatActivity() {
             for (tag in uniqueUnselectedTags) {
                 val normalizedTag = tag.lowercase(Locale.getDefault())
                 if (!displayedTags.contains(normalizedTag)) {
-                    val chip = createChip(tag, true) // true indicates it's a database tag
+                    val chip = createChip(tag, true)
+
+                    // true indicates it's a database tag
                     displayedTags.add(normalizedTag)
 
                     // Add chip to the UI on the main thread
@@ -412,8 +424,15 @@ class Interests : AppCompatActivity() {
                         // Check if the chip is not part of search results
                         if (!searchView.query.isNullOrEmpty() && !normalizedTag.contains(searchView.query.toString().lowercase(), ignoreCase = true)) {
                             if (chip != null) {
+
                                 chip.visibility = View.GONE
                             }
+                        }
+                        if (chip != null){
+                            chip.setChipBackgroundColorResource(R.color.white)
+                            chip.chipStrokeWidth =
+                                resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                            chip.setChipStrokeColorResource(R.color.gray)
                         }
                         chipGroup.addView(chip as View)
                     }
@@ -427,6 +446,12 @@ class Interests : AppCompatActivity() {
             hideLoadingDialog()
         }
     }
+
+
+
+
+
+
 
 
 
@@ -445,10 +470,13 @@ class Interests : AppCompatActivity() {
         // Add selected tags last
         for (tag in selectedTagsList) {
             val chip = createChip(tag)
+            chip?.isChecked = false
             chipGroupSelectedTags.addView(chip)
         }
 
     }
+
+
 
 
     private fun enableChips(chipGroup: ChipGroup) {
@@ -472,9 +500,12 @@ class Interests : AppCompatActivity() {
 
         val existingChip = chipGroup.findViewWithTag<Chip>(tag)
         if (existingChip != null) {
+
             return null // Skip creating a new chip
         }
+
         val chip = Chip(this)
+
         chip.text = tag.lowercase(Locale.getDefault())
         chip.isCheckable = true
 
@@ -501,7 +532,14 @@ class Interests : AppCompatActivity() {
                     // Remove the chip from its current parent (chipGroup) before adding it to chipGroupSelectedTags
                     val parent = chip.parent as? ViewGroup
                     parent?.removeView(chip)
+                    if(chip != null){
+                        chip.isCheckedIconVisible = false
+                        chip.setTextColor(ContextCompat.getColor(this, R.color.black))
+                        chip.setChipBackgroundColorResource(R.color.gold)
+                        chip.chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_not) // Set stroke width
+                        chip.setChipStrokeColorResource(R.color.gray)
 
+                    }
                     // Add the chip to chipGroupSelectedTags
                     chipGroupSelectedTags.addView(chip)
 
@@ -705,7 +743,7 @@ class Interests : AppCompatActivity() {
             try {
 
                 val response = OkHttpClient.Builder()
-                    .callTimeout(7, TimeUnit.SECONDS)
+                    .callTimeout(10, TimeUnit.SECONDS)
                     .build()
                     .newCall(request)
                     .execute()

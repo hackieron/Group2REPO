@@ -11,8 +11,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import android.widget.EditText
 import android.widget.Toast
-import java.io.ByteArrayOutputStream
-import java.io.OutputStreamWriter
+
 
 class AddTagFragment : Fragment() {
 

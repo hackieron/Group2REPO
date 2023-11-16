@@ -3,17 +3,26 @@ package com.example.courseer2
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.InsetDrawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.courseer2.databinding.FragmentUserProfileBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.play.integrity.internal.c
 
 
 class UserProfile : Fragment() {
@@ -30,13 +39,18 @@ class UserProfile : Fragment() {
 
         val binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         val view = binding.root
+        dataBaseHandler = DataBaseHandler(requireContext()) // Initialize dataBaseHandler here
+
+        val scoreLayout: LinearLayout = view.findViewById(R.id.scoreLayout)
+        // Add the score items to the layout
+        addScoreItemsToLayout(scoreLayout)
 
         imageView = binding.imageView3
         nameTextView = view.findViewById(R.id.name) // Add this line to initialize the nameTextView
-        strandTextView = view.findViewById(R.id.strand) // Add this line to initialize the strandTextView
+        strandTextView =
+            view.findViewById(R.id.strand) // Add this line to initialize the strandTextView
         val interestChips: ChipGroup = view.findViewById(R.id.interestChips)
         val careerChips: ChipGroup = view.findViewById(R.id.careerChips)
-        dataBaseHandler = DataBaseHandler(requireContext())// Use requireContext() to get the context
         var marginBottom = 1
         interestChips.chipSpacingVertical = -marginBottom // Adjust the value as needed
         careerChips.chipSpacingVertical = -marginBottom
@@ -73,15 +87,22 @@ class UserProfile : Fragment() {
 
 
                 chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                if (chip != null) {
+                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.chipStrokeWidth =
+                        resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                    chip.setChipStrokeColorResource(R.color.gray)
+                    chip.isClickable = false
+                    chip.setEnsureMinTouchTargetSize(false)
+                }
                 interestChips.addView(chip)
+                interestChips.setChipSpacingResource(R.dimen.chip_space)
             } while (cursor.moveToNext())
         }
         cursor.close()
         database.close()
 
 
-        /////////////////
-        //career displaying
         val database2: SQLiteDatabase = dataBaseHandler.readableDatabase
         val cursor2: Cursor = database2.query(
             "Keyword1",  // Table name
@@ -110,10 +131,21 @@ class UserProfile : Fragment() {
                 // Add the Chip to the ChipGroup
 
 
-
                 chip2.setPadding(-8, 0, -8, 0)
                 chip2.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                if (chip2 != null) {
+                    chip2.setChipBackgroundColorResource(R.color.white)
+                    chip2.chipStrokeWidth =
+                        resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                    chip2.setChipStrokeColorResource(R.color.gray)
+                    chip2.isClickable = false
+
+                    chip2.setEnsureMinTouchTargetSize(false)
+                }
+
                 careerChips.addView(chip2)
+                careerChips.setChipSpacingResource(R.dimen.chip_space)
+
             } while (cursor2.moveToNext())
         }
 
@@ -123,6 +155,66 @@ class UserProfile : Fragment() {
 
         return view
     }
+
+    private fun addScoreItemsToLayout(scoreLayout: ViewGroup) {
+        val db = dataBaseHandler.readableDatabase
+
+        val query =
+            "SELECT $COLUMN_WORD, $COLUMN_FSCORE, $COLUMN_DESCRIPTION FROM $TABLE_FSCORES"
+        val cursor = db.rawQuery(query, null)
+
+        var count = 0
+
+        if (cursor.moveToFirst()) {
+            do {
+                val word = cursor.getString(cursor.getColumnIndex(COLUMN_WORD))
+                val fscore = cursor.getInt(cursor.getColumnIndex(COLUMN_FSCORE))
+                val interpretation =
+                    cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION))
+
+                // Create the score item view
+                val scoreItemView = createScoreItem(word, fscore, interpretation)
+
+                // Add the score item view to the layout
+                scoreLayout.addView(scoreItemView)
+
+                count++
+                if (count == 3) {
+                    break  // Limit reached, exit the loop
+                }
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+    }
+
+    private fun createScoreItem(word: String, fscore: Int, interpretation: String): View {
+        val inflater = LayoutInflater.from(requireContext())
+        val scoreItemView = inflater.inflate(R.layout.layout_score_item, null)
+
+        // Find views in the inflated layout
+        val progressBar: ProgressBar = scoreItemView.findViewById(R.id.progressBar)
+        val wordTextView: TextView = scoreItemView.findViewById(R.id.wordTextView)
+        val percentageTextView: TextView = scoreItemView.findViewById(R.id.percentageTextView)
+        val interpretationTextView: TextView =
+            scoreItemView.findViewById(R.id.interpretation) // Add this line
+
+        // Set progress and text
+        progressBar.progress = fscore
+        val progressRatio = fscore.toFloat() / progressBar.max
+        val percentage = (progressRatio * 100).toInt()
+
+        // Set percentage text inside the TextView
+        percentageTextView.text = "$percentage%"
+
+        wordTextView.text = word
+        interpretationTextView.text = interpretation // Set interpretation text
+
+        return scoreItemView
+    }
+
+
 
     private fun loadImageAndUserDataFromDatabase() {
         val db: SQLiteDatabase = dataBaseHandler.readableDatabase

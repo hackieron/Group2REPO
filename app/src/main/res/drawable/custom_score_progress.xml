@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background shape -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <corners android:radius="6dp"/>
+
+            <stroke android:width="0.8dp"/>
+            <stroke android:color="@color/gray"/>
+            <solid android:color="@color/white"/> <!-- Set your desired background color -->
+        </shape>
+    </item>
+
+    <!-- Progress shape -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape android:shape="rectangle">
+                <corners android:radius="6dp"/>
+                <solid android:color="@color/gold"/> <!-- Set your desired progress color -->
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

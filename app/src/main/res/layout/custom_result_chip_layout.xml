@@ -1,18 +1,28 @@
 <!-- custom_result_chip_layout.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/resultProgressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        style="@style/ThickProgressBar"
         android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        android:layout_height="20dp"
+        android:progress="20" /> <!-- Set the initial progress value if needed -->
 
     <com.google.android.material.chip.Chip
         android:id="@+id/resultChip"
-        style="android:attr/chipBare"
+        style="@style/Widget.MaterialComponents.Chip.Action"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="asfasadasfasfafsaf"
+        android:textAlignment="center"
+        app:chipBackgroundColor="@color/white"
+        app:chipStrokeColor="@color/gray"
+        app:chipStrokeWidth="@dimen/chip_stroke"
+        app:chipSurfaceColor="#FFFFFF" />
+
 </LinearLayout>

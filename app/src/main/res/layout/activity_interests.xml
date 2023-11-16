@@ -31,8 +31,10 @@
 
     <ScrollView
         android:id="@+id/horizontalScrollView"
-        android:layout_width="387dp"
+        android:layout_width="match_parent"
         android:layout_height="213dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,12 +45,14 @@
             android:id="@+id/chipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-
             android:layout_gravity="top"
+
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
             <!-- Chip elements will be added programmatically here -->
+
+
         </com.google.android.material.chip.ChipGroup>
     </ScrollView>
 
@@ -66,14 +70,16 @@
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupSelectedTags"
-        android:layout_width="378dp"
-        android:layout_height="154dp"
+        android:layout_width="390dp"
+        android:layout_height="195dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
-        app:layout_constraintVertical_bias="0.359" >
+        app:layout_constraintVertical_bias="0.0">
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -118,7 +124,7 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="411dp"
+        android:layout_width="match_parent"
         android:layout_height="57dp"
         android:background="@color/gold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -141,17 +147,6 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Selected:"
-        app:layout_constraintBottom_toTopOf="@+id/chipGroupSelectedTags"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/next"
@@ -182,9 +177,9 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="200dp"
         android:layout_height="10dp"
-        android:visibility="gone"
         android:background="@drawable/custom_progress_background"
         android:progressDrawable="@drawable/custom_horizontal_progress"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
         app:layout_constraintStart_toStartOf="parent"

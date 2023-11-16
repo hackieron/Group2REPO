@@ -13,6 +13,13 @@
     <dimen name="chip_text_size">5.5sp</dimen>
     <dimen name="chip_negative_margin_bottom">1dp</dimen>
     <dimen name="bottom_nav_icon_size">39dp</dimen>
+    <dimen name="chip_stroke">0.8dp</dimen>
+    <dimen name="chip_stroke_not">0dp</dimen>
+    <dimen name="chip_space">5dp</dimen>
+    <dimen name="border_radius">5dp</dimen>
+    <dimen name="chip_font">5sp</dimen>
+
+
 
 
 </resources>

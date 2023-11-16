@@ -101,8 +101,25 @@ class Aptitude : Fragment() {
         return view
     }
 
+    private fun retrieveScoresFromDatabase(): Map<String, Int> {
+        val dbHelper = DataBaseHandler(requireContext())
+        val scoresMap: MutableMap<String, Int> = mutableMapOf()
+
+        val categories = dbHelper.getAllCategories() // Implement getAllCategories in your DataBaseHandler class
+
+        for (category in categories) {
+            val highestScore = dbHelper.getHighestScore(category) // Implement getHighestScore in your DataBaseHandler class
+            scoresMap[category] = highestScore
+        }
+
+        return scoresMap
+    }
 
     private fun logScores() {
+        // Log the scores to the console
+        scoresMap.clear()
+        scoresMap.putAll(retrieveScoresFromDatabase())
+
         // Log the scores to the console
         scoresMap.forEach { (category, score) ->
             Log.d("CategoryScore", "$category: $score")
@@ -147,20 +164,21 @@ class Aptitude : Fragment() {
         val dbHelper = DataBaseHandler(requireContext())
 
         dbHelper.setCurrentQuestionIndex(latestQuestionIndex)
-        dbHelper.close()
 
         // Update scores based on user response
         question.categories.forEach { category ->
             if (response) {
                 // Increment the score for the corresponding category
                 scoresMap[category] = scoresMap.getOrDefault(category, 0) + 1
+
+                // Store or update the score in the SQLite database
+                dbHelper.updateScore(category, scoresMap[category] ?: 0)
             }
         }
 
         // Store keywords for questions answered "yes"
         if (response) {
-            keywordsMap[question.text] = question.keywords
-            dbHelper.insertTestKeys(question.keywords)
+            // Implement keyword storage logic if needed
         }
 
         if (latestQuestionIndex < questions.size) {
@@ -209,7 +227,7 @@ class Aptitude : Fragment() {
                 val reader = BufferedReader(InputStreamReader(inputStream))
                 questions = reader.readLines().map { line ->
                     val parts = parseCSVLine(line)
-                    Question(parts[0].toInt(), parts[1], parts[2].split(","), parts[3].split(","))
+                    Question(parts[0].toInt(), parts[1], parts[2].split(","))
                 }
                 // Close the reader
                 reader.close()
@@ -230,7 +248,6 @@ class Aptitude : Fragment() {
                 // You can show an error message or log the exception
                 Log.e("Aptitude", "Failed to read questions from Firebase Storage.", exception)
             }
-
     }
 
     private fun parseCSVLine(line: String): List<String> {

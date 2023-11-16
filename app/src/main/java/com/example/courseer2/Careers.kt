@@ -22,10 +22,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.common.io.Resources
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
@@ -52,9 +54,10 @@ class Careers : AppCompatActivity() {
     private lateinit var chipGroupSelectedTags: ChipGroup
     private lateinit var chipGroup: ChipGroup
     private lateinit var editTextTag: EditText
+
     private lateinit var buttonAddTag: Button
-    private lateinit var skipButton: Button
     private lateinit var nextButton: Button
+    private lateinit var skipButton: Button
     private lateinit var tagCountTextView: TextView
     private val displayedTags = mutableListOf<String>()
     private val allPreExistingTags = mutableListOf<String>()
@@ -81,8 +84,8 @@ class Careers : AppCompatActivity() {
         chipGroup = findViewById(R.id.chipGroup)
         editTextTag = findViewById(R.id.editTextTag)
         buttonAddTag = findViewById(R.id.buttonAddTag)
-        skipButton = findViewById(R.id.skip)
         nextButton = findViewById<Button>(R.id.next)
+        skipButton = findViewById<Button>(R.id.skip)
         tagCountTextView = findViewById(R.id.textViewTagCount)
 
         readCsvFile(csvFileRef) { tags ->
@@ -98,7 +101,10 @@ class Careers : AppCompatActivity() {
 
         }
 
-
+        skipButton.setOnClickListener{
+            val intent = Intent(this, Careers::class.java)
+            startActivity(intent)
+        }
 
         buttonAddTag.setOnClickListener {
             showLoadingDialog()
@@ -156,10 +162,7 @@ class Careers : AppCompatActivity() {
         }
 
 
-        skipButton.setOnClickListener{
-            val intent = Intent(this, UserView::class.java)
-            startActivity(intent)
-        }
+
 
         nextButton.setOnClickListener {
             val selectedTagsList =
@@ -185,6 +188,7 @@ class Careers : AppCompatActivity() {
             }
         }
 
+
     }
 
     private fun readCsvFile(csvFileRef: StorageReference, callback: (List<String>) -> Unit) {
@@ -193,6 +197,8 @@ class Careers : AppCompatActivity() {
             val tags = parseCsvContent(csvContent)
             callback(tags)
         }.addOnFailureListener {
+            // Handle failure to read CSV file
+            // You can show a message or log the error
             it.printStackTrace()
         }
     }
@@ -227,6 +233,7 @@ class Careers : AppCompatActivity() {
 
 
     private suspend fun loadDataFromDatabase() {
+
         withContext(Dispatchers.Main) {
             setupChips()
         }
@@ -259,7 +266,15 @@ class Careers : AppCompatActivity() {
         // Add unselected tags first, removing duplicates
         val uniqueUnselectedTags = unselectedTags.toSet().toList()
         for (tag in uniqueUnselectedTags) {
-            val chip = createChip(tag, true) // true indicates it's a database tag
+            val chip = createChip(tag, true)
+            if(chip != null) {
+                chip.setTextColor(ContextCompat.getColor(this, R.color.black))
+                chip.setChipBackgroundColorResource(R.color.white)
+                chip.chipStrokeWidth =
+                    resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                chip.setChipStrokeColorResource(R.color.gray)
+            }
+            // true indicates it's a database tag
             chipGroup.addView(chip)
             displayedTags.add(tag)
         }
@@ -410,6 +425,12 @@ class Careers : AppCompatActivity() {
                                 chip.visibility = View.GONE
                             }
                         }
+                        if (chip != null){
+                            chip.setChipBackgroundColorResource(R.color.white)
+                            chip.chipStrokeWidth =
+                                resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                            chip.setChipStrokeColorResource(R.color.gray)
+                        }
                         chipGroup.addView(chip as View)
                     }
                 }
@@ -422,6 +443,12 @@ class Careers : AppCompatActivity() {
             hideLoadingDialog()
         }
     }
+
+
+
+
+
+
 
 
 
@@ -440,10 +467,13 @@ class Careers : AppCompatActivity() {
         // Add selected tags last
         for (tag in selectedTagsList) {
             val chip = createChip(tag)
+            chip?.isChecked = false
             chipGroupSelectedTags.addView(chip)
         }
 
     }
+
+
 
 
     private fun enableChips(chipGroup: ChipGroup) {
@@ -467,9 +497,12 @@ class Careers : AppCompatActivity() {
 
         val existingChip = chipGroup.findViewWithTag<Chip>(tag)
         if (existingChip != null) {
+
             return null // Skip creating a new chip
         }
+
         val chip = Chip(this)
+
         chip.text = tag.lowercase(Locale.getDefault())
         chip.isCheckable = true
 
@@ -496,7 +529,14 @@ class Careers : AppCompatActivity() {
                     // Remove the chip from its current parent (chipGroup) before adding it to chipGroupSelectedTags
                     val parent = chip.parent as? ViewGroup
                     parent?.removeView(chip)
+                    if(chip != null){
+                        chip.isCheckedIconVisible = false
+                        chip.setTextColor(ContextCompat.getColor(this, R.color.black))
+                        chip.setChipBackgroundColorResource(R.color.gold)
+                        chip.chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_not) // Set stroke width
+                        chip.setChipStrokeColorResource(R.color.gray)
 
+                    }
                     // Add the chip to chipGroupSelectedTags
                     chipGroupSelectedTags.addView(chip)
 
@@ -700,7 +740,7 @@ class Careers : AppCompatActivity() {
             try {
 
                 val response = OkHttpClient.Builder()
-                    .callTimeout(7, TimeUnit.SECONDS)
+                    .callTimeout(10, TimeUnit.SECONDS)
                     .build()
                     .newCall(request)
                     .execute()
