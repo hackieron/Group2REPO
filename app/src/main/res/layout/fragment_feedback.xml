@@ -21,25 +21,35 @@
         android:layout_height="520dp"
         android:layout_gravity="center_horizontal|center_vertical">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Feedback"
-            android:textAlignment="center"
-            android:textSize="30dp"
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="153dp"
+            android:layout_height="41dp"
+            android:background="@drawable/rounded_button"
+            android:text="SUBMIT"
+            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.966" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button"
-            tools:layout_editor_absoluteX="108dp"
-            tools:layout_editor_absoluteY="150dp" />
+        <EditText
+            android:id="@+id/feedbackInput"
+            android:layout_width="292dp"
+            android:layout_height="425dp"
+            android:background="@drawable/rounded_edittext_background"
+            android:gravity="center|top"
+            android:hint="Write your feedback/suggestions/comment about the app. Max of 1000 characters."
+            android:inputType="textMultiLine"
+            android:maxLength="1000"
+            android:paddingTop="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/submitButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
