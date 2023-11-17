@@ -54,11 +54,10 @@ class Careers : AppCompatActivity() {
     private lateinit var chipGroupSelectedTags: ChipGroup
     private lateinit var chipGroup: ChipGroup
     private lateinit var editTextTag: EditText
-
+    private lateinit var tagProgressBar: ProgressBar
     private lateinit var buttonAddTag: Button
     private lateinit var nextButton: Button
     private lateinit var skipButton: Button
-    private lateinit var tagCountTextView: TextView
     private val displayedTags = mutableListOf<String>()
     private val allPreExistingTags = mutableListOf<String>()
     private val selectedTags = mutableSetOf<String>()
@@ -79,14 +78,13 @@ class Careers : AppCompatActivity() {
         searchProgressBar = findViewById(R.id.searchProgressBar)
         loadingDialog = createLoadingDialog()
         searchView = findViewById(R.id.searchView)
-        progressBar = findViewById(R.id.progressBar)
         chipGroupSelectedTags = findViewById(R.id.chipGroupSelectedTags)
         chipGroup = findViewById(R.id.chipGroup)
         editTextTag = findViewById(R.id.editTextTag)
         buttonAddTag = findViewById(R.id.buttonAddTag)
         nextButton = findViewById<Button>(R.id.next)
         skipButton = findViewById<Button>(R.id.skip)
-        tagCountTextView = findViewById(R.id.textViewTagCount)
+
 
         readCsvFile(csvFileRef) { tags ->
             lifecycleScope.launch {
@@ -102,7 +100,7 @@ class Careers : AppCompatActivity() {
         }
 
         skipButton.setOnClickListener{
-            val intent = Intent(this, Careers::class.java)
+            val intent = Intent(this, UserView::class.java)
             startActivity(intent)
         }
 
@@ -820,9 +818,10 @@ class Careers : AppCompatActivity() {
 
     private fun updateTagCount() {
         val totalTags = selectedTags.size - hiddenSelectedTags.size // Exclude hidden tags
-        val tagCountText = "Tag Count: $totalTags/5 (Max 5)"
-        tagCountTextView.text = tagCountText
+        tagProgressBar = findViewById(R.id.tagProgressBar)
+        tagProgressBar.progress = totalTags
     }
+
 
 
 }

@@ -3,25 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_marginTop="60dp"
+    android:layout_marginBottom="60dp"
     android:layout_height="match_parent"
     android:layout_gravity="center|center_horizontal|center_vertical"
     android:gravity="center|center_horizontal">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Programs" />
-
     <!-- Wrap the RecyclerView in a CardView to add a border -->
     <androidx.cardview.widget.CardView
         android:id="@+id/searchCardView"
-        android:layout_width="334dp"
-        android:layout_height="49dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="31dp">
+        android:layout_marginEnd="50dp">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
@@ -29,15 +23,17 @@
             android:layout_height="wrap_content" />
     </androidx.cardview.widget.CardView>
 
+    <!-- Add a bottom margin to the CardView to adjust its position -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="380dp"
-        android:layout_height="622dp"
-        android:layout_below="@id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchCardView"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
         android:foregroundGravity="center_horizontal"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="8dp"
@@ -49,16 +45,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="8dp" >
+            android:padding="8dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 
 
-
-
     </androidx.cardview.widget.CardView>
 
-    <!-- Add a bottom margin to the CardView to adjust its position -->
     <Space
         android:id="@+id/bottom_margin"
         android:layout_width="match_parent"

@@ -16,14 +16,13 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:id="@+id/toolbar"
 
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:background="@color/gold"
             android:elevation="4dp"
-            />
+            app:popupTheme="@style/Base.Theme.CourSeer2" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -56,12 +55,13 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/gold"
-                android:src="@drawable/restart"
-                app:layout_anchor="@id/bottomAppBar"
-                app:maxImageSize="40dp"
-                android:id="@+id/reset"
-                android:contentDescription="TODO" />
+                android:src="@drawable/baseline_restart_alt_24"
+                app:backgroundTint="@color/gold"
+            app:layout_anchor="@id/bottomAppBar"
+            app:maxImageSize="40dp"
+            android:id="@+id/reset"
+            android:contentDescription="TODO" />
+
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </RelativeLayout>

@@ -174,6 +174,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="20dp"
+                android:visibility="visible"
                 app:chipSpacing="3dp"
                 app:chipSpacingHorizontal="3dp"
                 app:lineSpacing="3dp"
@@ -181,6 +182,16 @@
                 tools:layout_conversion_absoluteWidth="325dp">
 
 
+                <TextView
+                    android:id="@+id/notTV1"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:fontFamily="@font/alata"
+                    android:text="N/A"
+                    android:textAlignment="center"
+                    android:textSize="48sp"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
             </com.google.android.material.chip.ChipGroup>
 
             <com.google.android.material.chip.ChipGroup
@@ -201,6 +212,16 @@
                 tools:layout_conversion_absoluteHeight="0dp"
                 tools:layout_conversion_absoluteWidth="325dp">
 
+                <TextView
+                    android:id="@+id/notTV2"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:fontFamily="@font/alata"
+                    android:text="N/A"
+                    android:textAlignment="center"
+                    android:textSize="48sp"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
             </com.google.android.material.chip.ChipGroup>
 
             <LinearLayout
