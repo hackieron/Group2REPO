@@ -8,24 +8,29 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/searchCardView"
-        android:layout_width="334dp"
+        android:layout_width="match_parent"
         android:layout_height="49dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:clickable="true" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="380dp"
-        android:layout_height="622dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@id/searchCardView"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="60dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="60dp"
         android:foregroundGravity="center_horizontal"
         app:cardBackgroundColor="#FFFFFF"

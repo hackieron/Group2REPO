@@ -1,5 +1,6 @@
 package com.example.courseer2
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.provider.ContactsContract.Data
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,11 +36,25 @@ class Aptitude : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Add this after the if condition
+        // Add this after the if condition
+        val progressBar = view?.findViewById<ProgressBar>(R.id.loadingScreen)
+        if (progressBar != null) {
+            progressBar.visibility = View.VISIBLE
+        }
+        if (progressBar != null) {
+            progressBar.progress = 0
+        }
+
+
         val view = inflater.inflate(R.layout.fragment_aptitude, container, false)
         val dbHelper = DataBaseHandler(requireContext())
         val itemnumber = dbHelper.getCurrentQuestionIndex()
         Log.d("QINDEX", "$itemnumber")
         // Check if the test is done
+        if(dbHelper.getCurrentQuestionIndex() != 0){
+            view.findViewById<Button>(R.id.proceedButton).text = "CONTINUE"
+        }
 
         if (itemnumber == 40) {
             // Display "TEST DONE" message or update the UI accordingly
@@ -94,8 +110,9 @@ class Aptitude : Fragment() {
                 }
 
                 // Update the button text based on whether it's the first time
-                val proceedButtonText = if (dbHelper.getCurrentQuestionIndex() == 0) "Proceed" else "Continue"
-                view.findViewById<Button>(R.id.proceedButton).text = proceedButtonText
+
+
+
                 currentQuestionIndex = dbHelper.getCurrentQuestionIndex()
                 val itemnum = dbHelper.getCurrentQuestionIndex()
                 Log.d("getCurrentQuestionIndex", "$itemnum")
@@ -181,7 +198,6 @@ class Aptitude : Fragment() {
     private fun onResponseSelected(question: Question, response: Boolean) {
         latestQuestionIndex++
         val dbHelper = DataBaseHandler(requireContext())
-
         dbHelper.setCurrentQuestionIndex(latestQuestionIndex)
 
         // Update scores based on user response
@@ -200,16 +216,33 @@ class Aptitude : Fragment() {
             // Implement keyword storage logic if needed
         }
 
-        if (latestQuestionIndex < questions.size) {
-            // If there are more questions, display the next question
-            displayQuestion(requireView())
-        } else {
-            // If all questions are answered, display the result
-            logScores()
-        }
 
-        // Log keywords for debugging or additional actions
-        logKeywords()
+        view?.findViewById<View>(R.id.questionScreen)?.visibility = View.GONE
+        val progressBar = view?.findViewById<View>(R.id.loadingScreen)
+
+// Animate progress to 100 in 1 second
+        val animator = ObjectAnimator.ofInt(progressBar, "progress", 100)
+        animator.duration = 1000 // 1000 milliseconds (1 second)
+        animator.start()
+
+// Delay for 1 second before displaying the next question
+        view?.postDelayed({
+            // Hide loading screen
+            view?.findViewById<View>(R.id.loadingScreen)?.visibility = View.GONE
+
+            if (latestQuestionIndex < questions.size) {
+                // If there are more questions, display the next question
+                displayQuestion(requireView())
+            } else {
+                // If all questions are answered, display the result
+                logScores()
+            }
+
+            // Log keywords for debugging or additional actions
+            logKeywords()
+        }, 1000) // 1000 milliseconds delay
+
+        // 1000 milliseconds delay
     }
 
     private fun displayQuestion(view: View) {

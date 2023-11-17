@@ -15,7 +15,8 @@
         android:foregroundGravity="center_vertical|center|center_horizontal"
         android:gravity="center|center_vertical"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="gone">
 
         <TextView
             android:id="@+id/textView3"
@@ -33,17 +34,18 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             app:srcCompat="@drawable/check_icon"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
-        android:layout_width="409dp"
-        android:layout_height="669dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="-120dp"
         android:layout_marginBottom="-120dp"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:visibility="invisible">
         <!-- This container will hold your fragments. Initially set to gone -->
     </FrameLayout>
 
@@ -51,17 +53,67 @@
         android:id="@+id/startScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_marginTop="0dp"
+        android:gravity="center|top"
+        android:orientation="vertical">
 
         <!-- Add your start screen UI elements here -->
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="339dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Career - Interest Test"
+            android:textAlignment="center"
+            android:textColor="@color/gold"
+            android:textSize="34sp"
+            android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/intractions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:justificationMode="inter_word"
+            android:text="Career Interest Test is used to measure your interest in choosing a career. The items included in this test describes the nature of the jobs that you can pursue in different  fields. Please take your time and answer each item through a simple &quot;Yes&quot; or &quot;No&quot;."
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
         <Button
             android:id="@+id/proceedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Proceed" />
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginBottom="72dp"
+            android:text="Proceed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.84"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/loadingScreen"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:max="100"
+        android:visibility="gone"
+        tools:visibility="gone" />
     <!-- Question Screen -->
     <LinearLayout
         android:id="@+id/questionScreen"
@@ -70,7 +122,8 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:visibility="invisible">
 
         <!-- Add your RecyclerView for displaying questions here -->
         <androidx.recyclerview.widget.RecyclerView

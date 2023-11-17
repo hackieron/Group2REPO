@@ -241,7 +241,8 @@ class ResultFragment : Fragment() {
                         proceedButton.isEnabled = false
                     }
                 }
-            } else if(topCategories.size <= 3) {
+            }
+            if(topCategories.size <= 3) {
                 proceedButton.isEnabled = true
                 chip.isClickable = false
                 chip.isCheckable = false

@@ -3,6 +3,29 @@
     <style name="Base.Theme.CourSeer2" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your light theme here. -->
 
+        <!-- Change the primary color -->
+        <item name="colorPrimary">@color/gold</item>
+
+
+        <!-- Change the primary dark color -->
+        <item name="colorPrimaryDark">@color/gray</item>
+
+        <!-- Change the accent color -->
+        <item name="colorAccent">@color/gold</item>
+
+        <!-- Change the status bar color (if using android:fitsSystemWindows="true") -->
+        <item name="android:statusBarColor">@color/gold</item>
+
+        <!-- Change text color for various elements -->
+
+        <!-- Change the default text color -->
+        <item name="android:textColorPrimary">@color/textgray</item>
+
+        <!-- Change the secondary text color -->
+        <item name="android:textColorSecondary">#FFC107</item>
+
+        <!-- Add more text color attributes as needed -->
+
     </style>
 
     <style name="Theme.CourSeer2" parent="Base.Theme.CourSeer2" />

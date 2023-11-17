@@ -4,6 +4,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import com.example.courseer2.databinding.FragmentUserProfileBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-
+import kotlin.math.log
 
 
 class UserProfile : Fragment() {
@@ -25,6 +27,7 @@ class UserProfile : Fragment() {
     private lateinit var nameTextView: TextView
     private lateinit var strandTextView: TextView
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,6 +36,7 @@ class UserProfile : Fragment() {
         val binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         val view = binding.root
         dataBaseHandler = DataBaseHandler(requireContext()) // Initialize dataBaseHandler here
+
 
         val scoreLayout: LinearLayout = view.findViewById(R.id.scoreLayout)
         // Add the score items to the layout
@@ -47,6 +51,9 @@ class UserProfile : Fragment() {
         var marginBottom = 1
         interestChips.chipSpacingVertical = -marginBottom // Adjust the value as needed
         careerChips.chipSpacingVertical = -marginBottom
+
+
+
         // Load and display the image from the database
         loadImageAndUserDataFromDatabase()
         val database: SQLiteDatabase = dataBaseHandler.readableDatabase
@@ -88,9 +95,13 @@ class UserProfile : Fragment() {
                     chip.isClickable = false
                     chip.setEnsureMinTouchTargetSize(false)
                 }
+
                 interestChips.addView(chip)
                 interestChips.setChipSpacingResource(R.dimen.chip_space)
+
             } while (cursor.moveToNext())
+
+
         }
         cursor.close()
         database.close()
@@ -136,16 +147,26 @@ class UserProfile : Fragment() {
                     chip2.setEnsureMinTouchTargetSize(false)
                 }
 
+
                 careerChips.addView(chip2)
                 careerChips.setChipSpacingResource(R.dimen.chip_space)
 
             } while (cursor2.moveToNext())
+
+
         }
 
         // Close the database and cursor when done
         cursor2.close()
         database2.close()
-
+        if (interestChips.childCount == 1) {
+            val notTV1: TextView = view.findViewById(R.id.notTV1)
+            notTV1.visibility = View.VISIBLE
+        }
+        if (careerChips.childCount == 1) {
+            val notTV2: TextView = view.findViewById(R.id.notTV2)
+            notTV2.visibility = View.VISIBLE
+        }
         return view
     }
 
