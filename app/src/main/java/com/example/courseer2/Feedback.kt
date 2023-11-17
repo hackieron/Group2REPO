@@ -85,6 +85,7 @@ class Feedback : Fragment() {
             if (result) {
                 textBox.text.clear()
                 Toast.makeText(requireContext(), "Email sent successfully.", Toast.LENGTH_LONG).show()
+
             } else {
                 Toast.makeText(requireContext(), "Failed to send an email", Toast.LENGTH_LONG).show()
             }
