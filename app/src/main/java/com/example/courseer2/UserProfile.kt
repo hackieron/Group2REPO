@@ -3,12 +3,6 @@ package com.example.courseer2
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.InsetDrawable
-import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +10,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.courseer2.databinding.FragmentUserProfileBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.play.integrity.internal.c
+
 
 
 class UserProfile : Fragment() {
