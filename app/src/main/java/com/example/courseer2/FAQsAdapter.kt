@@ -1,6 +1,5 @@
 package com.example.courseer2
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,8 @@ import androidx.appcompat.widget.SearchView
 
 
 class FAQsAdapter(
-private var faqs: List<FAQ>,
-private var listener: OnItemClickListener // Change to var
+    private var faqs: List<FAQ>,
+    private var listener: OnItemClickListener // Change to var
 ) : RecyclerView.Adapter<FAQsAdapter.ViewHolder>() {
 
 
@@ -46,12 +45,14 @@ private var listener: OnItemClickListener // Change to var
                 if (position == expandedPosition) {
                     binding.shortDescriptionTextView.visibility = View.VISIBLE
                     binding.shortDescriptionCardView.visibility = View.VISIBLE
+                } else {
                     binding.shortDescriptionTextView.visibility = View.GONE
-                    binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
+                    binding.shortDescriptionCardView.visibility = View.GONE
                 }
             }
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = FaqItem1Binding.inflate(

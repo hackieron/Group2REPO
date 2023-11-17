@@ -96,11 +96,11 @@ class FAQs : Fragment() {
         val lines = csvData.split('|')
         for (line in lines) {
             val columns = line.split(";")
-            if (columns.size >= 5) {
-                val title = columns[0]
-                val category = columns[1]
-                val shortDescription = columns[2]
-                val faq = FAQ (title, category, shortDescription)
+            if (columns.size >= 3) { // Adjusted the column size check
+                val title = columns[0].trim()
+                val category = columns[1].trim()
+                val shortDescription = columns[2].trim()
+                val faq = FAQ(title, category, shortDescription)
                 faqs.add(faq)
             }
         }
@@ -138,7 +138,7 @@ class OneAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.category_item, parent, false)
+            .inflate(R.layout.faq_category_item, parent, false)
 
         return ViewHolder(itemView)
     }
