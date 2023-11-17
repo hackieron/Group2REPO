@@ -76,16 +76,14 @@ class ResultFragment : Fragment() {
                 keywords.addAll(listOf("Architecture", "Interior Design"))
                 dataBaseHandler.insertInterpretation("Architecture", "Transforming concepts into reality, architects craft spaces that harmonize functionality and aesthetics, creating environments tailored to clients' needs.")
             }
-            if (selectedChipsList.contains("Broadcasting") || selectedChipsList.contains("Communications")) {
-
+            if (selectedChipsList.contains("Broadcasting")) {
                 keywords.addAll(listOf("News Reporter", "News Writing", "Sports Writing"))
-                if(selectedChipsList.contains("BroadCasting")){
-                    dataBaseHandler.insertInterpretation("Broadcasting", "Professionals in broadcasting or communications may work as News Reporters, engaging in News Writing or Sports Writing.")
-                }
-                if(selectedChipsList.contains("Communications")){
-                    dataBaseHandler.insertInterpretation("Communications", "Professionals in broadcasting or communications may work as News Reporters, engaging in News Writing or Sports Writing.")
-                }
+                dataBaseHandler.insertInterpretation("Broadcasting", "Professionals in broadcasting or communications may work as News Reporters, engaging in News Writing or Sports Writing.")
+            }
 
+            if (selectedChipsList.contains("Communications")) {
+                keywords.addAll(listOf("News Reporter", "News Writing", "Sports Writing"))
+                dataBaseHandler.insertInterpretation("Communications", "Professionals in broadcasting or communications may work as News Reporters, engaging in News Writing or Sports Writing.")
             }
 
             if (selectedChipsList.contains("Business")) {
@@ -98,18 +96,18 @@ class ResultFragment : Fragment() {
                 dataBaseHandler.insertInterpretation("Marketing", "Deciphering the art of persuasion, marketers identify the most effective media channels to showcase products or services and captivate target audiences.")
             }
 
-            if (selectedChipsList.contains("Computer Science") || selectedChipsList.contains("Information Technology")) {
+            if (selectedChipsList.contains("Computer Science")) {
 
                 keywords.addAll(listOf("Game Developer", "Software Developer", "Web Developer"))
-                if(selectedChipsList.contains("Computer Science")){
-                    dataBaseHandler.insertInterpretation("Computer Science", "Developers in this field design and create games, software, and applications, shaping the digital landscape with innovative solutions.")
+                dataBaseHandler.insertInterpretation("Computer Science", "Developers in this field design and create games, software, and applications, shaping the digital landscape with innovative solutions.")
 
-                }
-                if(selectedChipsList.contains("Information Technology")){
-                    dataBaseHandler.insertInterpretation("Information Technology", "Developers in this field design and create games, software, and applications, shaping the digital landscape with innovative solutions.")
+            }
+            if (selectedChipsList.contains("Information Technology")) {
 
-                }
-                }
+                keywords.addAll(listOf("Game Developer", "Software Developer", "Web Developer"))
+                dataBaseHandler.insertInterpretation("Information Technology", "Developers in this field design and create games, software, and applications, shaping the digital landscape with innovative solutions.")
+
+            }
 
             if (selectedChipsList.contains("Digital Arts")) {
                 keywords.addAll(listOf("Digital Art", "Graphic Artist"))
@@ -184,8 +182,9 @@ class ResultFragment : Fragment() {
 // Add new chips for the top categories with the highest score
         val highestScore = topCategories.firstOrNull()?.value
         val secondHighestScore = topCategories.getOrNull(1)?.value
+        val thirdHigestScore = topCategories.getOrNull(2)?.value
 
-        topCategories.filter { it.value == highestScore || it.value == secondHighestScore }.forEachIndexed { index, entry ->
+        topCategories.filter { it.value == highestScore || it.value == secondHighestScore || it.value == thirdHigestScore }.forEachIndexed { index, entry ->
             val chipLayout = LayoutInflater.from(requireContext())
                 .inflate(R.layout.custom_result_chip_layout, null) as LinearLayout
 

@@ -52,6 +52,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     private lateinit var nameTextView: TextView
     private lateinit var strandTextView: TextView
     private val connectivityReceiver = object : BroadcastReceiver() {
+
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isInternetAvailable()) {
                 // If no internet, show a dialog and go back to MainActivity
@@ -59,7 +60,6 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             }
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerConnectivityReceiver()
@@ -223,8 +223,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                 showAdminLoginDialog()
             }
             R.id.menu_item_close_app -> {
-                exitProcess(0)
-                return true
+                finishAffinity()
             }
         }
 
@@ -261,7 +260,8 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            // Finish this activity and all activities in the back stack
+            finishAffinity()
         }
     }
 

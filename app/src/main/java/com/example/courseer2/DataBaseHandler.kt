@@ -61,11 +61,11 @@ class DataBaseHandler(context: Context) :
 
     override fun onCreate(db: SQLiteDatabase?) {
         val CREATE_SCORES_TABLE = "CREATE TABLE $TABLE_SCORES (" +
-                 "$COLUMN_SCORE_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                 "$COLUMN_CATEGORY TEXT NOT NULL," +
-                 "$COLUMN_SCORE INTEGER NOT NULL)"
+                "$COLUMN_SCORE_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "$COLUMN_CATEGORY TEXT NOT NULL," +
+                "$COLUMN_SCORE INTEGER NOT NULL)"
         val createTableFieldScores = "CREATE TABLE $TABLE_FSCORES (" +
-        "$COLUMN_FSCORES_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "$COLUMN_FSCORES_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COLUMN_WORD TEXT NOT NULL," +
                 "$COLUMN_DESCRIPTION TEXT NOT NULL," +
                 "$COLUMN_FSCORE INTEGER)"
@@ -124,22 +124,22 @@ class DataBaseHandler(context: Context) :
         onCreate(db)
     }
 
-// Inside DataBaseHandler class
-fun insertInterpretation(word: String, description: String) {
-    // Retrieve the highest COLUMN_SCORE value for the corresponding field from the TABLE_SCORE table
-    val highestScore: Int = getHighestScoreForCategoryFromTable(word)
+    // Inside DataBaseHandler class
+    fun insertInterpretation(word: String, description: String) {
+        // Retrieve the highest COLUMN_SCORE value for the corresponding field from the TABLE_SCORE table
+        val highestScore: Int = getHighestScoreForCategoryFromTable(word)
 
-    // Insert the interpretation into the TABLE_FSCORES table
-    val values = ContentValues().apply {
-        put(COLUMN_WORD, word)
-        put(COLUMN_DESCRIPTION, description)
-        put(COLUMN_FSCORE, highestScore)
+        // Insert the interpretation into the TABLE_FSCORES table
+        val values = ContentValues().apply {
+            put(COLUMN_WORD, word)
+            put(COLUMN_DESCRIPTION, description)
+            put(COLUMN_FSCORE, highestScore)
+        }
+
+        val db = this.writableDatabase
+        db.insertWithOnConflict(TABLE_FSCORES, null, values, SQLiteDatabase.CONFLICT_REPLACE)
+        db.close()
     }
-
-    val db = this.writableDatabase
-    db.insertWithOnConflict(TABLE_FSCORES, null, values, SQLiteDatabase.CONFLICT_REPLACE)
-    db.close()
-}
 
     // Function to retrieve the COLUMN_SCORE value for a specific category from the TABLE_SCORE table
     private fun getScoreForCategoryFromTable(category: String): Int {
@@ -190,23 +190,23 @@ fun insertInterpretation(word: String, description: String) {
         return highestScore
     }
 
-        fun processFieldScores() {
-            val db = this.readableDatabase
-            val fieldsCursor = db.query(TABLE_FIELDS, arrayOf(COL_FIELD_ID, COL_FIELDS), null, null, null, null, null)
+    fun processFieldScores() {
+        val db = this.readableDatabase
+        val fieldsCursor = db.query(TABLE_FIELDS, arrayOf(COL_FIELD_ID, COL_FIELDS), null, null, null, null, null)
 
-            while (fieldsCursor.moveToNext()) {
-                val fieldId = fieldsCursor.getInt(fieldsCursor.getColumnIndex(COL_FIELD_ID))
-                val fieldValue = fieldsCursor.getString(fieldsCursor.getColumnIndex(COL_FIELDS))
+        while (fieldsCursor.moveToNext()) {
+            val fieldId = fieldsCursor.getInt(fieldsCursor.getColumnIndex(COL_FIELD_ID))
+            val fieldValue = fieldsCursor.getString(fieldsCursor.getColumnIndex(COL_FIELDS))
 
-                val highestScore = getHighestScoreForField(fieldValue)
+            val highestScore = getHighestScoreForField(fieldValue)
 
-                // Save the results in TABLE_FSCORES
-                saveFieldScore(fieldId, fieldValue, highestScore)
-            }
-
-            fieldsCursor.close()
-            db.close()
+            // Save the results in TABLE_FSCORES
+            saveFieldScore(fieldId, fieldValue, highestScore)
         }
+
+        fieldsCursor.close()
+        db.close()
+    }
 
     fun getHighestScoreForField(fieldValue: String): Int {
         val db = this.readableDatabase
@@ -512,7 +512,10 @@ fun insertInterpretation(word: String, description: String) {
         db.delete(TABLE_PREFERENCES, null, null)
         db.delete(TABLE_KEYWORDS, null, null)
         db.delete(TABLE_KEYWORDS1, null, null)
-        db.delete(TABLE_TESTKEYS, null, null)
+        db.delete(TABLE_FIELDS, null, null)
+        db.delete(TABLE_SETTINGS, null, null)
+        db.delete(TABLE_FSCORES, null, null)
+        db.delete(TABLE_SCORES, null, null)
         db.close()
     }
 

@@ -34,7 +34,7 @@ class Recommend2 : Fragment() {
             return fragment
         }
     }
-    private var THRESHOLD = 2
+    private var THRESHOLD = 5
     private lateinit var seekBar: SeekBar
     private lateinit var seekBarLabel: TextView
     private lateinit var searchView: SearchView
@@ -62,9 +62,9 @@ class Recommend2 : Fragment() {
 
                 // Update label based on progress
                 when {
-                    progress <= 2 -> seekBarLabel.text = "BROAD"
-                    progress > 2 && progress <= 5 -> seekBarLabel.text = "NEUTRAL"
-                    progress > 5 -> seekBarLabel.text = "NARROW"
+                    progress <= 3 -> seekBarLabel.text = "BROAD"
+                    progress > 3 && progress <= 7 -> seekBarLabel.text = "NEUTRAL"
+                    progress > 7 -> seekBarLabel.text = "NARROW"
                 }
             }
 

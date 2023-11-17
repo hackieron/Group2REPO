@@ -22,11 +22,13 @@ class Aptitude : Fragment() {
 
     private val scoresMap: MutableMap<String, Int> = mutableMapOf()
     private val keywordsMap: MutableMap<String, List<String>> = mutableMapOf()
-
     private lateinit var questions: List<Question>
     private var currentQuestionIndex = 0
     private var latestQuestionIndex = 0
     private var lastAnsweredItemNumber: Int? = null
+    private var isTestDone: Boolean = false
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +36,21 @@ class Aptitude : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_aptitude, container, false)
         val dbHelper = DataBaseHandler(requireContext())
+        val itemnumber = dbHelper.getCurrentQuestionIndex()
+        Log.d("QINDEX", "$itemnumber")
+        // Check if the test is done
 
+        if (itemnumber == 40) {
+            // Display "TEST DONE" message or update the UI accordingly
+
+            view.findViewById<View>(R.id.startScreen).visibility = View.GONE
+            view.findViewById<View>(R.id.questionScreen).visibility = View.GONE
+            view.findViewById<Button>(R.id.proceedButton).visibility = View.GONE
+            view.findViewById<View>(R.id.testDoneScreen).visibility = View.VISIBLE
+            return view
+        }
+
+        // Continue with your existing logic
         // Update latestQuestionIndex based on the stored value
         latestQuestionIndex = dbHelper.getCurrentQuestionIndex()
 
@@ -143,6 +159,9 @@ class Aptitude : Fragment() {
         // Launch the ResultFragment with the top categories
         view?.findViewById<View>(R.id.questionScreen)?.visibility = View.GONE
         displayResultScreen(topCategories)
+
+        // Set the test as done
+        isTestDone = true
     }
 
     private fun displayResultScreen(topCategories: List<Map.Entry<String, Int>>) {
@@ -194,6 +213,7 @@ class Aptitude : Fragment() {
     }
 
     private fun displayQuestion(view: View) {
+
         if (!isAdded) {
             // Fragment not attached to an activity, do not proceed
             return
