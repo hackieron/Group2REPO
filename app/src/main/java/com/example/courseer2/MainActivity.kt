@@ -26,6 +26,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         progressBar = findViewById(R.id.progressBar)
+        val dbHelper = DataBaseHandler(this)
+        val highest = dbHelper.getHighestCount()
+
 
         val isFirstRun = isFirstRun()
         val isCalledByIntent = intent.hasExtra(EXTRA_FIRST_RUN)
@@ -38,7 +41,11 @@ class MainActivity : AppCompatActivity() {
                     preloadActivities()
                     redirectToUserCreate()
                 }
-            } else {
+            }
+            if(highest <3){
+                dbHelper.clearAllData()
+                redirectToUserCreate()
+            }else {
                 redirectToUserView()
             }
         }

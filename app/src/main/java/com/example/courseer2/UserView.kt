@@ -261,7 +261,18 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             // Finish this activity and all activities in the back stack
-            finishAffinity()
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Are you sure you want to exit?")
+            builder.setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                finishAffinity()
+            }
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
+
         }
     }
 

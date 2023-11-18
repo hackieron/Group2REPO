@@ -67,13 +67,22 @@ class Interests : AppCompatActivity() {
     private var initialChipCount = 0
     private lateinit var searchProgressBar: ProgressBar
     private var searchJob: Job? = null
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val dataBaseHandler = DataBaseHandler(this)
+        dataBaseHandler.decreaseCount()
+        dataBaseHandler.clearUser()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val storage = FirebaseStorage.getInstance()
         val storageRef: StorageReference = storage.getReferenceFromUrl("gs://courseer-3555d.appspot.com/")
         val csvFileRef: StorageReference = storageRef.child("csv_files/Keywords.csv")
 
-
+        val dataBaseHandler = DataBaseHandler(this)
 
         setContentView(R.layout.activity_interests)
         progressBar = findViewById(R.id.progressBar)
@@ -103,6 +112,8 @@ class Interests : AppCompatActivity() {
         }
 
         skipButton.setOnClickListener{
+
+            dataBaseHandler.increaseCount()
             val intent = Intent(this, Careers::class.java)
             startActivity(intent)
         }
@@ -169,13 +180,14 @@ class Interests : AppCompatActivity() {
             val selectedTagsList =
                 chipGroupSelectedTags.children.map { (it as? Chip)?.text.toString() }
                     .toList()
-            val dataBaseHandler = DataBaseHandler(this)
+
 
             if (selectedTagsList.isNotEmpty()) {
 
 
 
                 if (dataBaseHandler.insertKeywords(selectedTagsList)) {
+                    dataBaseHandler.increaseCount()
                     Toast.makeText(this, "Tags inserted into KeywordsTable", Toast.LENGTH_SHORT)
                         .show()
 

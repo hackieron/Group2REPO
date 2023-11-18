@@ -2,8 +2,6 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CourSeer2" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/gold</item>
-        <item name="android:windowBackground">@color/gray</item>
-        <item name="android:textColorPrimary">@color/black</item>
+
     </style>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Careers">
+    tools:context=".Interests">
 
     <!-- Existing UI elements -->
 
@@ -21,7 +21,7 @@
         app:queryHint="Search Tags" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTags"
+        android:id="@+id/recyclerViewTags1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
@@ -31,6 +31,7 @@
 
     <ScrollView
         android:id="@+id/horizontalScrollView"
+        style="@android:style/Widget.Holo.Light.ScrollView"
         android:layout_width="match_parent"
         android:layout_height="213dp"
         android:layout_marginLeft="10dp"
@@ -60,17 +61,16 @@
         android:id="@+id/buttonAddTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginEnd="16dp"
         android:text="Add Tag"
         app:layout_constraintBottom_toBottomOf="@+id/editTextTag"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextTag"
         app:layout_constraintTop_toTopOf="@+id/editTextTag"
         app:layout_constraintVertical_bias="0.985" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupSelectedTags"
-        android:layout_width="390dp"
+        android:layout_width="0dp"
         android:layout_height="195dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -85,11 +85,13 @@
 
     <EditText
         android:id="@+id/editTextTag"
-        android:layout_width="256dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:hint="Enter a tag"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddTag"
         app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
@@ -97,9 +99,11 @@
 
     <ProgressBar
         android:id="@+id/tagProgressBar"
-        style="@style/ItemCountBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:background="@drawable/custom_progress_background"
+        android:progressDrawable="@drawable/custom_horizontal_progress"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="10dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:max="5"
@@ -142,7 +146,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Careers"
+        android:text="Career Paths"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -156,25 +160,19 @@
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
         android:text="NEXT"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.873"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupSelectedTags"
-        app:layout_constraintVertical_bias="0.37" />
+        app:layout_constraintTop_toBottomOf="@+id/chipGroupSelectedTags" />
 
     <Button
         android:id="@+id/skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:text="skip"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/next"
-        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupSelectedTags"
-        app:layout_constraintVertical_bias="0.37" />
+        app:layout_constraintTop_toBottomOf="@+id/chipGroupSelectedTags" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -187,7 +185,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tagProgressBar" />
+       />
 
     <!-- Add this to your layout file -->
     <ProgressBar

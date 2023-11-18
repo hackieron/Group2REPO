@@ -4,7 +4,9 @@ package com.example.courseer2
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -28,7 +30,7 @@ import java.io.ByteArrayOutputStream
 @Suppress("DEPRECATION")
 class UserCreate : AppCompatActivity() {
 
-// Use dbHelper to insert, query, or update data in your database.
+
 
     private lateinit var option: Spinner
 
@@ -39,7 +41,7 @@ class UserCreate : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_create)
-
+        val dbHelper = DataBaseHandler(this)
         option = findViewById(R.id.strands)
         val strands = arrayOf("STEM", "ABM", "HUMMS", "GAS", "Arts and Design", "ICT", "Industrial Arts", "Agri-Fisheries", "Sports")
         option.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, strands)
@@ -51,8 +53,10 @@ class UserCreate : AppCompatActivity() {
         val context = this
 
         submit.setOnClickListener {
+
             Log.i("CLICKED", "CLICKED button")
             if (name.text.toString().isNotEmpty() && strand.selectedItem.toString().isNotEmpty()) {
+                dbHelper.increaseCount()
                 val image = findViewById<ImageView>(R.id.profileImgView)
 
                 val bitmap: Bitmap? = when (val drawable = image.drawable) {
@@ -84,6 +88,7 @@ class UserCreate : AppCompatActivity() {
                 } else {
                     Toast.makeText(context, "Please select a proper image", Toast.LENGTH_SHORT).show()
                 }
+
                 redirectToInterests()
             } else {
                 Toast.makeText(context, "Please put name and strand", Toast.LENGTH_SHORT).show()

@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import okhttp3.Request
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
@@ -19,10 +20,12 @@ import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import android.window.OnBackInvokedDispatcher
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
@@ -45,6 +48,16 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 class Careers : AppCompatActivity() {
+
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val dataBaseHandler = DataBaseHandler(this)
+        dataBaseHandler.decreaseCount()
+        dataBaseHandler.clearInterests()
+    }
+
     private lateinit var loadingDialog: AlertDialog
     private lateinit var progressBar: ProgressBar
     private lateinit var searchView: SearchView
@@ -65,12 +78,17 @@ class Careers : AppCompatActivity() {
     private var initialChipCount = 0
     private lateinit var searchProgressBar: ProgressBar
     private var searchJob: Job? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val db = DataBaseHandler(this)
+        Log.d("COUNTER", "${db.getHighestCount()}")
         val storage = FirebaseStorage.getInstance()
-        val storageRef: StorageReference = storage.getReferenceFromUrl("gs://courseer-3555d.appspot.com/")
+        val storageRef: StorageReference =
+            storage.getReferenceFromUrl("gs://courseer-3555d.appspot.com/")
         val csvFileRef: StorageReference = storageRef.child("csv_files/Keywords2.csv")
-
+        val dbHelper = DataBaseHandler(this)
 
 
         setContentView(R.layout.activity_careers)
@@ -99,7 +117,8 @@ class Careers : AppCompatActivity() {
 
         }
 
-        skipButton.setOnClickListener{
+        skipButton.setOnClickListener {
+            dbHelper.increaseCount()
             val intent = Intent(this, UserView::class.java)
             startActivity(intent)
         }
@@ -108,7 +127,10 @@ class Careers : AppCompatActivity() {
             showLoadingDialog()
             val userInputTag = editTextTag.text.toString().trim().lowercase(Locale.getDefault())
 
-            if (userInputTag.isNotEmpty() && selectedTags.size < 5 && !selectedTags.contains(userInputTag)) {
+            if (userInputTag.isNotEmpty() && selectedTags.size < 5 && !selectedTags.contains(
+                    userInputTag
+                )
+            ) {
                 if (allPreExistingTags.contains(userInputTag.lowercase(Locale.getDefault()))) {
                     Log.d("removed0", "removeddddd")
 
@@ -116,7 +138,9 @@ class Careers : AppCompatActivity() {
                     var matchingChip: Chip? = null
                     for (i in 0 until chipGroup.childCount) {
                         val chip = chipGroup.getChildAt(i) as? Chip
-                        if (chip?.text?.toString()?.equals(userInputTag, ignoreCase = true) == true) {
+                        if (chip?.text?.toString()
+                                ?.equals(userInputTag, ignoreCase = true) == true
+                        ) {
                             matchingChip = chip
                             break
                         }
@@ -139,8 +163,7 @@ class Careers : AppCompatActivity() {
                 }
 
                 editTextTag.text.clear()
-            }
-            else {
+            } else {
                 showLoadingDialog()
                 if (userInputTag.isEmpty()) {
 
@@ -171,11 +194,11 @@ class Careers : AppCompatActivity() {
             if (selectedTagsList.isNotEmpty()) {
 
 
-
-                if (dataBaseHandler.insertKeywords1(selectedTagsList)) {
+                if (dataBaseHandler.insertCareers(selectedTagsList)) {
                     Toast.makeText(this, "Tags inserted into KeywordsTable", Toast.LENGTH_SHORT)
                         .show()
-
+                    dataBaseHandler.copyKeywordsToPreferences()
+                    dbHelper.increaseCount()
                     val intent = Intent(this, UserView::class.java)
                     startActivity(intent)
                 } else {
@@ -200,6 +223,7 @@ class Careers : AppCompatActivity() {
             it.printStackTrace()
         }
     }
+
     private fun parseCsvContent(csvContent: String): List<String> {
         val tags = mutableListOf<String>()
         val reader = BufferedReader(InputStreamReader(csvContent.byteInputStream()))
@@ -210,6 +234,7 @@ class Careers : AppCompatActivity() {
         }
         return tags.map { it.lowercase(Locale.getDefault()) }.sorted()
     }
+
     private suspend fun loadData(progressCallback: (Int) -> Unit) {
         withContext(Dispatchers.IO) {
             val totalCount = 100
@@ -265,7 +290,7 @@ class Careers : AppCompatActivity() {
         val uniqueUnselectedTags = unselectedTags.toSet().toList()
         for (tag in uniqueUnselectedTags) {
             val chip = createChip(tag, true)
-            if(chip != null) {
+            if (chip != null) {
                 chip.setTextColor(ContextCompat.getColor(this, R.color.black))
                 chip.setChipBackgroundColorResource(R.color.white)
                 chip.chipStrokeWidth =
@@ -322,7 +347,6 @@ class Careers : AppCompatActivity() {
     }
 
 
-
     private fun setupChips() {
         showLoadingDialog()
 
@@ -350,6 +374,7 @@ class Careers : AppCompatActivity() {
             }
         })
     }
+
     private fun searchTags(query: String) {
         // Cancel the previous search job if it exists
         searchJob?.cancel()
@@ -383,6 +408,7 @@ class Careers : AppCompatActivity() {
             searchProgressBar.visibility = View.GONE
         }
     }
+
     private suspend fun loadRemainingChips() {
         withContext(Dispatchers.Default) {
             // Comment out or remove the following line
@@ -418,12 +444,15 @@ class Careers : AppCompatActivity() {
                     // Add chip to the UI on the main thread
                     withContext(Dispatchers.Main) {
                         // Check if the chip is not part of search results
-                        if (!searchView.query.isNullOrEmpty() && !normalizedTag.contains(searchView.query.toString().lowercase(), ignoreCase = true)) {
+                        if (!searchView.query.isNullOrEmpty() && !normalizedTag.contains(
+                                searchView.query.toString().lowercase(), ignoreCase = true
+                            )
+                        ) {
                             if (chip != null) {
                                 chip.visibility = View.GONE
                             }
                         }
-                        if (chip != null){
+                        if (chip != null) {
                             chip.setChipBackgroundColorResource(R.color.white)
                             chip.chipStrokeWidth =
                                 resources.getDimension(R.dimen.chip_stroke) // Set stroke width
@@ -441,14 +470,6 @@ class Careers : AppCompatActivity() {
             hideLoadingDialog()
         }
     }
-
-
-
-
-
-
-
-
 
 
     private fun updateSelectedTagsChips() {
@@ -470,8 +491,6 @@ class Careers : AppCompatActivity() {
         }
 
     }
-
-
 
 
     private fun enableChips(chipGroup: ChipGroup) {
@@ -527,11 +546,12 @@ class Careers : AppCompatActivity() {
                     // Remove the chip from its current parent (chipGroup) before adding it to chipGroupSelectedTags
                     val parent = chip.parent as? ViewGroup
                     parent?.removeView(chip)
-                    if(chip != null){
+                    if (chip != null) {
                         chip.isCheckedIconVisible = false
                         chip.setTextColor(ContextCompat.getColor(this, R.color.black))
                         chip.setChipBackgroundColorResource(R.color.gold)
-                        chip.chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_not) // Set stroke width
+                        chip.chipStrokeWidth =
+                            resources.getDimension(R.dimen.chip_stroke_not) // Set stroke width
                         chip.setChipStrokeColorResource(R.color.gray)
 
                     }
@@ -688,7 +708,6 @@ class Careers : AppCompatActivity() {
     }
 
 
-
     // Extension function to normalize tags
     private fun String.normalizeTag(): String {
         return this.replace("[^a-zA-Z0-9]".toRegex(), "").lowercase(Locale.ROOT)
@@ -771,7 +790,6 @@ class Careers : AppCompatActivity() {
     }
 
 
-
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
@@ -821,7 +839,6 @@ class Careers : AppCompatActivity() {
         tagProgressBar = findViewById(R.id.tagProgressBar)
         tagProgressBar.progress = totalTags
     }
-
 
 
 }
