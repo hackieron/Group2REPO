@@ -26,6 +26,7 @@ class ResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_result, container, false)
         proceedButton = view.findViewById(R.id.recommend)
         resultLayout = view.findViewById(R.id.resultLayout)
@@ -40,6 +41,7 @@ class ResultFragment : Fragment() {
         val resultChipGroup: ChipGroup = view.findViewById(R.id.resultChipGroup)
         val dataBaseHandler = DataBaseHandler(requireContext())
         proceedButton.setOnClickListener {
+            dataBaseHandler.setCurrentQuestionIndex(109)
             // Create a list to store selected chip text
             val selectedChipsList = mutableListOf<String>()
 
@@ -225,10 +227,14 @@ class ResultFragment : Fragment() {
                 chip.setOnCheckedChangeListener { _, isChecked ->
                     // Handle chip selection change
                     if (isChecked) {
+                        chip.setChipBackgroundColorResource(R.color.gold)
+                        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                         // Chip is selected
                         // You can perform actions when a chip is selected
                         selectedChipCount++
                     } else {
+                        chip.setChipBackgroundColorResource(R.color.white)
+                        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.textgray))
                         // Chip is unselected
                         // You can perform actions when a chip is unselected
                         selectedChipCount--

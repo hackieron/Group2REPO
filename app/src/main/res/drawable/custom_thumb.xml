@@ -1,0 +1,23 @@
+<!-- Create a new drawable resource file (e.g., custom_thumb.xml) -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Transparent background for the thumb -->
+    <item android:id="@android:id/background">
+        <shape android:shape="oval">
+            <solid android:color="@color/seekbar" />
+        </shape>
+    </item>
+
+    <!-- Gold ring shape for the thumb -->
+    <item android:id="@android:id/progress">
+        <shape android:shape="oval">
+            <solid android:color="@color/gold" /> <!-- Set your desired gold color -->
+            <size
+                android:width="20dp"
+                android:height="20dp" /> <!-- Set your desired size -->
+            <stroke
+                android:width="2dp"
+                android:color="@color/gold" /> <!-- Set your desired ring thickness -->
+        </shape>
+    </item>
+</layer-list>

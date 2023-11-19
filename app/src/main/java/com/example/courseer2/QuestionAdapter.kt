@@ -32,7 +32,7 @@ class QuestionAdapter(
         val question = questions[position]
 
         // Display the item number
-        val itemNumberText = "Question #${databaseHandler.getCurrentQuestionIndex()}"
+        val itemNumberText = "Question #${databaseHandler.getCurrentQuestionIndex()+1}"
         holder.itemNumber.text = itemNumberText
 
         holder.questionText.text = question.text

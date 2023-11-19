@@ -6,17 +6,19 @@
     android:padding="3dp">
 
     <FrameLayout
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="107dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:padding="0dp">
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="123dp"
             android:max="6"
+            android:padding="0dp"
             android:progress="0"
             android:progressDrawable="@drawable/circular_progress_with_text" />
 
@@ -25,16 +27,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text=""
-            android:textSize="25sp"
-            android:textColor="@android:color/black" />
+            android:fontFamily="@font/fjalla_one"
+            android:text="20%"
+            android:textColor="@android:color/black"
+            android:textSize="25sp" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:gravity="top|center_vertical"
         android:orientation="vertical">
 
         <TextView
@@ -43,12 +46,13 @@
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="3dp"
-            android:fontFamily="@font/alata"
+            android:fontFamily="@font/fira_sans_condensed_medium"
             android:foregroundGravity="center"
             android:gravity="bottom|start"
-            android:text="20sp"
+            android:text="Public Administration"
             android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <ProgressBar
             android:id="@+id/progressBar2"

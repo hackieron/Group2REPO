@@ -11,6 +11,7 @@
 
     <!-- Title TextView with border -->
     <androidx.cardview.widget.CardView
+
         android:id="@+id/titleCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +32,8 @@
 
     <!-- Short Description TextView without top border -->
     <androidx.cardview.widget.CardView
+
+
         android:id="@+id/shortDescriptionCardView"
         android:layout_width="330dp"
         android:layout_height="wrap_content"

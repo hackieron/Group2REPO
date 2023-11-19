@@ -9,16 +9,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:background="@drawable/border_background">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginBottom="60dp"
 
             app:layout_constraintBottom_toBottomOf="parent"
@@ -55,9 +52,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
 
-                android:layout_above="@+id/textView6"
+                android:layout_below="@id/constraintLayout4"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="30dp"
+                android:layout_marginBottom="5dp"
                 android:background="#757575"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:layout_editor_absoluteX="20dp" />
@@ -66,15 +65,17 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="33dp"
-                android:layout_below="@+id/constraintLayout4"
+                android:layout_below="@id/strandDivider"
                 android:layout_alignStart="@+id/view3"
                 android:layout_alignEnd="@+id/view3"
                 android:layout_marginStart="130dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="130dp"
+                android:fontFamily="@font/dm_sans"
                 android:text="Interests"
                 android:textAlignment="center"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -86,9 +87,11 @@
                 android:layout_marginStart="130dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="130dp"
+                android:fontFamily="@font/dm_sans"
                 android:text="Careers"
                 android:textAlignment="center"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
@@ -120,10 +123,10 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/alata"
+                    android:fontFamily="@font/dm_sans"
                     android:gravity="center"
                     android:text="@string/username"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

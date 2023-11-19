@@ -3,6 +3,7 @@ package com.example.courseer2
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import com.example.courseer2.databinding.FragmentUserProfileBinding
@@ -37,7 +40,7 @@ class UserProfile : Fragment() {
         val view = binding.root
         dataBaseHandler = DataBaseHandler(requireContext()) // Initialize dataBaseHandler here
 
-
+        val customTypeface: Typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
         val scoreLayout: LinearLayout = view.findViewById(R.id.scoreLayout)
         // Add the score items to the layout
         addScoreItemsToLayout(scoreLayout)
@@ -79,6 +82,7 @@ class UserProfile : Fragment() {
                 val chip = Chip(requireContext())
                 chip.text = keyname
                 chip.textSize = resources.getDimension(R.dimen.chip_text_size)
+                chip.typeface = customTypeface
                 chip.layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -88,11 +92,13 @@ class UserProfile : Fragment() {
 
                 chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 if (chip != null) {
+                    chip.setChipStrokeColorResource(R.color.black)
+                    chip.isClickable = false
+                    chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.textgray))
                     chip.setChipBackgroundColorResource(R.color.chip)
                     chip.chipStrokeWidth =
-                        resources.getDimension(R.dimen.chip_stroke) // Set stroke width
-                    chip.setChipStrokeColorResource(R.color.gray)
-                    chip.isClickable = false
+                        resources.getDimension(R.dimen.chip_stroke1) // Set stroke width
+
                     chip.setEnsureMinTouchTargetSize(false)
                 }
 
@@ -127,6 +133,7 @@ class UserProfile : Fragment() {
                 // Create a new Chip with the "keyname1" value
                 val chip2 = Chip(requireContext())
                 chip2.text = keyname1
+
                 chip2.textSize = resources.getDimension(R.dimen.chip_text_size)
                 chip2.layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -134,16 +141,17 @@ class UserProfile : Fragment() {
                 )
                 // Add the Chip to the ChipGroup
 
-
+                chip2.typeface = customTypeface
                 chip2.setPadding(-8, 0, -8, 0)
                 chip2.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 if (chip2 != null) {
                     chip2.setChipBackgroundColorResource(R.color.chip)
                     chip2.chipStrokeWidth =
-                        resources.getDimension(R.dimen.chip_stroke) // Set stroke width
-                    chip2.setChipStrokeColorResource(R.color.gray)
+                        resources.getDimension(R.dimen.chip_stroke1) // Set stroke width
+                    chip2.setChipStrokeColorResource(R.color.black)
+                    chip2.setChipStrokeWidthResource(R.dimen.chip_stroke1)
                     chip2.isClickable = false
-
+                    chip2.setTextColor(ContextCompat.getColor(requireContext(), R.color.textgray))
                     chip2.setEnsureMinTouchTargetSize(false)
                 }
 

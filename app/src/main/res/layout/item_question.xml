@@ -1,27 +1,26 @@
 <!-- res/layout/item_question_with_hexagon.xml -->
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal|center_vertical"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp">
+    android:layout_gravity="center_horizontal|center_vertical">
 
     <!-- Hexagon background for the question text -->
     <RelativeLayout
         android:id="@+id/hexagonContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/hexagon_border"
         android:padding="8dp"
-        android:layout_marginBottom="100dp"
         tools:layout_conversion_absoluteHeight="61dp"
-        tools:layout_editor_absoluteY="-13dp"
+        tools:layout_conversion_absoluteWidth="411dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="411dp">
+        tools:layout_editor_absoluteY="-13dp">
 
         <TextView
             android:id="@+id/itemnumber"

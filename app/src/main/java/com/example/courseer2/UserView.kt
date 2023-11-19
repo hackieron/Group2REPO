@@ -36,9 +36,12 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import kotlin.system.exitProcess
+
 import android.content.Context
+import android.graphics.PorterDuff
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AlertDialog
 
 
@@ -72,6 +75,12 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        val toolbarNavigationIcon = findViewById<Toolbar>(R.id.toolbar)
+        toolbarNavigationIcon.navigationIcon?.setColorFilter(
+            ContextCompat.getColor(this, R.color.textgray),
+            PorterDuff.Mode.SRC_IN
+        )
+
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
 // Assuming you have defined the color 'gold' in your resources

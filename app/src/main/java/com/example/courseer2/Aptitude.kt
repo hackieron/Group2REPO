@@ -55,10 +55,17 @@ class Aptitude : Fragment() {
         if(dbHelper.getCurrentQuestionIndex() != 0){
             view.findViewById<Button>(R.id.proceedButton).text = "CONTINUE"
         }
-
         if (itemnumber == 40) {
-            // Display "TEST DONE" message or update the UI accordingly
+            // Display results since the test is done
+            view.findViewById<View>(R.id.startScreen).visibility = View.GONE
+            view.findViewById<View>(R.id.questionScreen).visibility = View.GONE
+            view.findViewById<Button>(R.id.proceedButton).visibility = View.GONE
+            logScores()
+            return view
+        }
 
+        if (itemnumber == 109) {
+            // Display "TEST DONE" message or update the UI accordingly
             view.findViewById<View>(R.id.startScreen).visibility = View.GONE
             view.findViewById<View>(R.id.questionScreen).visibility = View.GONE
             view.findViewById<Button>(R.id.proceedButton).visibility = View.GONE

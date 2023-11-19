@@ -38,6 +38,8 @@ class Recommend : Fragment() {
         }
     }
     private var THRESHOLD = 5
+    private lateinit var loadingProgressBar: ProgressBar
+
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
     private var localFilteredPrograms: List<RProgram> = emptyList()
@@ -49,13 +51,16 @@ class Recommend : Fragment() {
     private lateinit var seekBar: SeekBar
     private lateinit var seekBarLabel: TextView
     private var basisValues = mutableListOf<String>()
-
+    private lateinit var noItemsTextView: TextView
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_recommend, container, false)
+        noItemsTextView = rootView.findViewById(R.id.noItems)
+        noItemsTextView.visibility = View.VISIBLE
+        loadingProgressBar = rootView.findViewById(R.id.loadingProgressBar)
         seekBarLabel = rootView.findViewById<TextView>(R.id.seekBarLabel)
         seekBar = rootView.findViewById<SeekBar>(R.id.seekBar)
         searchView = rootView.findViewById(R.id.searchView)
@@ -145,6 +150,7 @@ class Recommend : Fragment() {
         return rootView
     }
     private fun downloadCSVFromFirebase() {
+        loadingProgressBar.visibility = View.VISIBLE
         val storage = Firebase.storage
         val storageRef = storage.reference
         val csvRef = storageRef.child("csv_files/Programs.csv")
@@ -187,7 +193,11 @@ class Recommend : Fragment() {
                 }
 
                 // Update the RecyclerView with the new data
+                loadingProgressBar.visibility = View.GONE
                 updateRecyclerView()
+
+
+
             }
             .addOnFailureListener {
                 // Check if the fragment is added to an activity before proceeding
@@ -222,6 +232,8 @@ class Recommend : Fragment() {
 
                 // Update the RecyclerView with the default data
                 updateRecyclerView()
+                loadingProgressBar.visibility = View.GONE
+
             }
     }
     private fun loadProgramsFromAssets() {
@@ -334,6 +346,11 @@ class Recommend : Fragment() {
                     } != null
         }.sortedByDescending { program ->
             calculateProgramScore(program)
+        }
+        if (sortedList.isEmpty()) {
+            noItemsTextView.visibility = View.VISIBLE
+        } else {
+            noItemsTextView.visibility = View.GONE
         }
         adapter.updatePrograms(sortedList)
     }

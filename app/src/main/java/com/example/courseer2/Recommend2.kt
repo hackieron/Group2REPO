@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
@@ -44,13 +45,21 @@ class Recommend2 : Fragment() {
     private lateinit var allPrograms: List<Rprograms>
     private var filteredPrograms: List<Rprograms> = emptyList()
     private var basisValues = mutableListOf<String>()
+    private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var noItemsTextView: TextView
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+// Inside onCreateView, after initializing other views
+
         val rootView = inflater.inflate(R.layout.fragment_recommend2, container, false)
+        noItemsTextView = rootView.findViewById(R.id.noItems)
+        noItemsTextView.visibility = View.VISIBLE
+        loadingProgressBar = rootView.findViewById(R.id.loadingProgressBar)
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView2)
         seekBarLabel = rootView.findViewById<TextView>(R.id.seekBarLabel)
@@ -210,6 +219,7 @@ class Recommend2 : Fragment() {
 
     }
     private fun downloadCSVFromFirebase() {
+        loadingProgressBar.visibility = View.VISIBLE
         val storage = Firebase.storage
         val storageRef = storage.reference
         val csvRef = storageRef.child("csv_files/Programs.csv")
@@ -227,10 +237,10 @@ class Recommend2 : Fragment() {
                 // File downloaded successfully, parse and use it
                 val csvData = localFile.readText()
                 programs1 = parseCSVData(csvData)
-                allPrograms = parseCSVData(csvData)
+                // Note: Do not set allPrograms here
 
                 // Update filteredPrograms with the filtered data
-                filteredPrograms = allPrograms.filter { program1 ->
+                filteredPrograms = programs1.filter { program1 ->
                     calculateProgramScore(program1) >= THRESHOLD
                 }
 
@@ -250,6 +260,7 @@ class Recommend2 : Fragment() {
 
                 // Update the RecyclerView with the new data
                 updateRecyclerView()
+                loadingProgressBar.visibility = View.GONE
             }
             .addOnFailureListener {
                 // Check if the fragment is added to an activity before proceeding
@@ -281,10 +292,12 @@ class Recommend2 : Fragment() {
 
                 // Update the RecyclerView with the default data
                 updateRecyclerView()
+                loadingProgressBar.visibility = View.GONE
             }
     }
 
     private fun filterPrograms(query: String?): List<Rprograms> {
+        loadingProgressBar.visibility = View.VISIBLE
         // Filter programs based on title or fullDescription containing the query
         return programs1.filter { program1 ->
             program1.title2.contains(query.orEmpty(), ignoreCase = true) ||
@@ -294,15 +307,23 @@ class Recommend2 : Fragment() {
                     program1.category.contains(query.orEmpty(), ignoreCase = true)||
                     program1.keywords.contains(query.orEmpty(), ignoreCase = true)
         }
+        loadingProgressBar.visibility = View.GONE
     }
     private fun updateRecyclerView() {
+        loadingProgressBar.visibility = View.VISIBLE
         val filteredList = filterPrograms(searchView.query.toString())
         val sortedList = filteredList.filter { program ->
             calculateProgramScore(program) >= THRESHOLD
         }.sortedByDescending { program ->
             calculateProgramScore(program)
         }
+        if (sortedList.isEmpty()) {
+            noItemsTextView.visibility = View.VISIBLE
+        } else {
+            noItemsTextView.visibility = View.GONE
+        }
         adapter2.updatePrograms(sortedList)
+        loadingProgressBar.visibility = View.GONE
     }
 }
 data class Rprograms(

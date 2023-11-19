@@ -43,11 +43,11 @@ android:gravity="center|center_horizontal">
     app:cardElevation="4dp"> <!-- Elevation for the CardView -->
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/FAQsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/programbg"
         android:clipToPadding="false"
         android:padding="8dp" />
 

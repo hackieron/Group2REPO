@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="top"
     android:padding="16dp"
-    android:background="@color/white"
+    android:background="#00FFFFFF"
     android:theme="@style/ThemeOverlay.AppCompat">
 
     <include layout="@layout/user_profile_layout" />

@@ -14,12 +14,14 @@
 
     <com.google.android.material.chip.Chip
         android:id="@+id/resultChip"
-        style="@style/Widget.MaterialComponents.Chip.Action"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="2dp"
         android:gravity="center"
         android:text="asfasadasfasfafsaf"
         android:textAlignment="center"
+        android:textSize="16sp"
         app:chipBackgroundColor="@color/white"
         app:chipStrokeColor="@color/gray"
         app:chipStrokeWidth="@dimen/chip_stroke"

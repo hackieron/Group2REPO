@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center|center_horizontal|center_vertical"
@@ -28,30 +29,62 @@
         android:layout_alignTop="@id/searchCardView"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="60dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="60dp"
         android:foregroundGravity="center_horizontal"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"> <!-- Elevation for the CardView -->
+        app:cardElevation="4dp">
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible" /><!-- Elevation for the CardView -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/programRecyclerView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="30dp"
+            android:background="@drawable/programbg"
             android:clipToPadding="false"
             android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/noItems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:fontFamily="@font/fira_sans_condensed_medium"
+            android:padding="10dp"
+            android:text="Lower the adjuster to get recommendations"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <SeekBar
             android:id="@+id/seekBar"
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="39dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:max="8"
-            android:progress="5" />
+            android:padding="15dp"
+            android:progress="5"
+            android:progressDrawable="@drawable/custom_track"
+
+            android:thumb="@drawable/custom_thumb" />
 
         <TextView
             android:id="@+id/seekBarLabel"

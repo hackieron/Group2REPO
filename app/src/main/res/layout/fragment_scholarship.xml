@@ -31,9 +31,9 @@
         android:layout_below="@id/searchCardView"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
         android:foregroundGravity="center_horizontal"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="8dp"
@@ -44,6 +44,7 @@
             android:id="@+id/scholarshipRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/programbg"
             android:clipToPadding="false"
             android:padding="8dp">
 

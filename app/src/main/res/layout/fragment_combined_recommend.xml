@@ -10,8 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="50dp"
+        android:background="#FFFFFF"
         app:tabGravity="fill"
-        app:tabMode="fixed" />
+        app:tabMode="fixed"
+        app:tabRippleColor="@color/gold"
+        app:tabSelectedTextColor="@color/textgray"
+        app:tabTextColor="@color/textgray" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
