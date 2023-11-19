@@ -13,7 +13,9 @@ import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.*
 import android.app.Application
 import android.content.IntentFilter
+import android.media.Image
 import android.net.ConnectivityManager
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 
 
@@ -29,24 +31,25 @@ class MainActivity : AppCompatActivity() {
         val dbHelper = DataBaseHandler(this)
         val highest = dbHelper.getHighestCount()
 
-
         val isFirstRun = isFirstRun()
         val isCalledByIntent = intent.hasExtra(EXTRA_FIRST_RUN)
 
         if (!isNetworkConnected()) {
             showNoInternetDialog()
         } else {
-            if (isFirstRun || isCalledByIntent) {
-                coroutineScope.launch {
-                    preloadActivities()
+            coroutineScope.launch {
+                preloadActivities()
+                // Delay for 2 seconds
+                if (isFirstRun || isCalledByIntent) {
                     redirectToUserCreate()
+                } else {
+                    if (highest < 3) {
+                        dbHelper.clearAllData()
+                        redirectToUserCreate()
+                    } else {
+                        redirectToUserView()
+                    }
                 }
-            }
-            if(highest <3){
-                dbHelper.clearAllData()
-                redirectToUserCreate()
-            }else {
-                redirectToUserView()
             }
         }
     }
@@ -93,6 +96,8 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.VISIBLE // Show the progress bar
         }
 
+        // Simulate a delay (replace with your actual preload logic)
+        delay(2000)
 
         withContext(Dispatchers.Main) {
             progressBar.visibility = View.GONE // Hide the progress bar

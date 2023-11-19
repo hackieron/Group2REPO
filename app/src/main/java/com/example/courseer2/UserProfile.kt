@@ -88,7 +88,7 @@ class UserProfile : Fragment() {
 
                 chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 if (chip != null) {
-                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.setChipBackgroundColorResource(R.color.chip)
                     chip.chipStrokeWidth =
                         resources.getDimension(R.dimen.chip_stroke) // Set stroke width
                     chip.setChipStrokeColorResource(R.color.gray)
@@ -138,7 +138,7 @@ class UserProfile : Fragment() {
                 chip2.setPadding(-8, 0, -8, 0)
                 chip2.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 if (chip2 != null) {
-                    chip2.setChipBackgroundColorResource(R.color.white)
+                    chip2.setChipBackgroundColorResource(R.color.chip)
                     chip2.chipStrokeWidth =
                         resources.getDimension(R.dimen.chip_stroke) // Set stroke width
                     chip2.setChipStrokeColorResource(R.color.gray)

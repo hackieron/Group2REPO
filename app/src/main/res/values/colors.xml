@@ -6,4 +6,6 @@
     <color name="gray">#3B686868</color>
     <color name="textgray">#272727</color>
     <color name="secondary">#36FFBC</color>
+    <color name="transparent">#8DF6CF00</color>
+    <color name="chip">#00FFFFFF</color>
 </resources>

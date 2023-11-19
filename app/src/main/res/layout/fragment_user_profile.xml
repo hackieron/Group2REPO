@@ -9,38 +9,41 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="156dp"
-            android:background="@color/gold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/border_background">
 
         <RelativeLayout
             android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginBottom="60dp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0">
+            <!-- Your layout content goes here -->
 
 
             <View
+                android:id="@+id/careerChipsDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_below="@id/careerChips"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:background="#757575" />
+
+            <View
                 android:id="@+id/view3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="127dp"
@@ -48,32 +51,16 @@
                 android:background="@drawable/rounded_background" />
 
             <View
-                android:id="@+id/view10"
-                android:layout_width="300dp"
-                android:layout_height="2dp"
-                android:layout_above="@+id/interestChips"
-                android:layout_alignStart="@+id/textView6"
-                android:layout_alignTop="@+id/textView6"
-                android:layout_alignEnd="@+id/textView6"
-                android:layout_marginStart="-100dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="-100dp"
-                android:layout_marginBottom="17dp"
-                android:background="#757575" />
+                android:id="@+id/strandDivider"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
 
-            <View
-                android:id="@+id/view5"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_alignStart="@+id/textView4"
-                android:layout_alignTop="@+id/textView4"
-                android:layout_alignEnd="@+id/textView4"
-                android:layout_alignBottom="@+id/textView4"
-                android:layout_marginStart="-102dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="-102dp"
-                android:layout_marginBottom="17dp"
-                android:background="#757575" />
+                android:layout_above="@+id/textView6"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="#757575"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteX="20dp" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -82,10 +69,9 @@
                 android:layout_below="@+id/constraintLayout4"
                 android:layout_alignStart="@+id/view3"
                 android:layout_alignEnd="@+id/view3"
-                android:layout_marginStart="136dp"
+                android:layout_marginStart="130dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="136dp"
-                android:background="@color/white"
+                android:layout_marginEnd="130dp"
                 android:text="Interests"
                 android:textAlignment="center"
                 android:textSize="24sp" />
@@ -97,10 +83,9 @@
                 android:layout_below="@+id/interestChips"
                 android:layout_alignStart="@+id/view3"
                 android:layout_alignEnd="@+id/view3"
-                android:layout_marginStart="138dp"
+                android:layout_marginStart="130dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginEnd="138dp"
-                android:background="@color/white"
+                android:layout_marginEnd="130dp"
                 android:text="Careers"
                 android:textAlignment="center"
                 android:textSize="24sp" />
@@ -160,6 +145,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/name"
                     app:layout_constraintVertical_bias="0.0" />
 
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.chip.ChipGroup
@@ -191,7 +177,8 @@
                     android:textAlignment="center"
                     android:textSize="48sp"
                     android:textStyle="italic"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </com.google.android.material.chip.ChipGroup>
 
             <com.google.android.material.chip.ChipGroup
@@ -221,7 +208,9 @@
                     android:textAlignment="center"
                     android:textSize="48sp"
                     android:textStyle="italic"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
             </com.google.android.material.chip.ChipGroup>
 
             <LinearLayout
@@ -231,7 +220,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
 
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/scoreLayout"
@@ -239,7 +229,8 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginLeft="6dp"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"
+                    tools:visibility="visible"></LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 

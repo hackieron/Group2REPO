@@ -45,13 +45,11 @@
                 android:layout_width="305dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
-                android:background="@drawable/buttonshape"
                 android:backgroundTint="#FFFFFF"
                 android:text="Proceed"
                 android:textColor="#000000"
                 android:textColorHighlight="#DC0000"
-                android:textColorHint="#00FFFFFF"
-                android:theme="@style/Theme.MaterialComponents.Light" />
+                android:textColorHint="#00FFFFFF" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

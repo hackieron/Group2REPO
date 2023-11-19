@@ -123,7 +123,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         fragmentManager = supportFragmentManager
         openFragment(UserProfile())
-
+        setTitleForFragment(UserProfile())
         binding.reset.setOnClickListener {
             // Create an AlertDialog.Builder
             val builder = AlertDialog.Builder(this)
@@ -204,23 +204,27 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             R.id.nav_programs -> {
                 openFragment(Programs())
                 selectedNavItem = R.id.nav_programs
+                setTitleForFragment(Programs()) // Set the title for Programs fragment
             }
             R.id.nav_scholarship -> {
                 openFragment(Scholarship())
                 selectedNavItem = R.id.nav_scholarship
+                setTitleForFragment(Scholarship()) // Set the title for Scholarship fragment
             }
             R.id.nav_feedback -> {
                 openFragment(Feedback())
                 selectedNavItem = R.id.nav_feedback
+                setTitleForFragment(Feedback()) // Set the title for Feedback fragment
             }
             R.id.nav_faqs -> {
                 openFragment(FAQs())
                 selectedNavItem = R.id.nav_faqs
+                setTitleForFragment(FAQs()) // Set the title for FAQs fragment
             }
             R.id.nav_admin -> {
-
                 selectedNavItem = R.id.nav_admin
                 showAdminLoginDialog()
+                setTitleForFragment(AdminFragment())
             }
             R.id.menu_item_close_app -> {
                 finishAffinity()
@@ -327,12 +331,18 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         scaleUp.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 // Perform the actual fragment transaction after the animation ends
-                when (view.id) {
-                    R.id.bottom_prof -> openFragment(UserProfile())
-                    R.id.bottom_apt -> openFragment(Aptitude())
-                    R.id.bottom_recom -> openFragment(CombinedRecommendFragment())
-                    R.id.bottom_fav -> openFragment(Favorites())
+                val fragment: Fragment = when (view.id) {
+                    R.id.bottom_prof -> UserProfile()
+                    R.id.bottom_apt -> Aptitude()
+                    R.id.bottom_recom -> CombinedRecommendFragment()
+                    R.id.bottom_fav -> Favorites()
+                    else -> UserProfile() // Default fragment
                 }
+
+                openFragment(fragment)
+
+                // Set the title based on the selected fragment
+                setTitleForFragment(fragment)
 
                 // Scale down to the original size after the fragment transaction
                 val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
@@ -347,6 +357,24 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         })
 
         scaleUp.start()
+    }
+
+    private fun setTitleForFragment(fragment: Fragment) {
+        // Set the title based on the selected fragment
+        val title: String = when (fragment) {
+            is UserProfile -> "Profile"
+            is Aptitude -> "Aptitude"
+            is CombinedRecommendFragment -> "Recommendations"
+            is Favorites -> "Favorites"
+            is Programs -> "Programs" // Add this line for Programs fragment
+            is Scholarship -> "Scholarship" // Add this line for Scholarship fragment
+            is Feedback -> "Feedback" // Add this line for Feedback fragment
+            is FAQs -> "FAQs"
+            is CombinedFragment -> "Admin"// Add this line for FAQs fragment
+            else -> "Default Title" // Default title for unknown fragments
+        }
+
+        supportActionBar?.title = title
     }
     private fun showAdminLoginDialog() {
         val builder = AlertDialog.Builder(this)

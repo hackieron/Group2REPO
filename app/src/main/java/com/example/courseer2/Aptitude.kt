@@ -255,13 +255,14 @@ class Aptitude : Fragment() {
         // Display the question screen
         view.findViewById<View>(R.id.questionScreen).visibility = View.VISIBLE
         val dbHelper = DataBaseHandler(requireContext())
+        val databaseHandler = DataBaseHandler(requireContext())
+
         currentQuestionIndex = latestQuestionIndex
         if (::questions.isInitialized && currentQuestionIndex < questions.size) {
             val currentQuestion = listOf(questions[dbHelper.getCurrentQuestionIndex()])
-            val adapter = QuestionAdapter(currentQuestion, this::onResponseSelected)
-
+            val questionAdapter = QuestionAdapter(currentQuestion, this::onResponseSelected, databaseHandler)
             val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
-            recyclerView.adapter = adapter
+            recyclerView.adapter = questionAdapter
             recyclerView.layoutManager = LinearLayoutManager(context)
         } else {
             Log.e("Aptitude", "Questions not initialized or no more questions.")
