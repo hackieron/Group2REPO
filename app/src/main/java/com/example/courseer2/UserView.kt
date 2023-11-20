@@ -137,7 +137,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
             // Set the title and message for the dialog
             builder.setTitle("Confirmation")
-            builder.setMessage("Are you sure you want to reset your profile?")
+            builder.setMessage("Are you sure you want to reset your profile?\nWhat would be cleared?\n1. Interests and Career Preferences\n2. Career-Interest Test\n3. Recommendations")
 
             // Set positive and negative buttons
             builder.setPositiveButton("Yes") { _, _ ->
