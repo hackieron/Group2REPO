@@ -1,6 +1,7 @@
 package com.example.courseer2
 
 import android.Manifest
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         progressBar = findViewById(R.id.progressBar)
         val dbHelper = DataBaseHandler(this)
         val highest = dbHelper.getHighestCount()

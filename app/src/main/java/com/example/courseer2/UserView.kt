@@ -1,7 +1,7 @@
 package com.example.courseer2
 
 import android.content.BroadcastReceiver
-
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import android.content.IntentFilter
 
 import android.animation.Animator
@@ -35,13 +35,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
-import kotlin.system.exitProcess
+
 
 import android.content.Context
-import android.graphics.PorterDuff
+
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.appcompat.widget.Toolbar
+
 import androidx.appcompat.app.AlertDialog
 
 
@@ -66,6 +66,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerConnectivityReceiver()
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
         if (!isInternetAvailable()) {
             // If no internet, show a dialog and go back to MainActivity
             showNoInternetDialog()

@@ -2,7 +2,6 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CourSeer2" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="android:buttonStyle">@style/ButtonStyle</item>
         <item name="colorPrimary">@color/gold</item>
         <item name="colorSecondary">@color/gold</item>
     </style>

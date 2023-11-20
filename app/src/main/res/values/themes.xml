@@ -2,7 +2,6 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CourSeer2" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="android:buttonStyle">@style/ButtonStyle</item>
         <!-- Change the primary color -->
         <item name="colorPrimary">@color/gold</item>
 
@@ -22,7 +21,6 @@
 
         <!-- Change the secondary text color -->
         <item name="android:textColorSecondary">#FFC907</item>
-        <item name="colorControlNormal">@color/textgray</item>
         <!-- Add more text color attributes as needed -->
 
     </style>

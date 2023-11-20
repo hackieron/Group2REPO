@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/bg4"
+                android:src="@drawable/bg"
                 android:visibility="gone"
                 tools:visibility="visible" />
         </FrameLayout>
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/bg4" />
+                android:src="@drawable/bg" />
 
             <LinearLayout
                 android:id="@+id/testDoneScreen"
@@ -203,7 +203,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/bg4"
+                android:src="@drawable/bg"
                 android:visibility="gone"
                 tools:visibility="visible" />
         </FrameLayout>

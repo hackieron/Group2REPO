@@ -10,7 +10,7 @@ import java.io.ByteArrayOutputStream
 
 
 val DATABASE_NAME = "MyDB"
-val DATABASE_VERSION = 1
+val DATABASE_VERSION = 2
 val TABLE_NAME = "User"
 val COL_ID = "userid"
 val COL_NAME = "name"
@@ -58,20 +58,20 @@ class DataBaseHandler(context: Context) :
 
 
     override fun onCreate(db: SQLiteDatabase?) {
-        val CREATE_SCORES_TABLE = "CREATE TABLE $TABLE_SCORES (" +
+        val CREATE_SCORES_TABLE = "CREATE TABLE IF NOT EXISTS $TABLE_SCORES (" +
                 "$COLUMN_SCORE_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COLUMN_CATEGORY TEXT NOT NULL," +
                 "$COLUMN_SCORE INTEGER NOT NULL)"
-        val createTableFieldScores = "CREATE TABLE $TABLE_FSCORES (" +
+        val createTableFieldScores = "CREATE TABLE IF NOT EXISTS $TABLE_FSCORES (" +
                 "$COLUMN_FSCORES_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COLUMN_WORD TEXT NOT NULL," +
                 "$COLUMN_DESCRIPTION TEXT NOT NULL," +
                 "$COLUMN_FSCORE INTEGER)"
-        val createTableCounter = "CREATE TABLE $TABLE_COUNT (" +
+        val createTableCounter = "CREATE TABLE IF NOT EXISTS $TABLE_COUNT (" +
                 "$COL_COUNT_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_COUNT INTEGER NOT NULL)"
 
-        val createTablePrograms = "CREATE TABLE $TABLE_PROG_TABLE (" +
+        val createTablePrograms = "CREATE TABLE IF NOT EXISTS $TABLE_PROG_TABLE (" +
                 "$COL_PROG_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_PROG_TITLE VARCHAR(256)," +
                 "$COL_PROG_SHORT TEXT," +
@@ -79,35 +79,35 @@ class DataBaseHandler(context: Context) :
                 "$COL_PROG_SUBJECTS VARCHAR(256)," +
                 "$COL_PROG_CAREERS VARCHAR(256))"
 
-        val createTablePreferences = "CREATE TABLE $TABLE_PREFERENCES (" +
+        val createTablePreferences = "CREATE TABLE IF NOT EXISTS $TABLE_PREFERENCES (" +
                 "$COL_PREFERENCE_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_BASIS TEXT)"
 
-        val createTableTestKeys = "CREATE TABLE $TABLE_TESTKEYS (" +
+        val createTableTestKeys = "CREATE TABLE IF NOT EXISTS $TABLE_TESTKEYS (" +
                 "$COL_TESTKEYS_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_TESTKEYS TEXT)"
 
-        val createTableKeywords = "CREATE TABLE $TABLE_KEYWORDS (" +
+        val createTableKeywords = "CREATE TABLE IF NOT EXISTS $TABLE_KEYWORDS (" +
                 "$COL_KEY_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_KEY_NAME TEXT)"
 
 
 
-        val createTableKeywords1 = "CREATE TABLE $TABLE_KEYWORDS1 (" +
+        val createTableKeywords1 = "CREATE TABLE IF NOT EXISTS $TABLE_KEYWORDS1 (" +
                 "$COL_KEY_ID1 INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_KEY_NAME1 TEXT)"
 
-        val createTableFields = "CREATE TABLE $TABLE_FIELDS (" +
+        val createTableFields = "CREATE TABLE IF NOT EXISTS $TABLE_FIELDS (" +
                 "$COL_FIELD_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_FIELDS TEXT)"
 
-        val createTable = "CREATE TABLE $TABLE_NAME (" +
+        val createTable = "CREATE TABLE IF NOT EXISTS $TABLE_NAME (" +
                 "$COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "$COL_IMAGE BLOB," +
                 "$COL_NAME VARCHAR(256)," +
                 "$COL_STRAND VARCHAR(256))"
         val createSettingsTable =
-            "CREATE TABLE $TABLE_SETTINGS ($COLUMN_CURRENT_QUESTION_INDEX INTEGER)"
+            "CREATE TABLE IF NOT EXISTS $TABLE_SETTINGS ($COLUMN_CURRENT_QUESTION_INDEX INTEGER)"
 
         db?.execSQL(createTableFieldScores)
         db?.execSQL(createTableCounter)

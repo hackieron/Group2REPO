@@ -46,12 +46,12 @@
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="3dp"
-            android:fontFamily="@font/fira_sans_condensed_medium"
+            android:fontFamily="@font/noto_sans"
             android:foregroundGravity="center"
             android:gravity="bottom|start"
             android:text="Public Administration"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textColor="@color/textgray"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <ProgressBar
@@ -68,7 +68,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="top"
-            android:paddingEnd="20dp"
-            android:text="asdasdasdawdasaaadasasasdadshfis ef h weiofh iwoefh wioeh fowehf woehf w" />
+            android:paddingEnd="15dp"
+            android:text="asdasdasda asd asid haisdh aishd asih daosdh aoshd uiagsd 8ayfgsod 7iatsfda7it sfdalyu sdvayusi dcvasud tfcvcatyusc ausd cvuatcsd asvi asif aisdf uaysf auyf dasyu fda yufasduy l afyusda sda sd as ad as das da d asdas da" />
     </LinearLayout>
 </LinearLayout>

@@ -11,5 +11,6 @@
     <color name="chiptext">#FFFFFF</color>
     <color name="seekbar">#00FFFFFF</color>
     <color name="chipborder">#48000000</color>
+    <color name="pitch">#FFFEF1D8</color>
 
 </resources>

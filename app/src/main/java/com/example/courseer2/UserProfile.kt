@@ -40,7 +40,7 @@ class UserProfile : Fragment() {
         val view = binding.root
         dataBaseHandler = DataBaseHandler(requireContext()) // Initialize dataBaseHandler here
 
-        val customTypeface: Typeface = ResourcesCompat.getFont(requireContext(), R.font.blinker_bold)!!
+        val customTypeface: Typeface = ResourcesCompat.getFont(requireContext(), R.font.alata)!!
         val scoreLayout: LinearLayout = view.findViewById(R.id.scoreLayout)
         // Add the score items to the layout
         addScoreItemsToLayout(scoreLayout)
