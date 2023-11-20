@@ -1,11 +1,11 @@
 <!-- res/layout/item_question_with_hexagon.xml -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal|center_vertical">
+    android:layout_gravity="center|center_horizontal|center_vertical">
 
     <!-- Hexagon background for the question text -->
     <RelativeLayout
@@ -15,47 +15,47 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/hexagon_border"
-        android:padding="8dp"
-        tools:layout_conversion_absoluteHeight="61dp"
-        tools:layout_conversion_absoluteWidth="411dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-13dp">
 
-        <TextView
-            android:id="@+id/itemnumber"
-            style="@android:style/Widget.DeviceDefault.Light.TextView"
-            android:layout_width="wrap_content"
-
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/questionText"
-            android:layout_alignEnd="@+id/questionText"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="15dp"
-            android:textSize="20sp"
-            android:textStyle="bold|italic"
-            tools:text="Kieron\" />
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/questionText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="227dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/qbg"
             android:gravity="center"
             android:padding="50dp"
             android:text="aisfbabwfuiwbauifbasifbiob wefhb iwuefb wpioefuvbqw"
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/itemnumber"
+            style="@android:style/Widget.DeviceDefault.Light.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/questionText"
+            android:layout_alignEnd="@+id/questionText"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="40dp"
+            android:textAlignment="textEnd"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            tools:text="Kieron\" />
+
     </RelativeLayout>
 
     <!-- Buttons outside the hexagon -->
     <LinearLayout
         android:id="@+id/buttonsLayout"
-        android:layout_width="262dp"
+        android:layout_width="match_parent"
         android:layout_height="113dp"
         android:layout_below="@id/hexagonContainer"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="200dp"
+
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="50dp"
         android:orientation="vertical">
 
         <Button
@@ -73,4 +73,4 @@
             android:text="No" />
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>

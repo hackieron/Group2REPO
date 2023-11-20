@@ -75,11 +75,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-        val toolbarNavigationIcon = findViewById<Toolbar>(R.id.toolbar)
-        toolbarNavigationIcon.navigationIcon?.setColorFilter(
-            ContextCompat.getColor(this, R.color.textgray),
-            PorterDuff.Mode.SRC_IN
-        )
+
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
@@ -103,6 +99,8 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         toggle.drawerArrowDrawable.setDirection(DrawerArrowDrawable.ARROW_DIRECTION_END)
+
+        toggle.drawerArrowDrawable.color = getResources().getColor(R.color.textgray)
 
         binding.navigationDrawer.setNavigationItemSelectedListener(this)
         val navigationView = findViewById<NavigationView>(R.id.navigation_drawer)

@@ -40,7 +40,7 @@ class UserProfile : Fragment() {
         val view = binding.root
         dataBaseHandler = DataBaseHandler(requireContext()) // Initialize dataBaseHandler here
 
-        val customTypeface: Typeface = ResourcesCompat.getFont(requireContext(), R.font.roboto_medium)!!
+        val customTypeface: Typeface = ResourcesCompat.getFont(requireContext(), R.font.blinker_bold)!!
         val scoreLayout: LinearLayout = view.findViewById(R.id.scoreLayout)
         // Add the score items to the layout
         addScoreItemsToLayout(scoreLayout)
@@ -83,16 +83,15 @@ class UserProfile : Fragment() {
                 chip.text = keyname
                 chip.textSize = resources.getDimension(R.dimen.chip_text_size)
                 chip.typeface = customTypeface
-                chip.layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+
+                chip.setPadding(16, 12, 5, 12)
 
 
 
                 chip.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 if (chip != null) {
-                    chip.setChipStrokeColorResource(R.color.black)
+
+                    chip.setChipStrokeColorResource(R.color.chipborder)
                     chip.isClickable = false
                     chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.textgray))
                     chip.setChipBackgroundColorResource(R.color.chip)
@@ -135,20 +134,18 @@ class UserProfile : Fragment() {
                 chip2.text = keyname1
 
                 chip2.textSize = resources.getDimension(R.dimen.chip_text_size)
-                chip2.layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
+
+                chip2.setPadding(16, 12, 16, 12)
                 // Add the Chip to the ChipGroup
 
                 chip2.typeface = customTypeface
-                chip2.setPadding(-8, 0, -8, 0)
+
                 chip2.textAlignment = View.TEXT_ALIGNMENT_CENTER
                 if (chip2 != null) {
                     chip2.setChipBackgroundColorResource(R.color.chip)
                     chip2.chipStrokeWidth =
                         resources.getDimension(R.dimen.chip_stroke1) // Set stroke width
-                    chip2.setChipStrokeColorResource(R.color.black)
+                    chip2.setChipStrokeColorResource(R.color.chipborder)
                     chip2.setChipStrokeWidthResource(R.dimen.chip_stroke1)
                     chip2.isClickable = false
                     chip2.setTextColor(ContextCompat.getColor(requireContext(), R.color.textgray))

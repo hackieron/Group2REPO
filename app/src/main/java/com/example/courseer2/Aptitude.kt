@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,7 +41,9 @@ class Aptitude : Fragment() {
         // Add this after the if condition
         val progressBar = view?.findViewById<ProgressBar>(R.id.loadingScreen)
         if (progressBar != null) {
+            progressBar.progress = 0
             progressBar.visibility = View.VISIBLE
+
         }
         if (progressBar != null) {
             progressBar.progress = 0
@@ -69,7 +72,9 @@ class Aptitude : Fragment() {
             view.findViewById<View>(R.id.startScreen).visibility = View.GONE
             view.findViewById<View>(R.id.questionScreen).visibility = View.GONE
             view.findViewById<Button>(R.id.proceedButton).visibility = View.GONE
+            view.findViewById<FrameLayout>(R.id.fragmentContainer).visibility = View.GONE
             view.findViewById<View>(R.id.testDoneScreen).visibility = View.VISIBLE
+
             return view
         }
 
@@ -87,6 +92,9 @@ class Aptitude : Fragment() {
 
             // Set up "Proceed" button click listener
             view.findViewById<View>(R.id.proceedButton).setOnClickListener {
+                // Show the progress bar
+                view.findViewById<View>(R.id.loadingScreen).visibility = View.VISIBLE
+
                 // Hide the start screen
                 view.findViewById<View>(R.id.startScreen).visibility = View.GONE
 
@@ -102,24 +110,27 @@ class Aptitude : Fragment() {
                             currentQuestionIndex = lastIndex
                             val itemnum = dbHelper.getCurrentQuestionIndex()
                             Log.d("getCurrentQuestionIndex", "$itemnum")
+                            val progressBar = view.findViewById<ProgressBar>(R.id.loadingScreen)
+                            progressBar.progress = 0
                             displayQuestion(view)
                         } else {
                             // Handle the case where the last answered question is not found
                             currentQuestionIndex = 0
                             val itemnum = dbHelper.getCurrentQuestionIndex()
                             Log.d("getCurrentQuestionIndex", "$itemnum")
+                            val progressBar = view.findViewById<ProgressBar>(R.id.loadingScreen)
+                            progressBar.progress = 0
                             displayQuestion(view)
                         }
                     } else {
                         // If lastAnsweredItemNumber is null, proceed with the next question
+                        val progressBar = view.findViewById<ProgressBar>(R.id.loadingScreen)
+                        progressBar.progress = 0
                         displayQuestion(view)
                     }
                 }
 
                 // Update the button text based on whether it's the first time
-
-
-
                 currentQuestionIndex = dbHelper.getCurrentQuestionIndex()
                 val itemnum = dbHelper.getCurrentQuestionIndex()
                 Log.d("getCurrentQuestionIndex", "$itemnum")
@@ -131,7 +142,9 @@ class Aptitude : Fragment() {
             view.findViewById<View>(R.id.startScreen).visibility = View.GONE
             // Display the question screen
             view.findViewById<View>(R.id.questionScreen).visibility = View.VISIBLE
-
+            if (progressBar != null) {
+                progressBar.visibility = View.GONE
+            }
             // Read questions from Firebase Storage
             readQuestionsFromFirebaseStorage(view)
 
@@ -140,6 +153,7 @@ class Aptitude : Fragment() {
 
         return view
     }
+
 
     private fun retrieveScoresFromDatabase(): Map<String, Int> {
         val dbHelper = DataBaseHandler(requireContext())
@@ -223,9 +237,13 @@ class Aptitude : Fragment() {
             // Implement keyword storage logic if needed
         }
 
-
+        val progressBar = view?.findViewById<ProgressBar>(R.id.loadingScreen)
         view?.findViewById<View>(R.id.questionScreen)?.visibility = View.GONE
-        val progressBar = view?.findViewById<View>(R.id.loadingScreen)
+// Reset the progress bar to zero immediately
+        if (progressBar != null) {
+            progressBar.progress = 0
+
+        }
 
 // Animate progress to 100 in 1 second
         val animator = ObjectAnimator.ofInt(progressBar, "progress", 100)
@@ -248,12 +266,14 @@ class Aptitude : Fragment() {
             // Log keywords for debugging or additional actions
             logKeywords()
         }, 1000) // 1000 milliseconds delay
+// 1000 milliseconds delay
 
         // 1000 milliseconds delay
     }
 
     private fun displayQuestion(view: View) {
-
+        val progressBar = view.findViewById<ProgressBar>(R.id.loadingScreen)
+        progressBar.progress = 0
         if (!isAdded) {
             // Fragment not attached to an activity, do not proceed
             return
@@ -261,11 +281,17 @@ class Aptitude : Fragment() {
 
         // Display the question screen
         view.findViewById<View>(R.id.questionScreen).visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        // Reset the progress bar
+
+
         val dbHelper = DataBaseHandler(requireContext())
         val databaseHandler = DataBaseHandler(requireContext())
 
         currentQuestionIndex = latestQuestionIndex
         if (::questions.isInitialized && currentQuestionIndex < questions.size) {
+
+
             val currentQuestion = listOf(questions[dbHelper.getCurrentQuestionIndex()])
             val questionAdapter = QuestionAdapter(currentQuestion, this::onResponseSelected, databaseHandler)
             val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
@@ -274,6 +300,10 @@ class Aptitude : Fragment() {
         } else {
             Log.e("Aptitude", "Questions not initialized or no more questions.")
         }
+
+        progressBar.visibility = View.VISIBLE
+
+
     }
     private fun readQuestionsFromFirebaseStorage(view: View) {
         // Initialize Firebase Storage reference

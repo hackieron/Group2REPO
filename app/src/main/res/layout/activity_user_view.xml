@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
-    android:theme="@style/Theme.AppCompat.NoActionBar"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@drawable/whitebg"
     android:layout_gravity="end"
+    android:background="@drawable/bg2"
+    android:theme="@style/Theme.AppCompat.NoActionBar"
     tools:context=".UserView">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/whitebg"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg2" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,16 +24,16 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/textgray"
             android:background="#FEEB9C"
             android:elevation="4dp"
-            app:popupTheme="@style/Base.Theme.CourSeer2" />
+            app:popupTheme="@style/Base.Theme.CourSeer2"
+            app:titleTextColor="@color/textgray" />
 
 
         <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragment_container"/>
+            android:layout_height="match_parent" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -58,14 +59,14 @@
             </com.google.android.material.bottomappbar.BottomAppBar>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/reset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="TODO"
                 android:src="@drawable/baseline_restart_alt_24"
                 app:backgroundTint="@color/gold"
-            app:layout_anchor="@id/bottomAppBar"
-            app:maxImageSize="40dp"
-            android:id="@+id/reset"
-            android:contentDescription="TODO" />
+                app:layout_anchor="@id/bottomAppBar"
+                app:maxImageSize="40dp" />
 
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

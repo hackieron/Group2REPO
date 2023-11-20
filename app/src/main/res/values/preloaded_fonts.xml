@@ -4,10 +4,12 @@
         <item>@font/alata</item>
         <item>@font/alegreya_sans_sc</item>
         <item>@font/allerta</item>
+        <item>@font/blinker_bold</item>
         <item>@font/dm_sans</item>
         <item>@font/fira_sans_condensed_medium</item>
         <item>@font/fjalla_one</item>
         <item>@font/hammersmith_one</item>
+        <item>@font/noto_sans</item>
         <item>@font/roboto_medium</item>
         <item>@font/roboto_thin</item>
     </array>

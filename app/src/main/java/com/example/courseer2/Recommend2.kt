@@ -58,7 +58,7 @@ class Recommend2 : Fragment() {
 
         val rootView = inflater.inflate(R.layout.fragment_recommend2, container, false)
         noItemsTextView = rootView.findViewById(R.id.noItems)
-        noItemsTextView.visibility = View.VISIBLE
+
         loadingProgressBar = rootView.findViewById(R.id.loadingProgressBar)
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView2)
@@ -318,6 +318,7 @@ class Recommend2 : Fragment() {
             calculateProgramScore(program)
         }
         if (sortedList.isEmpty()) {
+            loadingProgressBar.visibility = View.GONE
             noItemsTextView.visibility = View.VISIBLE
         } else {
             noItemsTextView.visibility = View.GONE

@@ -59,7 +59,7 @@ class Recommend : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_recommend, container, false)
         noItemsTextView = rootView.findViewById(R.id.noItems)
-        noItemsTextView.visibility = View.VISIBLE
+
         loadingProgressBar = rootView.findViewById(R.id.loadingProgressBar)
         seekBarLabel = rootView.findViewById<TextView>(R.id.seekBarLabel)
         seekBar = rootView.findViewById<SeekBar>(R.id.seekBar)

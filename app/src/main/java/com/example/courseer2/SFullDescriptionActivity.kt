@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 import com.example.courseer2.databinding.ActivitySfullDescriptionBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SFullDescriptionActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySfullDescriptionBinding // Declare a binding object
@@ -15,7 +16,11 @@ class SFullDescriptionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySfullDescriptionBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val closeButton:FloatingActionButton = findViewById(R.id.closeButton1)
 
+        closeButton.setOnClickListener {
+            finish()
+        }
         // Retrieve the program title and full description from intent extras
         val programTitle = intent.getStringExtra("program_title")
         val shortDescription = intent.getStringExtra("short_description")

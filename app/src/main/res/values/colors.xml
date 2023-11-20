@@ -10,4 +10,6 @@
     <color name="chip">#FFFFFF</color>
     <color name="chiptext">#FFFFFF</color>
     <color name="seekbar">#00FFFFFF</color>
+    <color name="chipborder">#48000000</color>
+
 </resources>

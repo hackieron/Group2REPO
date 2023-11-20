@@ -38,13 +38,7 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
-        <ProgressBar
-            android:id="@+id/loadingProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible" /><!-- Elevation for the CardView -->
+        <!-- Elevation for the CardView -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/programRecyclerView2"
@@ -53,7 +47,9 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/programbg"
             android:clipToPadding="false"
-            android:padding="8dp" />
+            android:padding="8dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/noItems"
@@ -94,6 +90,14 @@
             android:gravity="center"
             android:labelFor="@id/seekBar"
             android:text="NEUTRAL" />
+
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
 
     </androidx.cardview.widget.CardView>

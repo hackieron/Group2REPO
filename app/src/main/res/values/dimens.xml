@@ -14,7 +14,7 @@
     <dimen name="chip_negative_margin_bottom">1dp</dimen>
     <dimen name="bottom_nav_icon_size">39dp</dimen>
     <dimen name="chip_stroke">0.4dp</dimen>
-    <dimen name="chip_stroke1">0.08dp</dimen>
+    <dimen name="chip_stroke1">1.5dp</dimen>
 
     <dimen name="chip_stroke_not">0dp</dimen>
     <dimen name="chip_space">5dp</dimen>

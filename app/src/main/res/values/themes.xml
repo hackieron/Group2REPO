@@ -21,7 +21,7 @@
         <item name="android:textColorPrimary">@color/textgray</item>
 
         <!-- Change the secondary text color -->
-        <item name="android:textColorSecondary">#FFC107</item>
+        <item name="android:textColorSecondary">#FFC907</item>
         <item name="colorControlNormal">@color/textgray</item>
         <!-- Add more text color attributes as needed -->
 
