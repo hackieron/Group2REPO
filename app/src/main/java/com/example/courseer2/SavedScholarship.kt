@@ -19,8 +19,13 @@ import java.io.InputStreamReader
 
 class SavedScholarship : Fragment() {
     companion object {
+<<<<<<< HEAD
         fun newInstance2(program: Boolean): SavedScholarship {
             val fragment = SavedScholarship()
+=======
+        fun newInstance2(program: Boolean): Recommend2 {
+            val fragment = Recommend2()
+>>>>>>> added favorites layout, toggle
             val args = Bundle()
             args.putBoolean("scholarship", program)
             fragment.arguments = args
