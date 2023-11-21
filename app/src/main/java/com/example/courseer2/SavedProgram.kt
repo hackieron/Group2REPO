@@ -24,8 +24,8 @@ import java.io.File
 
 class SavedProgram : Fragment() {
     companion object {
-        fun newInstance2(program: Boolean): Recommend {
-            val fragment = Recommend()
+        fun newInstance2(program: Boolean): SavedProgram {
+            val fragment = SavedProgram()
             val args = Bundle()
             args.putBoolean("program", program)
             fragment.arguments = args
