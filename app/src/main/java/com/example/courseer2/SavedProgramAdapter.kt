@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.courseer2.databinding.SchoItemBinding
+import com.example.courseer2.databinding.ProgramItemBinding // Replace with your actual binding class package
 
+class SavedProgramAdapter(
 
-class ScholarshipAdapter(
-
-    private var scholarships: List<Scholarships1>,
+    private var programs: List<Program>,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<ScholarshipAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SavedProgramAdapter.ViewHolder>() {
 
     private var expandedPosition: Int = -1
 
@@ -21,12 +20,13 @@ class ScholarshipAdapter(
         fun onItemClick(position: Int)
     }
 
-    inner class ViewHolder(private val binding: SchoItemBinding) :
+    inner class ViewHolder(private val binding: ProgramItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(program: Scholarships1) {
+        fun bind(program: Program) {
             binding.titleTextView.text = program.title
             binding.shortDescriptionTextView.text = program.shortDescription
+
 
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
@@ -45,13 +45,10 @@ class ScholarshipAdapter(
                     binding.shortDescriptionCardView.visibility = View.VISIBLE
                     binding.shortDescriptionTextView.setOnClickListener{
                         val context = binding.root.context
-                        val intent = Intent(context, SFullDescriptionActivity::class.java)
+                        val intent = Intent(context, FullDescriptionActivity::class.java)
                         intent.putExtra("program_title", program.title)
-                        intent.putExtra("full_description", program.shortDescription)
-                        intent.putExtra("short_description", program.longDescription)
-                        intent.putExtra("link", program.link)
-                        intent.putExtra("city", program.city)
-
+                        intent.putExtra("full_description", program.fullDescription)
+                        intent.putExtra("subcar", program.subcar)
                         context.startActivity(intent)// Show the CardView
                     }
 
@@ -73,21 +70,22 @@ class ScholarshipAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = SchoItemBinding.inflate(
+        val binding = ProgramItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(scholarships[position])
+        holder.bind(programs[position])
     }
 
     override fun getItemCount(): Int {
-        return scholarships.size
+        return programs.size
     }
-    fun updateScholarships(filteredScholarships: List<Scholarships1>) {
-        scholarships = filteredScholarships
+    fun updatePrograms(filteredPrograms: List<Program>) {
+        programs = filteredPrograms
         notifyDataSetChanged()
     }
 }
+

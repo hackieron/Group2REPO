@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.courseer2.databinding.SchoItemBinding
 
 
-class ScholarshipAdapter(
+class SavedScholarshipAdapter(
 
     private var scholarships: List<Scholarships1>,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<ScholarshipAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SavedScholarshipAdapter.ViewHolder>() {
 
     private var expandedPosition: Int = -1
 
