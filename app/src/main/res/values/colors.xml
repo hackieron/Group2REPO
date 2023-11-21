@@ -12,5 +12,8 @@
     <color name="seekbar">#00FFFFFF</color>
     <color name="chipborder">#48000000</color>
     <color name="pitch">#FFFEF1D8</color>
+    <color name="checkedColor">#FFCF02</color> <!-- Replace this color with your desired checked color -->
+    <color name="uncheckedColor">#EFF1F3</color> <!-- Replace this color with your desired unchecked color -->
+
 
 </resources>

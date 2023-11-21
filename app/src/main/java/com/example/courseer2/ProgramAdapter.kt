@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.courseer2.databinding.ProgramItemBinding // Replace with your actual binding class package
 
@@ -54,6 +55,13 @@ class ProgramAdapter(
                 } else {
                     binding.shortDescriptionTextView.visibility = View.GONE
                     binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
+                }
+                // Set the color of the ToggleButton based on its checked state
+                binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
+                    val colorResId = if (isChecked) R.color.checkedColor
+                    else R.color.uncheckedColor
+                    binding.saveButton.backgroundTintList =
+                        ContextCompat.getColorStateList(binding.root.context, colorResId)
                 }
             }
         }

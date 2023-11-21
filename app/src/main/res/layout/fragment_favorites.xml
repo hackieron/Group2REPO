@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Favorites">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:background="#FFFFFF"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabRippleColor="@color/gold"
+        app:tabSelectedTextColor="@color/textgray"
+        app:tabTextColor="@color/textgray" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Favorites"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:textAlignment="center"/>
+        android:layout_below="@id/tabLayout" />
 
-</FrameLayout>
+
+</RelativeLayout>
