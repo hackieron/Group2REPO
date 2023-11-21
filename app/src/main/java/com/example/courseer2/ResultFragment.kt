@@ -99,10 +99,8 @@ class ResultFragment : Fragment() {
             }
 
             if (selectedChipsList.contains("Computer Science")) {
-
                 keywords.addAll(listOf("Game Developer", "Software Developer", "Web Developer"))
                 dataBaseHandler.insertInterpretation("Computer Science", "Developers in this field design and create games, software, and applications, shaping the digital landscape with innovative solutions.")
-
             }
             if (selectedChipsList.contains("Information Technology")) {
 

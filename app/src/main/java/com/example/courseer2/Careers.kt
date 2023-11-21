@@ -119,7 +119,7 @@ class Careers : AppCompatActivity() {
 
         skipButton.setOnClickListener {
             dbHelper.increaseCount()
-            val intent = Intent(this, UserView::class.java)
+            val intent = Intent(this, GuideUserView::class.java)
             startActivity(intent)
         }
 
@@ -199,7 +199,7 @@ class Careers : AppCompatActivity() {
                         .show()
                     dataBaseHandler.copyKeywordsToPreferences()
                     dbHelper.increaseCount()
-                    val intent = Intent(this, UserView::class.java)
+                    val intent = Intent(this, GuideUserView::class.java)
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Failed to insert tags", Toast.LENGTH_SHORT).show()

@@ -42,11 +42,11 @@ class MainActivity : AppCompatActivity() {
                 preloadActivities()
                 // Delay for 2 seconds
                 if (isFirstRun || isCalledByIntent) {
-                    redirectToUserCreate()
+                    redirectToGuide()
                 } else {
                     if (highest < 3) {
                         dbHelper.clearAllData()
-                        redirectToUserCreate()
+                        redirectToGuide()
                     } else {
                         redirectToUserView()
                     }
@@ -61,8 +61,8 @@ class MainActivity : AppCompatActivity() {
         return networkInfo?.isConnectedOrConnecting == true
     }
 
-    private fun redirectToUserCreate() {
-        val redirectIntent = Intent(this, UserCreate::class.java)
+    private fun redirectToGuide() {
+        val redirectIntent = Intent(this, GuideUserCreate::class.java)
         startActivity(redirectIntent)
         finish()
     }
