@@ -160,7 +160,9 @@ class Programs : Fragment() {
                 val shortDescription = columns[2]
                 val fullDescription = columns[3]
                 val subcar = columns[4]
-                val program = Program(title, category, shortDescription, fullDescription, subcar)
+                val strand = columns[5]
+                val keywords = columns[6]
+                val program = Program(title, category, shortDescription, fullDescription, subcar, strand, keywords)
                 programs.add(program)
             }
         }
@@ -188,7 +190,7 @@ class Programs : Fragment() {
     private fun filterPrograms(query: String?): List<Program> {
         return programs.filter { program ->
             program.title.contains(query.orEmpty(), ignoreCase = true) ||
-                    program.fullDescription.contains(query.orEmpty(), ignoreCase = true) || program.category.contains(query.orEmpty(), ignoreCase = true) || program.subcar.contains(query.orEmpty(), ignoreCase = true) || program.shortDescription.contains(query.orEmpty(), ignoreCase = true )
+                    program.fullDescription.contains(query.orEmpty(), ignoreCase = true) || program.category.contains(query.orEmpty(), ignoreCase = true) || program.subcar.contains(query.orEmpty(), ignoreCase = true) || program.shortDescription.contains(query.orEmpty(), ignoreCase = true) || program.strand.contains(query.orEmpty(), ignoreCase = true ) || program.keywords.contains(query.orEmpty(), ignoreCase = true )
         }
     }
 }
@@ -198,7 +200,9 @@ data class Program(
     val category: String,
     val shortDescription: String,
     val fullDescription: String,
-    val subcar:String
+    val subcar:String,
+    val strand:String,
+    val keywords:String
 )
 
 
