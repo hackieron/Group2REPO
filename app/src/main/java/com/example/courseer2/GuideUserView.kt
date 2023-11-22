@@ -23,9 +23,10 @@ class GuideUserView : AppCompatActivity() {
         viewPager = findViewById(R.id.viewPager)
 
         val images = listOf(
-            ImageItem(R.drawable.bg1),
-            ImageItem(R.drawable.bg2),
-            ImageItem(R.drawable.bg10)
+            ImageItem(R.drawable.userview),
+            ImageItem(R.drawable.homeview),
+            ImageItem(R.drawable.bottomnavigate),
+            ImageItem(R.drawable.sidenavigate)
             // Add more images as needed
         )
 
