@@ -247,7 +247,7 @@ class Aptitude : Fragment() {
 
 // Animate progress to 100 in 1 second
         val animator = ObjectAnimator.ofInt(progressBar, "progress", 100)
-        animator.duration = 1000 // 1000 milliseconds (1 second)
+        animator.duration = 300 // 1000 milliseconds (1 second)
         animator.start()
 
 // Delay for 1 second before displaying the next question
@@ -265,7 +265,7 @@ class Aptitude : Fragment() {
 
             // Log keywords for debugging or additional actions
             logKeywords()
-        }, 1000) // 1000 milliseconds delay
+        }, 300) // 1000 milliseconds delay
 // 1000 milliseconds delay
 
         // 1000 milliseconds delay

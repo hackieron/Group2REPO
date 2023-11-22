@@ -95,13 +95,24 @@ class MainActivity : AppCompatActivity() {
     private suspend fun preloadActivities() {
         withContext(Dispatchers.Main) {
             progressBar.visibility = View.VISIBLE // Show the progress bar
+         // Show the horizontal progress bar
         }
 
         // Simulate a delay (replace with your actual preload logic)
-        delay(2000)
+        for (progress in 0..100 step 2) {
+            delay(10) // Adjust the delay time as needed
+            updateProgressBar(progress)
+        }
 
         withContext(Dispatchers.Main) {
             progressBar.visibility = View.GONE // Hide the progress bar
+            // Hide the horizontal progress bar
+        }
+    }
+
+    private fun updateProgressBar(progress: Int) {
+        runOnUiThread {
+            progressBar.progress = progress
         }
     }
 

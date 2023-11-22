@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.courseer2.ImageItem
 import com.example.courseer2.R
 
@@ -26,8 +28,13 @@ class ImageAdapter(private val images: List<ImageItem>) :
     class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(image: ImageItem) {
             val imageView = itemView.findViewById<ImageView>(R.id.imageView)
-            imageView.setImageResource(image.resourceId)
+
+            // Center crop the image using Glide
+            Glide.with(itemView)
+                .load(image.resourceId)
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView)
         }
     }
-
 }

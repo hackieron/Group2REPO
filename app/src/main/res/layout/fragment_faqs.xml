@@ -25,7 +25,9 @@ android:gravity="center|center_horizontal">
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        app:iconifiedByDefault="false"
+        android:clickable="true"/>
 </androidx.cardview.widget.CardView>
 
 <androidx.cardview.widget.CardView
