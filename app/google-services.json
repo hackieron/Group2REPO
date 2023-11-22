@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "260565852017",
+    "firebase_url": "https://courseer-3555d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "courseer-3555d",
+    "storage_bucket": "courseer-3555d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260565852017:android:a1b52564b9652a4c4120d0",
+        "android_client_info": {
+          "package_name": "com.example.courseer2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260565852017-kj8vpf2oejko9pa1t558vfc07e5jh8fu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdVbWnSwPeof2-lcU8R-gpIe8aOSoekWA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260565852017-kj8vpf2oejko9pa1t558vfc07e5jh8fu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
