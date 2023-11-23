@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import java.io.InputStreamReader
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
+import java.io.FileReader
 
 
 class SavedProgram : Fragment() {
@@ -48,7 +50,7 @@ class SavedProgram : Fragment() {
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView)
 
-        val csvData = readCSVFileFromAssets(requireContext())
+        val csvData = readCSVFileFromInternalStorage(requireContext())
         programs = parseCSVData(csvData)
         allPrograms = parseCSVData(csvData)
         filteredPrograms = allPrograms
@@ -70,26 +72,25 @@ class SavedProgram : Fragment() {
     }
 
 
-    private fun readCSVFileFromAssets(context: Context): String {
+    private fun readCSVFileFromInternalStorage(context: Context): String {
         val fileName = "savedPrograms.csv"
-        val inputStream = context.assets.open(fileName)
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+        val internalStorageDir = context.filesDir
+        val file = File(internalStorageDir, fileName)
         val stringBuilder = StringBuilder()
-        var line: String?
 
         try {
+            val bufferedReader = BufferedReader(FileReader(file))
+            var line: String?
+
             while (bufferedReader.readLine().also { line = it } != null) {
                 stringBuilder.append(line)
                 stringBuilder.append('\n')
             }
+
+            bufferedReader.close()
         } catch (e: IOException) {
             e.printStackTrace()
-        } finally {
-            try {
-                inputStream.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            Log.d("pogi na ako", "$e")
         }
 
         return stringBuilder.toString()

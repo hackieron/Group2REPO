@@ -59,13 +59,7 @@ class SavedScholarshipAdapter(
                     binding.shortDescriptionTextView.visibility = View.GONE
                     binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
                 }
-                // Set the color of the ToggleButton based on its checked state
-                binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
-                    val colorResId = if (isChecked) R.color.checkedColor
-                    else R.color.uncheckedColor
-                    binding.saveButton.backgroundTintList =
-                        ContextCompat.getColorStateList(binding.root.context, colorResId)
-                }
+
             }
         }
     }

@@ -65,7 +65,7 @@ class ScholarshipAdapter(
                     binding.shortDescriptionTextView.visibility = View.GONE
                     binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
                 }
-                // Set the color of the ToggleButton based on its checked state
+
                 binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) {
 

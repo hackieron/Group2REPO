@@ -38,7 +38,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/save"
-                android:backgroundTint="#EFF1F3"
+                android:backgroundTint="@color/toggle_button_colors"
                 android:checked="false"
                 android:textOn=""
                 android:textOff=""

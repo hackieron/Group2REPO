@@ -66,7 +66,7 @@ class Recommend2 : Fragment() {
         seekBar = rootView.findViewById<SeekBar>(R.id.seekBar)
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                THRESHOLD = progress
+                THRESHOLD = maxOf(2, progress)
                 updateRecyclerView()
 
                 // Update label based on progress
@@ -108,7 +108,8 @@ class Recommend2 : Fragment() {
                     override fun onItemClick(position: Int) {
                         // Handle item click if needed
                     }
-                })
+                }, requireContext()
+            )
 
             recyclerView.adapter = adapter2
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -196,8 +197,9 @@ class Recommend2 : Fragment() {
                 val shortDescription = columns[2]
                 val fullDescription = columns[3]
                 val subcar = columns[4]
+                val strand = columns[5]
                 val keywords = columns[6]
-                val program1 = Rprograms(title, category, shortDescription, fullDescription, subcar, keywords )
+                val program1 = Rprograms(title, category, shortDescription, fullDescription, subcar, strand, keywords )
                 programs.add(program1)
             }
         }
@@ -252,7 +254,8 @@ class Recommend2 : Fragment() {
                             override fun onItemClick(position: Int) {
                                 // Handle item click if needed
                             }
-                        })
+                        }, requireContext()
+                    )
 
                     recyclerView.adapter = adapter2
                     recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -284,7 +287,8 @@ class Recommend2 : Fragment() {
                             override fun onItemClick(position: Int) {
                                 // Handle item click if needed
                             }
-                        })
+                        }, requireContext()
+                    )
 
                     recyclerView.adapter = adapter2
                     recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -333,5 +337,6 @@ data class Rprograms(
     val shortDescription: String,
     val fullDescription: String,
     val subcar: String,
+    val strand: String,
     val keywords: String
 )

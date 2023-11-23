@@ -67,7 +67,7 @@ class Recommend : Fragment() {
         recyclerView = rootView.findViewById(R.id.programRecyclerView)
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                THRESHOLD = progress
+                THRESHOLD = maxOf(2, progress)
                 updateRecyclerView()
 
                 // Update label based on progress
@@ -114,7 +114,9 @@ class Recommend : Fragment() {
                     override fun onItemClick(position: Int) {
                         // Handle item click if needed
                     }
-                })
+                },
+                requireContext()
+            )
 
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -186,7 +188,10 @@ class Recommend : Fragment() {
                             override fun onItemClick(position: Int) {
                                 // Handle item click if needed
                             }
-                        })
+                        },
+                        requireContext()
+
+                    )
 
                     recyclerView.adapter = adapter
                     recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -224,7 +229,9 @@ class Recommend : Fragment() {
                             override fun onItemClick(position: Int) {
                                 // Handle item click if needed
                             }
-                        })
+                        },
+                        requireContext()
+                    )
 
                     recyclerView.adapter = adapter
                     recyclerView.layoutManager = LinearLayoutManager(requireContext())

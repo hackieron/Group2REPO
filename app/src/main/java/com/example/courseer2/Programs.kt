@@ -125,7 +125,7 @@ class Programs : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            }, requireContext()
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -216,7 +216,8 @@ data class Program(
 
 class CategoryAdapter(
     private var programsByCategory: Map<String, List<Program>>,
-    private val itemClickListener: ProgramAdapter.OnItemClickListener
+    private val itemClickListener: ProgramAdapter.OnItemClickListener,
+    private val context: Context
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -234,7 +235,7 @@ class CategoryAdapter(
         val category = programsByCategory.keys.toList()[position]
         holder.categoryName.text = category
         val programAdapter =
-            ProgramAdapter(programsByCategory[category] ?: emptyList(), itemClickListener)
+            ProgramAdapter(programsByCategory[category] ?: emptyList(), itemClickListener, context)
         holder.programRecyclerView.adapter = programAdapter
         holder.programRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
     }
