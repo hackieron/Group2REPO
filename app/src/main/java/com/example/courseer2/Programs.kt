@@ -20,6 +20,7 @@ import java.io.InputStreamReader
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
+import java.util.Locale
 
 
 class Programs : Fragment() {
@@ -188,9 +189,16 @@ class Programs : Fragment() {
     }
 
     private fun filterPrograms(query: String?): List<Program> {
+        val lowercaseQuery = query.orEmpty().lowercase(Locale.ROOT)
+
         return programs.filter { program ->
-            program.title.contains(query.orEmpty(), ignoreCase = true) ||
-                    program.fullDescription.contains(query.orEmpty(), ignoreCase = true) || program.category.contains(query.orEmpty(), ignoreCase = true) || program.subcar.contains(query.orEmpty(), ignoreCase = true) || program.shortDescription.contains(query.orEmpty(), ignoreCase = true) || program.strand.contains(query.orEmpty(), ignoreCase = true ) || program.keywords.contains(query.orEmpty(), ignoreCase = true )
+            program.title.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.fullDescription.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.category.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.subcar.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.shortDescription.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.strand.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.keywords.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true)
         }
     }
 }

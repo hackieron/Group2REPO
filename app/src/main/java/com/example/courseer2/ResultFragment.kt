@@ -248,8 +248,11 @@ class ResultFragment : Fragment() {
             }
             if(topCategories.size <= 3) {
                 proceedButton.isEnabled = true
+                chip.isChecked = true
                 chip.isClickable = false
                 chip.isCheckable = false
+                chip.setChipBackgroundColorResource(R.color.gold)
+                chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
 
             // Add chip to the ChipGroup

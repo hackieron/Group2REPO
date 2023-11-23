@@ -483,10 +483,18 @@ class Interests : AppCompatActivity() {
         // Add selected tags last
         for (tag in selectedTagsList) {
             val chip = createChip(tag)
-            chip?.isChecked = false
+            chip?.isChecked = true
+            chip?.isCheckedIconVisible = false
+            chip?.setTextColor(ContextCompat.getColor(this, R.color.black))
+            chip?.setChipBackgroundColorResource(R.color.gold)
+            chip?.chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_not)
+
+            // Remove the chip from its current parent (chipGroup) before adding it to chipGroupSelectedTags
+            val parent = chip?.parent as? ViewGroup
+            parent?.removeView(chip)
+
             chipGroupSelectedTags.addView(chip)
         }
-
     }
 
 
