@@ -96,7 +96,7 @@ class ScholarshipAdapter(
 
                             // Optionally, you can notify the user that the data has been saved.
                             // For example, you can use Toast or Log.
-                            Toast.makeText(context, "Data saved to $fileName", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Saved to favorites", Toast.LENGTH_SHORT).show()
 
                         } catch (e: IOException) {
                             e.printStackTrace()
