@@ -4,15 +4,21 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.courseer2.databinding.SchoItemBinding
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 class ScholarshipAdapter(
 
     private var scholarships: List<Scholarships1>,
-    private val listener: OnItemClickListener
+    private val listener: OnItemClickListener,
+    private val context: Context
 ) : RecyclerView.Adapter<ScholarshipAdapter.ViewHolder>() {
 
     private var expandedPosition: Int = -1
@@ -61,10 +67,47 @@ class ScholarshipAdapter(
                 }
                 // Set the color of the ToggleButton based on its checked state
                 binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
-                    val colorResId = if (isChecked) R.color.checkedColor
-                    else R.color.uncheckedColor
-                    binding.saveButton.backgroundTintList =
-                        ContextCompat.getColorStateList(binding.root.context, colorResId)
+                    if (isChecked) {
+
+                        // save scholarship data into string
+                        val schoName: String = program.title.toString()
+                        val schoShortDesc: String = program.shortDescription.toString()
+                        val schoLongDesc: String = program.longDescription.toString()
+                        val schoLink: String = program.link.toString()
+                        val schoCateg: String = program.category.toString()
+                        val schoCity: String = program.city.toString()
+                        // transfer them into a new string
+                        val csvRow = "$schoName;$schoShortDesc;$schoLongDesc;$schoLink;$schoCateg;$schoCity|"
+                        // Define the file name
+                        val fileName = "savedScholarships.csv"
+
+                        // Get the path to the app's internal storage directory
+                        val internalStorageDir = context.filesDir
+
+                        // Create a File object for the CSV file
+                        val file = File(internalStorageDir, fileName)
+
+                        try {
+                            // Open the file in append mode and write the csvRow
+                            val fileOutputStream = FileOutputStream(file, true)
+                            fileOutputStream.write(csvRow.toByteArray())
+                            fileOutputStream.close()
+                            Log.d("hindi ako pogi", "$internalStorageDir")
+
+                            // Optionally, you can notify the user that the data has been saved.
+                            // For example, you can use Toast or Log.
+                            Toast.makeText(context, "Data saved to $fileName", Toast.LENGTH_SHORT).show()
+
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+
+                            // Handle the exception as needed
+                        }
+                    }
+                    else {
+
+                    }
+
                 }
             }
         }
@@ -90,4 +133,6 @@ class ScholarshipAdapter(
         scholarships = filteredScholarships
         notifyDataSetChanged()
     }
+
+
 }

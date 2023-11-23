@@ -3,6 +3,7 @@ package com.example.courseer2
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
 import java.io.IOException
 import java.io.InputStreamReader
 
@@ -42,7 +45,7 @@ class SavedScholarship : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_saved_scholarship, container, false)
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.scholarshipRecyclerView)
-        val csvData = readCSVFileFromAssets(requireContext())
+        val csvData = readCSVFileFromInternalStorage(requireContext())
         scholarship = parseCSVData(csvData)
         allScholarships = parseCSVData(csvData)
         filteredScholarships = allScholarships
@@ -76,30 +79,30 @@ class SavedScholarship : Fragment() {
 
 
 
-    private fun readCSVFileFromAssets(context: Context): String {
+    private fun readCSVFileFromInternalStorage(context: Context): String {
         val fileName = "savedScholarships.csv"
-        val inputStream = context.assets.open(fileName)
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+        val internalStorageDir = context.filesDir
+        val file = File(internalStorageDir, fileName)
         val stringBuilder = StringBuilder()
-        var line: String?
 
         try {
+            val bufferedReader = BufferedReader(FileReader(file))
+            var line: String?
+
             while (bufferedReader.readLine().also { line = it } != null) {
                 stringBuilder.append(line)
                 stringBuilder.append('\n')
             }
+
+            bufferedReader.close()
         } catch (e: IOException) {
             e.printStackTrace()
-        } finally {
-            try {
-                inputStream.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            Log.d("pogi na ako", "$e")
         }
 
         return stringBuilder.toString()
     }
+
     private fun initializeAdapter() {
         adapter = CategoryScholarshipAdapter(
             groupScholarshipsByCategory(filteredScholarships),

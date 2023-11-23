@@ -57,7 +57,8 @@ class Scholarship : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            },requireContext()
+
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -153,7 +154,8 @@ class Scholarship : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            }, requireContext()
+
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -202,7 +204,8 @@ data class Scholarships1(
 
 class CategorySAdapter(
     private var scholarshipByCategory: Map<String, List<Scholarships1>>,
-    private val itemClickListener: ScholarshipAdapter.OnItemClickListener
+    private val itemClickListener: ScholarshipAdapter.OnItemClickListener,
+    private val context: Context
 ) : RecyclerView.Adapter<CategorySAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -220,7 +223,7 @@ class CategorySAdapter(
         val category = scholarshipByCategory.keys.toList()[position]
         holder.categoryName.text = category
         val scholarshipAdapter =
-            ScholarshipAdapter(scholarshipByCategory[category] ?: emptyList(), itemClickListener)
+            ScholarshipAdapter(scholarshipByCategory[category] ?: emptyList(), itemClickListener, context)
         holder.scholarshipRecyclerView.adapter = scholarshipAdapter
         holder.scholarshipRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
     }
