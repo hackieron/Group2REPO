@@ -36,6 +36,7 @@ class SavedScholarship : Fragment() {
     private lateinit var scholarship: List<Scholarships1>
     private lateinit var allScholarships: List<Scholarships1>
     private var filteredScholarships: List<Scholarships1> = emptyList()
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +58,7 @@ class SavedScholarship : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            }, requireContext()
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -110,7 +111,8 @@ class SavedScholarship : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            }, requireContext()
+
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -151,7 +153,9 @@ class SavedScholarship : Fragment() {
 
 class CategoryScholarshipAdapter(
     private var scholarshipByCategory: Map<String, List<Scholarships1>>,
-    private val itemClickListener: SavedScholarshipAdapter.OnItemClickListener
+    private val itemClickListener: SavedScholarshipAdapter.OnItemClickListener,
+    private val context: Context,
+
 ) : RecyclerView.Adapter<CategoryScholarshipAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -169,7 +173,7 @@ class CategoryScholarshipAdapter(
         val category = scholarshipByCategory.keys.toList()[position]
         holder.categoryName.text = category
         val SavedScholarshipAdapter =
-            SavedScholarshipAdapter(scholarshipByCategory[category] ?: emptyList(), itemClickListener)
+            SavedScholarshipAdapter(scholarshipByCategory[category] ?: emptyList(), itemClickListener, context)
         holder.scholarshipRecyclerView.adapter = SavedScholarshipAdapter
         holder.scholarshipRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
     }

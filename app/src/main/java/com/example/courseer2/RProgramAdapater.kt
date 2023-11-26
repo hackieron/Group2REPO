@@ -2,6 +2,7 @@ package com.example.courseer2
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.example.courseer2.databinding.RprogramItemBinding
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.StringBuilder
 
 
 // Replace with your actual binding class package
@@ -24,6 +26,7 @@ class RProgramAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<RProgramAdapter.ViewHolder>() {
 
+
     private var expandedPosition: Int = -1
 
     interface OnItemClickListener {
@@ -32,6 +35,7 @@ class RProgramAdapter(
 
     inner class ViewHolder(private val binding: RprogramItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
 
         fun bind(program: RProgram) {
             binding.titleTextView.text = program.title
@@ -66,7 +70,9 @@ class RProgramAdapter(
                     binding.shortDescriptionTextView.visibility = View.GONE
                     binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
                 }
+
                 binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
+
                     if (isChecked) {
 
                         // save scholarship data into string
@@ -106,6 +112,49 @@ class RProgramAdapter(
                         }
                     }
                     else {
+                        // save scholarship data into string
+                        val progName: String = program.title.toString()
+
+                        // transfer into a new string
+                        val csvTitle :String = "$progName"
+                        // Define the file name
+                        val fileName = "savedPrograms.csv"
+
+                        // Get the path to the app's internal storage directory
+                        val internalStorageDir = context.filesDir
+
+                        // Create a File object for the CSV file
+                        val file = File(internalStorageDir, fileName)
+                        try {
+                            val newDataBuilder = StringBuilder()
+                            val existingData = file.readText()
+                            val rows = existingData.split("|")
+                            for (row in rows){
+                                val columns = row.split(";")
+                                if (columns.isNotEmpty() && columns[0] != csvTitle) {
+                                    // Keep the rows that are not the selected scholarship
+                                    newDataBuilder.append(row).append("|")
+                                }
+                            }
+
+
+                            val newData = newDataBuilder.toString()
+                            // Open the file in write mode and save the new data
+                            val fileOutputStream = FileOutputStream(file)
+                            fileOutputStream.write(newData.toByteArray())
+                            fileOutputStream.close()
+
+
+
+                            // Optionally, you can notify the user that the data has been deleted.
+                            // For example, you can use Toast or Log.
+                            Toast.makeText(context, "Removed from favorites.", Toast.LENGTH_SHORT).show()
+
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+
+                            // Handle the exception as needed
+                        }
 
                     }
 

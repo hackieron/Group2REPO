@@ -29,6 +29,7 @@ class Scholarship : Fragment() {
     private lateinit var scholarship: List<Scholarships1>
     private lateinit var allScholarships: List<Scholarships1>
     private var filteredScholarships: List<Scholarships1> = emptyList()
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -205,7 +206,8 @@ data class Scholarships1(
 class CategorySAdapter(
     private var scholarshipByCategory: Map<String, List<Scholarships1>>,
     private val itemClickListener: ScholarshipAdapter.OnItemClickListener,
-    private val context: Context
+    private val context: Context,
+
 ) : RecyclerView.Adapter<CategorySAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

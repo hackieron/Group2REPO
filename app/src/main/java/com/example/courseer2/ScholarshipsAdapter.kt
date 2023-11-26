@@ -12,13 +12,15 @@ import android.widget.Toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.StringBuilder
 
 
 class ScholarshipAdapter(
 
     private var scholarships: List<Scholarships1>,
     private val listener: OnItemClickListener,
-    private val context: Context
+    private val context: Context,
+
 ) : RecyclerView.Adapter<ScholarshipAdapter.ViewHolder>() {
 
     private var expandedPosition: Int = -1
@@ -66,7 +68,12 @@ class ScholarshipAdapter(
                     binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
                 }
 
+
+
+
                 binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
+
+
                     if (isChecked) {
 
                         // save scholarship data into string
@@ -105,6 +112,49 @@ class ScholarshipAdapter(
                         }
                     }
                     else {
+                        // save scholarship data into string
+                        val schoName: String = program.title.toString()
+
+                        // transfer into a new string
+                        val csvTitle :String = "$schoName"
+                        // Define the file name
+                        val fileName = "savedScholarships.csv"
+
+                        // Get the path to the app's internal storage directory
+                        val internalStorageDir = context.filesDir
+
+                        // Create a File object for the CSV file
+                        val file = File(internalStorageDir, fileName)
+                        try {
+                            val newDataBuilder = StringBuilder()
+                            val existingData = file.readText()
+                            val rows = existingData.split("|")
+                            for (row in rows){
+                                val columns = row.split(";")
+                                if (columns.isNotEmpty() && columns[0] != csvTitle) {
+                                    // Keep the rows that are not the selected scholarship
+                                    newDataBuilder.append(row).append("|")
+                                }
+                            }
+
+
+                            val newData = newDataBuilder.toString()
+                            // Open the file in write mode and save the new data
+                            val fileOutputStream = FileOutputStream(file)
+                            fileOutputStream.write(newData.toByteArray())
+                            fileOutputStream.close()
+
+
+
+                            // Optionally, you can notify the user that the data has been deleted.
+                            // For example, you can use Toast or Log.
+                            Toast.makeText(context, "Removed from favorites.", Toast.LENGTH_SHORT).show()
+
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+
+                            // Handle the exception as needed
+                        }
 
                     }
 
