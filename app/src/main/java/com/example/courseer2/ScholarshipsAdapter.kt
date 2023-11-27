@@ -67,28 +67,46 @@ class ScholarshipAdapter(
                     binding.shortDescriptionTextView.visibility = View.GONE
                     binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
                 }
+                // save scholarship data into string
+                val schoName: String = program.title.toString()
+
+                // transfer into a new string
+                val csvTitle :String = "$schoName"
+                // Define the file name
+                val fileName = "savedScholarships.csv"
+
+                // Get the path to the app's internal storage directory
+                val internalStorageDir = context.filesDir
+
+                // Create a File object for the CSV file
+                val file = File(internalStorageDir, fileName)
+                // check if csvTitle exists in the csv
+                if (isScholarshipAlreadyExists(file, csvTitle)) {
+                    binding.saveButton.isChecked = true
+                }
 
 
 
 
                 binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
+                    // save scholarship data into string
+                    val schoName: String = program.title.toString()
+
+                    // transfer into a new string
+                    val csvTitle :String = "$schoName"
+                    // Define the file name
+                    val fileName = "savedScholarships.csv"
+
+                    // Get the path to the app's internal storage directory
+                    val internalStorageDir = context.filesDir
+
+                    // Create a File object for the CSV file
+                    val file = File(internalStorageDir, fileName)
+
 
 
                     if (isChecked) {
-                        // save scholarship data into string
-                        val schoName: String = program.title.toString()
 
-                        // transfer into a new string
-                        val csvTitle :String = "$schoName"
-                        // Define the file name
-                        val fileName = "savedScholarships.csv"
-
-                        // Get the path to the app's internal storage directory
-                        val internalStorageDir = context.filesDir
-
-                        // Create a File object for the CSV file
-                        val file = File(internalStorageDir, fileName)
-                        // check if csvTitle exists in the csv
                         if (isScholarshipAlreadyExists(file, csvTitle)) {
                             Toast.makeText(context, "Scholarship already exists in favorites", Toast.LENGTH_SHORT).show()
                         }

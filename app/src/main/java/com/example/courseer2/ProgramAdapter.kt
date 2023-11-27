@@ -67,23 +67,27 @@ class ProgramAdapter(
                     binding.shortDescriptionTextView.visibility = View.GONE
                     binding.shortDescriptionCardView.visibility = View.GONE // Hide the CardView
                 }
+                // save scholarship data into string
+                val progName: String = program.title.toString()
+
+                // transfer into a new string
+                val csvTitle :String = "$progName"
+                // Define the file name
+                val fileName = "savedPrograms.csv"
+
+                // Get the path to the app's internal storage directory
+                val internalStorageDir = context.filesDir
+
+                // Create a File object for the CSV file
+                val file = File(internalStorageDir, fileName)
+                if (isProgramAlreadyExists(file, csvTitle)){
+                    binding.saveButton.isChecked = true
+                }
 
                 binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
 
                     if (isChecked) {
-                        // save scholarship data into string
-                        val progName: String = program.title.toString()
 
-                        // transfer into a new string
-                        val csvTitle :String = "$progName"
-                        // Define the file name
-                        val fileName = "savedPrograms.csv"
-
-                        // Get the path to the app's internal storage directory
-                        val internalStorageDir = context.filesDir
-
-                        // Create a File object for the CSV file
-                        val file = File(internalStorageDir, fileName)
 
                         if (isProgramAlreadyExists(file, csvTitle)){
                             Toast.makeText(context, "Program already exists in favorites", Toast.LENGTH_SHORT).show()
