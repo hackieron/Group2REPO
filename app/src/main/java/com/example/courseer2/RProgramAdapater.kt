@@ -74,8 +74,25 @@ class RProgramAdapter(
                 binding.saveButton.setOnCheckedChangeListener { _, isChecked ->
 
                     if (isChecked) {
-
                         // save scholarship data into string
+                        val progName: String = program.title.toString()
+
+                        // transfer into a new string
+                        val csvTitle :String = "$progName"
+                        // Define the file name
+                        val fileName = "savedPrograms.csv"
+
+                        // Get the path to the app's internal storage directory
+                        val internalStorageDir = context.filesDir
+
+                        // Create a File object for the CSV file
+                        val file = File(internalStorageDir, fileName)
+
+                        if (isProgramAlreadyExists(file, csvTitle)){
+                            Toast.makeText(context, "Program already exists in favorites", Toast.LENGTH_SHORT).show()
+                        }
+
+                        else {// save scholarship data into string
                         val progName: String = program.title.toString()
                         val progCateg: String = program.category.toString()
                         val progShortDesc: String = program.shortDescription.toString()
@@ -84,7 +101,8 @@ class RProgramAdapter(
                         val progStrand: String = program.strand.toString()
                         val progKeywords: String = program.keywords.toString()
                         // transfer them into a new string
-                        val csvRow = "$progName;$progCateg;$progShortDesc;$progFullDesc;$progSubcar;$progStrand;$progKeywords|"
+                        val csvRow =
+                            "$progName;$progCateg;$progShortDesc;$progFullDesc;$progSubcar;$progStrand;$progKeywords|"
                         // Define the file name
                         val fileName = "savedPrograms.csv"
 
@@ -110,6 +128,7 @@ class RProgramAdapter(
 
                             // Handle the exception as needed
                         }
+                    }
                     }
                     else {
                         // save scholarship data into string
@@ -184,6 +203,22 @@ class RProgramAdapter(
         programs2.clear()
         programs2.addAll(newPrograms)
         notifyDataSetChanged()
+    }
+    private fun isProgramAlreadyExists(file: File, programName: String): Boolean {
+        try {
+            val existingData = file.readText()
+            val rows = existingData.split("|")
+            for (row in rows) {
+                val columns = row.split(";")
+                if (columns.isNotEmpty() && columns[0] == programName) {
+                    return true
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            // Handle the exception as needed
+        }
+        return false
     }
 
 }

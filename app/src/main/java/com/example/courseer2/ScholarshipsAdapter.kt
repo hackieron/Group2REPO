@@ -75,8 +75,24 @@ class ScholarshipAdapter(
 
 
                     if (isChecked) {
-
                         // save scholarship data into string
+                        val schoName: String = program.title.toString()
+
+                        // transfer into a new string
+                        val csvTitle :String = "$schoName"
+                        // Define the file name
+                        val fileName = "savedScholarships.csv"
+
+                        // Get the path to the app's internal storage directory
+                        val internalStorageDir = context.filesDir
+
+                        // Create a File object for the CSV file
+                        val file = File(internalStorageDir, fileName)
+                        // check if csvTitle exists in the csv
+                        if (isScholarshipAlreadyExists(file, csvTitle)) {
+                            Toast.makeText(context, "Scholarship already exists in favorites", Toast.LENGTH_SHORT).show()
+                        }
+                        else {// save scholarship data into string
                         val schoName: String = program.title.toString()
                         val schoShortDesc: String = program.shortDescription.toString()
                         val schoLongDesc: String = program.longDescription.toString()
@@ -84,7 +100,9 @@ class ScholarshipAdapter(
                         val schoCateg: String = program.category.toString()
                         val schoCity: String = program.city.toString()
                         // transfer them into a new string
-                        val csvRow = "$schoName;$schoShortDesc;$schoLongDesc;$schoLink;$schoCateg;$schoCity|"
+                        val csvRow =
+                            "$schoName;$schoShortDesc;$schoLongDesc;$schoLink;$schoCateg;$schoCity|"
+                        val csvTitle: String = "$schoName"
                         // Define the file name
                         val fileName = "savedScholarships.csv"
 
@@ -95,6 +113,7 @@ class ScholarshipAdapter(
                         val file = File(internalStorageDir, fileName)
 
                         try {
+
                             // Open the file in append mode and write the csvRow
                             val fileOutputStream = FileOutputStream(file, true)
                             fileOutputStream.write(csvRow.toByteArray())
@@ -110,6 +129,7 @@ class ScholarshipAdapter(
 
                             // Handle the exception as needed
                         }
+                    }
                     }
                     else {
                         // save scholarship data into string
@@ -182,6 +202,23 @@ class ScholarshipAdapter(
     fun updateScholarships(filteredScholarships: List<Scholarships1>) {
         scholarships = filteredScholarships
         notifyDataSetChanged()
+    }
+    // Function to check if scholarship with the specified name already exists in the file
+    private fun isScholarshipAlreadyExists(file: File, scholarshipName: String): Boolean {
+        try {
+            val existingData = file.readText()
+            val rows = existingData.split("|")
+            for (row in rows) {
+                val columns = row.split(";")
+                if (columns.isNotEmpty() && columns[0] == scholarshipName) {
+                    return true
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            // Handle the exception as needed
+        }
+        return false
     }
 
 
