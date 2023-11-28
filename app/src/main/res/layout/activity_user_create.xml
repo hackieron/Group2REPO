@@ -11,7 +11,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:src="@drawable/pfp"
+        android:src="@drawable/pfp1"
 
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="2dp"
@@ -40,29 +40,35 @@
 
     <EditText
         android:id="@+id/userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
+        android:layout_width="195dp"
+        android:layout_height="46dp"
         android:layout_marginTop="72dp"
-        android:ems="10"
         android:hint="@string/userName"
         android:importantForAutofill="no"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImgView"
-        tools:ignore="LabelFor" />
+        android:outlineAmbientShadowColor="#1C1C1C"
+        android:outlineProvider="bounds"
+        android:outlineSpotShadowColor="#000000"
+        android:textSize="16sp"
+        android:background="@drawable/edittext"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/profileImgView"
+    tools:ignore="LabelFor" />
 
     <Spinner
         android:id="@+id/strands"
-        android:layout_width="220dp"
-        android:layout_height="40dp"
+        style="@android:style/Widget.Material.Spinner"
+        android:layout_width="195dp"
+        android:layout_height="46dp"
+        android:background="@drawable/edittext"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/userName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/userName"
         app:layout_constraintTop_toBottomOf="@+id/userName"
-        app:layout_constraintVertical_bias="0.079" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <TextView
         android:id="@+id/text1"
