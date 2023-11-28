@@ -5,15 +5,12 @@
     <color name="gold">#FFF6CF00</color>
     <color name="gray">#3B686868</color>
     <color name="textgray">#272727</color>
-    <color name="secondary">#36FFBC</color>
-    <color name="transparent">#CBF6CF00</color>
     <color name="chip">#FFFFFF</color>
-    <color name="chiptext">#FFFFFF</color>
     <color name="seekbar">#00FFFFFF</color>
     <color name="chipborder">#48000000</color>
     <color name="pitch">#FFFEF1D8</color>
-    <color name="checkedColor">#FFCF02</color> <!-- Replace this color with your desired checked color -->
-    <color name="uncheckedColor">#EFF1F3</color> <!-- Replace this color with your desired unchecked color -->
+    <!-- Replace this color with your desired checked color -->
+    <!-- Replace this color with your desired unchecked color -->
 
 
 </resources>

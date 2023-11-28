@@ -27,12 +27,4 @@
 
     <style name="Theme.CourSeer2" parent="Base.Theme.CourSeer2" />
 
-    <style name="Theme.CourSeer2.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.CourSeer2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.CourSeer2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
