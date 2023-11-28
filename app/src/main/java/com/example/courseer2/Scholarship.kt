@@ -186,9 +186,17 @@ class Scholarship : Fragment() {
     }
 
     private fun filterScholarships(query: String?): List<Scholarships1> {
-        return scholarship.filter { scholarship ->
-            scholarship.title.contains(query.orEmpty(), ignoreCase = true) ||
-                    scholarship.longDescription.contains(query.orEmpty(), ignoreCase = true) ||scholarship.link.contains(query.orEmpty(), ignoreCase = true) || scholarship.category.contains(query.orEmpty(), ignoreCase = true) || scholarship.city.contains(query.orEmpty(), ignoreCase = true) || scholarship.shortDescription.contains(query.orEmpty(), ignoreCase = true )
+        return if (::scholarship.isInitialized) {
+            scholarship.filter { scholarship ->
+                scholarship.title.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.longDescription.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.link.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.category.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.city.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.shortDescription.contains(query.orEmpty(), ignoreCase = true)
+            }
+        } else {
+            emptyList()
         }
     }
 }

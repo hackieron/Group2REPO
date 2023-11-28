@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Interests">
+    tools:context=".Careers">
 
     <!-- Existing UI elements -->
     <ImageView
@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg4"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +21,7 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:iconifiedByDefault="false"
         app:layout_constraintBottom_toTopOf="@+id/editTextTag"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,12 +45,11 @@
         android:layout_width="match_parent"
         android:layout_height="213dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="16dp"
         android:layout_marginRight="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTag"
-        app:layout_constraintVertical_bias="0.055">
+        app:layout_constraintTop_toBottomOf="@+id/editTextTag">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
@@ -71,12 +70,12 @@
         android:id="@+id/buttonAddTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:text="Add Tag"
         app:layout_constraintBottom_toBottomOf="@+id/editTextTag"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editTextTag"
-        app:layout_constraintVertical_bias="0.985" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupSelectedTags"
@@ -84,12 +83,10 @@
         android:layout_height="195dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -97,32 +94,29 @@
         android:id="@+id/editTextTag"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="50dp"
         android:hint="Enter a tag"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonAddTag"
-        app:layout_constraintHorizontal_bias="0.103"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.105" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <ProgressBar
         android:id="@+id/tagProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:background="@drawable/custom_progress_background"
-        android:progressDrawable="@drawable/custom_horizontal_progress"
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
+        android:background="@drawable/custom_progress_background"
         android:max="5"
+        android:progressDrawable="@drawable/custom_horizontal_progress"
         android:progressTint="@color/gold"
         app:layout_constraintBottom_toTopOf="@+id/chipGroupSelectedTags"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.936"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddTag"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTag"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
@@ -144,19 +138,17 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="57dp"
-        android:background="@color/gold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#714D22"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Career Paths"
+        android:text="Careers"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -200,14 +192,15 @@
     <!-- Add this to your layout file -->
     <ProgressBar
         android:id="@+id/searchProgressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/searchView"
-        app:layout_constraintEnd_toEndOf="@+id/searchView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/horizontalScrollView"
+        app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+        app:layout_constraintTop_toTopOf="@+id/horizontalScrollView"
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

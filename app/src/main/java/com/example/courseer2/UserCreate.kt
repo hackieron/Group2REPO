@@ -29,7 +29,6 @@ import java.io.ByteArrayOutputStream
 class UserCreate : AppCompatActivity() {
 
 
-
     private lateinit var option: Spinner
 
     private val pickedimage = 1
@@ -41,7 +40,17 @@ class UserCreate : AppCompatActivity() {
         setContentView(R.layout.activity_user_create)
         val dbHelper = DataBaseHandler(this)
         option = findViewById(R.id.strands)
-        val strands = arrayOf("STEM", "ABM", "HUMMS", "GAS", "Arts and Design", "ICT", "Industrial Arts", "Agri-Fisheries", "Sports")
+        val strands = arrayOf(
+            "STEM",
+            "ABM",
+            "HUMMS",
+            "GAS",
+            "Arts and Design",
+            "ICT",
+            "Industrial Arts",
+            "Agri-Fisheries",
+            "Sports"
+        )
         option.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, strands)
 
         val submit = findViewById<Button>(R.id.submit1)
@@ -80,11 +89,13 @@ class UserCreate : AppCompatActivity() {
                     // Compress the image before saving
                     val compressedBitmap = compressBitmap(bitmap)
 
-                    val user = User(name.text.toString(), compressedBitmap, strand.selectedItem.toString())
+                    val user =
+                        User(name.text.toString(), compressedBitmap, strand.selectedItem.toString())
                     val db = DataBaseHandler(context)
                     db.insertData(user)
                 } else {
-                    Toast.makeText(context, "Please select a proper image", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please select a proper image", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
                 redirectToInterests()
@@ -101,11 +112,13 @@ class UserCreate : AppCompatActivity() {
 
 
     }
+
     private fun compressBitmap(originalBitmap: Bitmap): Bitmap {
         val stream = ByteArrayOutputStream()
         originalBitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream)
         return BitmapFactory.decodeStream(ByteArrayInputStream(stream.toByteArray()))
     }
+
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, pickedimage)
@@ -131,10 +144,10 @@ class UserCreate : AppCompatActivity() {
             }
         }
     }
+
     private fun redirectToInterests() {
         val interestsIntent = Intent(this, Interests::class.java)
         startActivity(interestsIntent)
-        finish()
     }
 
 }

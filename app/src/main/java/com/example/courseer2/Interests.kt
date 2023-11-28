@@ -79,7 +79,8 @@ class Interests : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val storage = FirebaseStorage.getInstance()
-        val storageRef: StorageReference = storage.getReferenceFromUrl("gs://courseer-3555d.appspot.com/")
+        val storageRef: StorageReference =
+            storage.getReferenceFromUrl("gs://courseer-3555d.appspot.com/")
         val csvFileRef: StorageReference = storageRef.child("csv_files/Keywords.csv")
 
         val dataBaseHandler = DataBaseHandler(this)
@@ -111,18 +112,22 @@ class Interests : AppCompatActivity() {
 
         }
 
-        skipButton.setOnClickListener{
+        skipButton.setOnClickListener {
 
             dataBaseHandler.increaseCount()
             val intent = Intent(this, Careers::class.java)
             startActivity(intent)
+
         }
 
         buttonAddTag.setOnClickListener {
             showLoadingDialog()
             val userInputTag = editTextTag.text.toString().trim().lowercase(Locale.getDefault())
 
-            if (userInputTag.isNotEmpty() && selectedTags.size < 5 && !selectedTags.contains(userInputTag)) {
+            if (userInputTag.isNotEmpty() && selectedTags.size < 5 && !selectedTags.contains(
+                    userInputTag
+                )
+            ) {
                 if (allPreExistingTags.contains(userInputTag.lowercase(Locale.getDefault()))) {
                     Log.d("removed0", "removeddddd")
 
@@ -130,7 +135,9 @@ class Interests : AppCompatActivity() {
                     var matchingChip: Chip? = null
                     for (i in 0 until chipGroup.childCount) {
                         val chip = chipGroup.getChildAt(i) as? Chip
-                        if (chip?.text?.toString()?.equals(userInputTag, ignoreCase = true) == true) {
+                        if (chip?.text?.toString()
+                                ?.equals(userInputTag, ignoreCase = true) == true
+                        ) {
                             matchingChip = chip
                             break
                         }
@@ -153,8 +160,7 @@ class Interests : AppCompatActivity() {
                 }
 
                 editTextTag.text.clear()
-            }
-            else {
+            } else {
                 showLoadingDialog()
                 if (userInputTag.isEmpty()) {
 
@@ -185,7 +191,6 @@ class Interests : AppCompatActivity() {
             if (selectedTagsList.isNotEmpty()) {
 
 
-
                 if (dataBaseHandler.insertKeywords(selectedTagsList)) {
                     dataBaseHandler.increaseCount()
                     Toast.makeText(this, "Tags inserted into KeywordsTable", Toast.LENGTH_SHORT)
@@ -193,6 +198,7 @@ class Interests : AppCompatActivity() {
 
                     val intent = Intent(this, Careers::class.java)
                     startActivity(intent)
+
                 } else {
                     Toast.makeText(this, "Failed to insert tags", Toast.LENGTH_SHORT).show()
                 }
@@ -215,6 +221,7 @@ class Interests : AppCompatActivity() {
             it.printStackTrace()
         }
     }
+
     private fun parseCsvContent(csvContent: String): List<String> {
         val tags = mutableListOf<String>()
         val reader = BufferedReader(InputStreamReader(csvContent.byteInputStream()))
@@ -225,6 +232,7 @@ class Interests : AppCompatActivity() {
         }
         return tags.map { it.lowercase(Locale.getDefault()) }.sorted()
     }
+
     private suspend fun loadData(progressCallback: (Int) -> Unit) {
         withContext(Dispatchers.IO) {
             val totalCount = 100
@@ -246,7 +254,6 @@ class Interests : AppCompatActivity() {
 
 
     private suspend fun loadDataFromDatabase() {
-
         withContext(Dispatchers.Main) {
             setupChips()
         }
@@ -280,7 +287,7 @@ class Interests : AppCompatActivity() {
         val uniqueUnselectedTags = unselectedTags.toSet().toList()
         for (tag in uniqueUnselectedTags) {
             val chip = createChip(tag, true)
-            if(chip != null) {
+            if (chip != null) {
                 chip.setTextColor(ContextCompat.getColor(this, R.color.black))
                 chip.setChipBackgroundColorResource(R.color.white)
                 chip.chipStrokeWidth =
@@ -337,7 +344,6 @@ class Interests : AppCompatActivity() {
     }
 
 
-
     private fun setupChips() {
         showLoadingDialog()
 
@@ -365,6 +371,7 @@ class Interests : AppCompatActivity() {
             }
         })
     }
+
     private fun searchTags(query: String) {
         // Cancel the previous search job if it exists
         searchJob?.cancel()
@@ -398,6 +405,7 @@ class Interests : AppCompatActivity() {
             searchProgressBar.visibility = View.GONE
         }
     }
+
     private suspend fun loadRemainingChips() {
         withContext(Dispatchers.Default) {
             // Comment out or remove the following line
@@ -435,13 +443,16 @@ class Interests : AppCompatActivity() {
                     // Add chip to the UI on the main thread
                     withContext(Dispatchers.Main) {
                         // Check if the chip is not part of search results
-                        if (!searchView.query.isNullOrEmpty() && !normalizedTag.contains(searchView.query.toString().lowercase(), ignoreCase = true)) {
+                        if (!searchView.query.isNullOrEmpty() && !normalizedTag.contains(
+                                searchView.query.toString().lowercase(), ignoreCase = true
+                            )
+                        ) {
                             if (chip != null) {
 
                                 chip.visibility = View.GONE
                             }
                         }
-                        if (chip != null){
+                        if (chip != null) {
                             chip.setChipBackgroundColorResource(R.color.white)
                             chip.chipStrokeWidth =
                                 resources.getDimension(R.dimen.chip_stroke) // Set stroke width
@@ -459,14 +470,6 @@ class Interests : AppCompatActivity() {
             hideLoadingDialog()
         }
     }
-
-
-
-
-
-
-
-
 
 
     private fun updateSelectedTagsChips() {
@@ -496,8 +499,6 @@ class Interests : AppCompatActivity() {
             chipGroupSelectedTags.addView(chip)
         }
     }
-
-
 
 
     private fun enableChips(chipGroup: ChipGroup) {
@@ -553,11 +554,12 @@ class Interests : AppCompatActivity() {
                     // Remove the chip from its current parent (chipGroup) before adding it to chipGroupSelectedTags
                     val parent = chip.parent as? ViewGroup
                     parent?.removeView(chip)
-                    if(chip != null){
+                    if (chip != null) {
                         chip.isCheckedIconVisible = false
                         chip.setTextColor(ContextCompat.getColor(this, R.color.black))
                         chip.setChipBackgroundColorResource(R.color.gold)
-                        chip.chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_not) // Set stroke width
+                        chip.chipStrokeWidth =
+                            resources.getDimension(R.dimen.chip_stroke_not) // Set stroke width
                         chip.setChipStrokeColorResource(R.color.gray)
 
                     }
@@ -642,7 +644,16 @@ class Interests : AppCompatActivity() {
         for (word in matchingWords) {
             // Check if the word is not already in the selected chip group
             if (!selectedTags.contains(word)) {
-                val chip = createChip(word, true) // true indicates it's a database tag
+                val chip = createChip(word, true)
+                if (chip != null) {
+                    chip.setTextColor(ContextCompat.getColor(this, R.color.black))
+                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.chipStrokeWidth =
+                        resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                    chip.setChipStrokeColorResource(R.color.gray)
+                }
+
+                // true indicates it's a database tag
                 chipGroup.addView(chip)
             }
         }
@@ -712,7 +723,6 @@ class Interests : AppCompatActivity() {
             builder.show()
         }
     }
-
 
 
     // Extension function to normalize tags
@@ -795,7 +805,6 @@ class Interests : AppCompatActivity() {
             }
         }
     }
-
 
 
     private fun isNetworkAvailable(): Boolean {

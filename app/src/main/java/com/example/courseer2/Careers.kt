@@ -122,6 +122,7 @@ class Careers : AppCompatActivity() {
             dbHelper.copyKeywordsToPreferences()
             val intent = Intent(this, GuideUserView::class.java)
             startActivity(intent)
+
         }
 
         buttonAddTag.setOnClickListener {
@@ -202,6 +203,7 @@ class Careers : AppCompatActivity() {
                     dbHelper.increaseCount()
                     val intent = Intent(this, GuideUserView::class.java)
                     startActivity(intent)
+
                 } else {
                     Toast.makeText(this, "Failed to insert tags", Toast.LENGTH_SHORT).show()
                 }
@@ -644,7 +646,15 @@ class Careers : AppCompatActivity() {
         for (word in matchingWords) {
             // Check if the word is not already in the selected chip group
             if (!selectedTags.contains(word)) {
-                val chip = createChip(word, true) // true indicates it's a database tag
+                val chip = createChip(word, true)
+                if (chip != null) {
+                    chip.setTextColor(ContextCompat.getColor(this, R.color.black))
+                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.chipStrokeWidth =
+                        resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                    chip.setChipStrokeColorResource(R.color.gray)
+                }
+                // true indicates it's a database tag
                 chipGroup.addView(chip)
             }
         }
