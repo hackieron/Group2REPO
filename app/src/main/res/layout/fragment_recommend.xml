@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="30dp"
-            android:background="@drawable/programbg"
+
             android:clipToPadding="false"
             android:padding="8dp"></androidx.recyclerview.widget.RecyclerView>
 
@@ -69,9 +69,11 @@
             style="@style/Widget.AppCompat.TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:gravity="center"
             android:labelFor="@id/seekBar"
-            android:text="NEUTRAL" />
+            android:text="NEUTRAL"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/noItems"

@@ -9,17 +9,22 @@
         android:id="@+id/interestsEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/dm_sans"
         android:hint="Interests" />
 
     <EditText
         android:id="@+id/careersEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/dm_sans"
         android:hint="Careers" />
 
     <Button
         android:id="@+id/addTagButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Tag" />
+        android:fontFamily="@font/dm_sans"
+        android:text="Add Tag"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 </LinearLayout>

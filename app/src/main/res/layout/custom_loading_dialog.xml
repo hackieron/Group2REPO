@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:fontFamily="@font/dm_sans"
         android:paddingStart="10dp"
         android:text="Loading..."
         android:textColor="@android:color/black" />

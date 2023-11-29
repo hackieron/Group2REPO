@@ -20,42 +20,49 @@
             android:id="@+id/programTitleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:hint="Program Title" />
 
         <EditText
             android:id="@+id/categoryEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:hint="Category"/>
 
         <EditText
             android:id="@+id/shortDescriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:hint="Short Description"/>
 
         <EditText
             android:id="@+id/fullDescriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:hint="Full Description"/>
 
         <EditText
             android:id="@+id/subjectsEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:hint="Subjects"/>
 
         <EditText
             android:id="@+id/strandEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:hint="Strand"/>
 
         <EditText
             android:id="@+id/keywordsEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:hint="Keywords"/>
 
         <!-- Button to add a new row -->
@@ -68,6 +75,9 @@
                 android:id="@+id/addRowButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:text="Add Row" />
 
             <Button
@@ -76,6 +86,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="-3dp"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:text="Clear Text" />
 
             <Button
@@ -86,21 +99,27 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="48dp"
                 android:layout_marginBottom="6dp"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:text="Update Row" />
 
             <Button
                 android:id="@+id/deleteRowButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="242dp"
+                android:layout_marginStart="222dp"
                 android:layout_marginTop="48dp"
                 android:layout_marginEnd="1dp"
                 android:layout_marginBottom="6dp"
-                android:text="Delete Row" />
+                android:fontFamily="@font/dm_sans"
+                android:text="Delete Row"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

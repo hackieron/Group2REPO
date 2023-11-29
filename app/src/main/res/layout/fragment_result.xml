@@ -25,10 +25,12 @@
                 android:layout_width="334dp"
                 android:layout_height="62dp"
                 android:layout_marginBottom="16dp"
+                android:fontFamily="@font/dm_sans"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="Top Fields for you\n(Select 3 if there are more than 3 Fields)"
+                android:text="\n(Select 3 if there are more than 3 Fields)"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -47,10 +49,12 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="#FFFFFF"
+                android:fontFamily="@font/dm_sans"
                 android:text="Proceed"
                 android:textColor="#000000"
                 android:textColorHighlight="#DC0000"
-                android:textColorHint="#00FFFFFF" />
+                android:textColorHint="#00FFFFFF"
+                android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

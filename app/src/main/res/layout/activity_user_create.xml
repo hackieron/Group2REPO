@@ -8,10 +8,10 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImgView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="127dp"
+        android:layout_height="131dp"
         android:layout_gravity="center"
-        android:src="@drawable/pfp1"
+        android:src="@drawable/blankpfp"
 
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="2dp"
@@ -24,12 +24,13 @@
 
     <Button
         android:id="@+id/selectImgButton"
-        android:layout_width="72dp"
-        android:layout_height="71dp"
+        android:layout_width="59dp"
+        android:layout_height="65dp"
         android:background="@drawable/buttonshape"
         android:clickable="true"
         android:text="+"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="@+id/profileImgView"
         app:layout_constraintEnd_toEndOf="@+id/profileImgView"
@@ -44,18 +45,20 @@
         android:layout_width="195dp"
         android:layout_height="46dp"
         android:layout_marginTop="72dp"
+        android:background="@drawable/edittext"
+        android:fontFamily="@font/dm_sans"
         android:hint="@string/userName"
         android:importantForAutofill="no"
         android:inputType="text"
         android:outlineAmbientShadowColor="#1C1C1C"
         android:outlineProvider="bounds"
         android:outlineSpotShadowColor="#000000"
+        android:textColor="@color/black"
         android:textSize="16sp"
-        android:background="@drawable/edittext"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/profileImgView"
-    tools:ignore="LabelFor" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileImgView"
+        tools:ignore="LabelFor" />
 
     <Spinner
         android:id="@+id/strands"
@@ -82,7 +85,10 @@
         android:id="@+id/submit1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/dm_sans"
         android:text="@string/next"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.879"

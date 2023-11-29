@@ -6,11 +6,12 @@ android:layout_height="match_parent"
 android:layout_gravity="center|center_horizontal|center_vertical"
 android:gravity="center|center_horizontal">
 
-<TextView
-    android:id="@+id/textView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="FAQs" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/dm_sans"
+        android:text="FAQs" />
 
 <!-- Wrap the RecyclerView in a CardView to add a border -->
 <androidx.cardview.widget.CardView
@@ -26,8 +27,10 @@ android:gravity="center|center_horizontal">
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
         app:iconifiedByDefault="false"
-        android:clickable="true"/>
+        app:queryHint="Search"
+        style="@style/SearchViewStyle"/>
 </androidx.cardview.widget.CardView>
 
 <androidx.cardview.widget.CardView
@@ -49,7 +52,7 @@ android:gravity="center|center_horizontal">
         android:id="@+id/FAQsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/programbg"
+
         android:clipToPadding="false"
         android:padding="8dp" />
 

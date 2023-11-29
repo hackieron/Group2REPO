@@ -1,5 +1,5 @@
 <!-- Create a new drawable resource file (e.g., custom_track.xml) -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <corners android:radius="10dp" /> <!-- Set your desired corner radius -->
-    <solid android:color="#F5FF97" /> <!-- Set your desired color -->
+    <solid android:color="#EFF1F3" /> <!-- Set your desired color -->
 </shape>
