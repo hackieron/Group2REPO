@@ -27,7 +27,7 @@
                 android:layout_margin="2dp"
                 android:clickable="true"
                 android:scaleType="centerCrop"
-                app:backgroundTint="#F3C64A"
+                app:backgroundTint="@color/gold"
                 app:srcCompat="@drawable/baseline_close_24"
                 app:useCompatPadding="false" />
 
@@ -95,6 +95,7 @@
                 android:autoLink="web"
                 android:fontFamily="@font/dm_sans"
                 android:linksClickable="true"
+                android:textColor="@color/black"
                 android:textColorLink="@color/gold"
                 android:textSize="18sp"
                 tools:text="m.google.com" />
@@ -105,7 +106,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
 
