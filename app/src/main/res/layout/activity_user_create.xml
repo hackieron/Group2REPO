@@ -1,98 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="50dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="50dp"
+    app:cardCornerRadius="8dp"
     tools:context=".UserCreate">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profileImgView"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_gravity="center"
-        android:src="@drawable/pfp1"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/chip"
+        tools:context=".UserCreate">
 
-        app:civ_border_color="#FFFFFF"
-        app:civ_border_width="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.133" />
 
-    <Button
-        android:id="@+id/selectImgButton"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:background="@drawable/buttonshape"
-        android:clickable="true"
-        android:text="+"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="@+id/profileImgView"
-        app:layout_constraintEnd_toEndOf="@+id/profileImgView"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/profileImgView"
-        app:layout_constraintTop_toTopOf="@+id/profileImgView"
-        app:layout_constraintVertical_bias="1.0" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImgView"
+            android:layout_width="196dp"
+            android:layout_height="193dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
 
-    <EditText
-        android:id="@+id/userName"
-        style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
-        android:layout_width="195dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="72dp"
-        android:background="@drawable/edittext"
-        android:fontFamily="@font/dm_sans"
-        android:hint="@string/userName"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:outlineAmbientShadowColor="#1C1C1C"
-        android:outlineProvider="bounds"
-        android:outlineSpotShadowColor="#000000"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileImgView"
-        tools:ignore="LabelFor" />
+            android:src="@drawable/pfp1"
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/strands"
-        style="@android:style/Widget.Material.Spinner"
-        android:layout_width="195dp"
-        android:layout_height="46dp"
-        android:background="@drawable/edittext"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/userName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/userName"
-        app:layout_constraintTop_toBottomOf="@+id/userName"
-        app:layout_constraintVertical_bias="0.007" />
+        <EditText
+            android:id="@+id/userName"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
+            android:layout_width="240dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edittext"
+            android:fontFamily="@font/dm_sans"
+            android:hint="@string/userName"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:outlineAmbientShadowColor="#1C1C1C"
+            android:outlineProvider="bounds"
+            android:outlineSpotShadowColor="#000000"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileImgView"
+            tools:ignore="LabelFor" />
 
-    <TextView
-        android:id="@+id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:layout_editor_absoluteX="171dp"
-        tools:layout_editor_absoluteY="584dp" />
+        <Spinner
+            android:id="@+id/strands"
+            style="@android:style/Widget.Material.Spinner"
+            android:layout_width="240dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edittext"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/userName"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/userName"
+            app:layout_constraintTop_toBottomOf="@+id/userName"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/submit1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/dm_sans"
-        android:text="@string/next"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.879"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.877" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/selectImgButton"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@drawable/buttonshape"
+            android:clickable="true"
+            android:text="+"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toBottomOf="@+id/profileImgView"
+            app:layout_constraintEnd_toEndOf="@+id/profileImgView"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/profileImgView"
+            app:layout_constraintTop_toTopOf="@+id/profileImgView"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="171dp"
+            tools:layout_editor_absoluteY="584dp" />
+
+        <Button
+            android:id="@+id/submit1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
+            android:text="@string/next"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/strands"
+            app:layout_constraintHorizontal_bias="0.013"
+            app:layout_constraintStart_toStartOf="@+id/strands"
+            app:layout_constraintTop_toBottomOf="@+id/strands" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:foregroundGravity="center"
+                app:srcCompat="@drawable/logotrans" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans"
+                    android:text="Create your"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans"
+                    android:text=" Profile"
+                    android:textColor="#FCCA02"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -232,7 +232,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             R.id.nav_admin -> {
                 selectedNavItem = R.id.nav_admin
                 showAdminLoginDialog()
-                setTitleForFragment(AdminFragment())
+                setTitleForFragment(CombinedFragment())
             }
             R.id.menu_item_close_app -> {
                 finishAffinity()
