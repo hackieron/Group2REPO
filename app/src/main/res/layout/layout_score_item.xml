@@ -17,6 +17,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="123dp"
+            android:layout_gravity="center_horizontal"
             android:max="6"
             android:padding="0dp"
             android:progress="0"
@@ -26,11 +27,11 @@
             android:id="@+id/percentageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|center_horizontal"
             android:fontFamily="@font/fjalla_one"
             android:text="20%"
             android:textColor="@android:color/black"
-            android:textSize="25sp" />
+            android:textSize="26dp" />
 
     </FrameLayout>
 
@@ -67,9 +68,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:autoSizeTextType="uniform"
+            android:ellipsize="end"
             android:fontFamily="sans-serif-medium"
             android:gravity="top"
-            android:paddingEnd="15dp"
+            android:maxLines="6"
+            android:paddingEnd="5dp"
             android:text="asdasdasda asd asid haisdh aishd asih daosdh aoshd uiagsd 8ayfgsod 7iatsfda7it sfdalyu sdvayusi dcvasud tfcvcatyusc ausd cvuatcsd asvi asif aisdf uaysf auyf dasyu fda yufasduy l afyusda sda sd as ad as das da d asdas da"
             android:textSize="14sp" />
     </LinearLayout>

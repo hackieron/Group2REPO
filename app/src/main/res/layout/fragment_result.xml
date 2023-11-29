@@ -28,7 +28,7 @@
                 android:fontFamily="@font/dm_sans"
                 android:foregroundGravity="center"
                 android:gravity="center"
-                android:text="\n(Select 3 if there are more than 3 Fields)"
+                android:text="(Select 3 if there are more than 3 Fields)"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -44,7 +44,7 @@
             <Button
                 android:id="@+id/recommend"
                 style="@style/Widget.AppCompat.Button"
-                android:layout_width="305dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"

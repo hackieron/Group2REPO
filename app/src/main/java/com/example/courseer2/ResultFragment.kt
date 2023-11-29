@@ -226,7 +226,7 @@ class ResultFragment : Fragment() {
                     // Handle chip selection change
                     if (isChecked) {
                         chip.setChipBackgroundColorResource(R.color.gold)
-                        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                        chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.textgray))
                         // Chip is selected
                         // You can perform actions when a chip is selected
                         selectedChipCount++
@@ -252,7 +252,7 @@ class ResultFragment : Fragment() {
                 chip.isClickable = false
                 chip.isCheckable = false
                 chip.setChipBackgroundColorResource(R.color.gold)
-                chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                chip.setTextColor(ContextCompat.getColor(requireContext(), R.color.textgray))
             }
 
             // Add chip to the ChipGroup

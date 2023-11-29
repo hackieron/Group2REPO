@@ -115,7 +115,7 @@ class UserCreate : AppCompatActivity() {
 
     private fun compressBitmap(originalBitmap: Bitmap): Bitmap {
         val stream = ByteArrayOutputStream()
-        originalBitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream)
+        originalBitmap.compress(Bitmap.CompressFormat.PNG, 20, stream)
         return BitmapFactory.decodeStream(ByteArrayInputStream(stream.toByteArray()))
     }
 

@@ -8,10 +8,10 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImgView"
-        android:layout_width="127dp"
-        android:layout_height="131dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_gravity="center"
-        android:src="@drawable/blankpfp"
+        android:src="@drawable/pfp1"
 
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="2dp"
@@ -24,7 +24,7 @@
 
     <Button
         android:id="@+id/selectImgButton"
-        android:layout_width="59dp"
+        android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/buttonshape"
         android:clickable="true"

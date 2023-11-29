@@ -12,47 +12,35 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="50dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:layout_marginBottom="50dp"
         app:cardBackgroundColor="#00FFFFFF"
         app:cardCornerRadius="8dp"
-        app:cardElevation="2dp">
+        app:cardElevation="4dp">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:visibility="visible">
-
-            <!-- Other views go here -->
-
-            <!-- Background Image -->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/bg"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
             tools:visibility="gone">
 
             <!-- Other views go here -->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/bg" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="#FFFFFF"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <!-- Other views go here -->
+
 
             <LinearLayout
                 android:id="@+id/testDoneScreen"
@@ -60,6 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:background="@color/white"
                 android:foregroundGravity="center_vertical|center|center_horizontal"
                 android:gravity="center|center_vertical"
                 android:orientation="vertical"
@@ -76,21 +65,16 @@
                     android:textStyle="bold"
                     android:typeface="sans" />
 
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    app:srcCompat="@drawable/check_icon"
-                    tools:visibility="gone" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/startScreen"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center|top"
                 android:orientation="vertical"
-                tools:visibility="gone">
+                tools:visibility="visible">
                 <!-- Use an ImageView to display the background drawable -->
 
                 <!-- Add your start screen UI elements here -->
@@ -111,7 +95,8 @@
                     android:typeface="monospace"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
 
                 <ProgressBar
                     android:id="@+id/progressBar3"
@@ -119,7 +104,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/intractions"
@@ -132,23 +118,26 @@
                     android:justificationMode="none"
                     android:text="Career Interest Test is used to measure your interest in choosing a career. The items included in this test describes the nature of the jobs that you can pursue in different  fields. Please take your time and answer each item through a simple &quot;Yes&quot; or &quot;No&quot;."
                     android:textAlignment="textEnd"
+                    android:textColor="#000000"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView5"
+                    tools:visibility="visible" />
 
                 <Button
                     android:id="@+id/proceedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="100dp"
-                    android:layout_marginTop="80dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="200dp"
                     android:text="Proceed"
+                    android:textColor="#000000"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.84"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:visibility="visible" />
 
 
             </LinearLayout>
@@ -169,7 +158,7 @@
             android:max="100"
             android:tooltipText="Loading..."
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/questionScreen"
@@ -179,7 +168,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <!-- Add your RecyclerView for displaying questions here -->
             <androidx.recyclerview.widget.RecyclerView
@@ -196,16 +185,9 @@
             android:layout_centerInParent="true"
 
             android:visibility="visible"
-            tools:visibility="visible">
+            tools:visibility="gone">
             <!-- This container will hold your fragments. Initially set to gone -->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/bg"
-                android:visibility="gone"
-                tools:visibility="visible" />
+
         </FrameLayout>
 
     </androidx.cardview.widget.CardView>

@@ -304,7 +304,6 @@ class Careers : AppCompatActivity() {
             chipGroup.addView(chip)
             displayedTags.add(tag)
         }
-
         hideLoadingDialog()
     }
 
