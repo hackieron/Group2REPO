@@ -66,9 +66,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:autoSizeTextType="uniform"
             android:fontFamily="sans-serif-medium"
             android:gravity="top"
             android:paddingEnd="15dp"
-            android:text="asdasdasda asd asid haisdh aishd asih daosdh aoshd uiagsd 8ayfgsod 7iatsfda7it sfdalyu sdvayusi dcvasud tfcvcatyusc ausd cvuatcsd asvi asif aisdf uaysf auyf dasyu fda yufasduy l afyusda sda sd as ad as das da d asdas da" />
+            android:text="asdasdasda asd asid haisdh aishd asih daosdh aoshd uiagsd 8ayfgsod 7iatsfda7it sfdalyu sdvayusi dcvasud tfcvcatyusc ausd cvuatcsd asvi asif aisdf uaysf auyf dasyu fda yufasduy l afyusda sda sd as ad as das da d asdas da"
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

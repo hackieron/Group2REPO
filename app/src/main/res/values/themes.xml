@@ -20,7 +20,7 @@
         <item name="android:textColorPrimary">@color/textgray</item>
 
         <!-- Change the secondary text color -->
-        <item name="android:textColorSecondary">#FFC907</item>
+        <item name="android:textColorSecondary">@color/gold</item>
         <!-- Add more text color attributes as needed -->
 
     </style>

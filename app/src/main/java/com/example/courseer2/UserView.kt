@@ -101,7 +101,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         toggle.syncState()
         toggle.drawerArrowDrawable.setDirection(DrawerArrowDrawable.ARROW_DIRECTION_END)
 
-        toggle.drawerArrowDrawable.color = getResources().getColor(R.color.textgray)
+        toggle.drawerArrowDrawable.color = getResources().getColor(R.color.white)
 
         binding.navigationDrawer.setNavigationItemSelectedListener(this)
         val navigationView = findViewById<NavigationView>(R.id.navigation_drawer)

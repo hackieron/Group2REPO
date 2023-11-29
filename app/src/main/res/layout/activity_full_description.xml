@@ -41,7 +41,7 @@
                 android:fontFamily="@font/dm_sans"
                 android:text="Program Title"
                 android:textAlignment="textStart"
-                android:textColor="#7A6A00"
+                android:textColor="@color/black"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 tools:text="Bachelor of Science in Information Technology" />

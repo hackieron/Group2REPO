@@ -29,8 +29,8 @@ class CombinedFragment : Fragment() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Admin"
-                1 -> tab.text = "Admin Program"
+                0 -> tab.text = "Scholarships"
+                1 -> tab.text = "Programs"
                 2 -> tab.text = "Add Keywords"
             }
         }.attach()

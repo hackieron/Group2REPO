@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="gold">#FFF6CF00</color>
-    <color name="gray">#3B686868</color>
-    <color name="textgray">#272727</color>
+    <color name="gold">#FCA311</color>
+    <color name="gray">#E5E5E5</color>
+    <color name="textgray">#000000</color>
     <color name="chip">#FFFFFF</color>
     <color name="seekbar">#00FFFFFF</color>
     <color name="chipborder">#48000000</color>
     <color name="pitch">#FFFEF1D8</color>
+    <color name="blue">#14213D</color>
     <!-- Replace this color with your desired checked color -->
     <!-- Replace this color with your desired unchecked color -->
 
