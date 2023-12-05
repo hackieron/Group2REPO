@@ -120,7 +120,7 @@ class Careers : AppCompatActivity() {
         skipButton.setOnClickListener {
             dbHelper.increaseCount()
             dbHelper.copyKeywordsToPreferences()
-            val intent = Intent(this, GuideUserView::class.java)
+            val intent = Intent(this, UserView::class.java)
             startActivity(intent)
 
         }
@@ -201,7 +201,7 @@ class Careers : AppCompatActivity() {
                         .show()
                     dataBaseHandler.copyKeywordsToPreferences()
                     dbHelper.increaseCount()
-                    val intent = Intent(this, GuideUserView::class.java)
+                    val intent = Intent(this, UserView::class.java)
                     startActivity(intent)
 
                 } else {

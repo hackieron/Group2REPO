@@ -68,6 +68,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:3.0.0'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
+
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.android.car.ui:car-ui-lib:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
