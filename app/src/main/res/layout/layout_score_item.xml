@@ -1,79 +1,88 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    android:padding="3dp">
-
-    <FrameLayout
-        android:layout_width="107dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:layout_marginEnd="16dp"
-        android:padding="0dp">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="123dp"
-            android:layout_gravity="center_horizontal"
-            android:max="6"
-            android:padding="0dp"
-            android:progress="0"
-            android:progressDrawable="@drawable/circular_progress_with_text" />
-
-        <TextView
-            android:id="@+id/percentageTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|center_horizontal"
-            android:fontFamily="@font/fjalla_one"
-            android:text="20%"
-            android:textColor="@android:color/black"
-            android:textSize="26dp" />
-
-    </FrameLayout>
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    app:cardCornerRadius="10dp">
 
     <LinearLayout
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top|center_vertical"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="3dp">
 
-        <TextView
-            android:id="@+id/wordTextView"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="3dp"
-            android:fontFamily="@font/noto_sans"
-            android:foregroundGravity="center"
-            android:gravity="bottom|start"
-            android:text="Public Administration"
-            android:textColor="@color/textgray"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+        <FrameLayout
+            android:layout_width="107dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="16dp"
+            android:padding="0dp">
 
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:paddingEnd="15dp" />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+                android:layout_gravity="center_horizontal"
+                android:max="6"
+                android:padding="0dp"
+                android:progress="0"
+                android:progressDrawable="@drawable/circular_progress_with_text" />
 
-        <TextView
-            android:id="@+id/interpretation"
+            <TextView
+                android:id="@+id/percentageTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_horizontal"
+                android:fontFamily="@font/fjalla_one"
+                android:text="20%"
+                android:textColor="@android:color/black"
+                android:textSize="26dp" />
+
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:autoSizeTextType="uniform"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="top"
-            android:maxLines="6"
-            android:paddingEnd="5dp"
-            android:text="asdasdasda asd asid haisdh aishd asih daosdh aoshd uiagsd 8ayfgsod 7iatsfda7it sfdalyu sdvayusi dcvasud tfcvcatyusc ausd cvuatcsd asvi asif aisdf uaysf auyf dasyu fda yufasduy l afyusda sda sd as ad as das da d asdas da"
-            android:textSize="14sp" />
+            android:layout_height="match_parent"
+            android:gravity="top|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/wordTextView"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="3dp"
+                android:fontFamily="@font/noto_sans"
+                android:foregroundGravity="center"
+                android:gravity="bottom|start"
+                android:text="Public Administration"
+                android:textColor="@color/textgray"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:paddingEnd="15dp" />
+
+            <TextView
+                android:id="@+id/interpretation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:autoSizeTextType="uniform"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="top"
+                android:maxLines="6"
+                android:paddingEnd="5dp"
+                android:text="asdasdasda asd asid haisdh aishd asih daosdh aoshd uiagsd 8ayfgsod 7iatsfda7it sfdalyu sdvayusi dcvasud tfcvcatyusc ausd cvuatcsd asvi asif aisdf uaysf auyf dasyu fda yufasduy l afyusda sda sd as ad as das da d asdas da"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -29,9 +29,12 @@ class AdminFragment : Fragment() {
     private lateinit var shortDescriptionEditText: EditText
     private lateinit var longDescriptionEditText: EditText
     private lateinit var linkEditText: EditText
-    private lateinit var categoryEditText: EditText
+
     private lateinit var cityEditText: EditText
-    private lateinit var rootView: View // Added
+    private lateinit var categorySpinner: Spinner
+    private lateinit var categoryAdapter: ArrayAdapter<String>
+    private lateinit var rootView: View
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,12 +46,19 @@ class AdminFragment : Fragment() {
         shortDescriptionEditText = rootView.findViewById(R.id.shortDescriptionEditText)
         longDescriptionEditText = rootView.findViewById(R.id.longDescriptionEditText)
         linkEditText = rootView.findViewById(R.id.linkEditText)
-        categoryEditText = rootView.findViewById(R.id.categoryEditText)
+
         cityEditText = rootView.findViewById(R.id.cityEditText)
+        categorySpinner = rootView.findViewById(R.id.categorySpinner)
 
         uploadCsvButton = rootView.findViewById(R.id.uploadCsvButton)
         addRowButton = rootView.findViewById(R.id.addRowButton)
-        updateRowButton= rootView.findViewById(R.id.updateRowButton)
+        updateRowButton = rootView.findViewById(R.id.updateRowButton)
+        deleteRowButton = rootView.findViewById(R.id.deleteRowButton)
+
+        categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, mutableListOf())
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categorySpinner.adapter = categoryAdapter
+        fetchCategoriesFromStorage()
 
         updateRowButton.setOnClickListener {
             updateRowInCsv()
@@ -110,7 +120,31 @@ class AdminFragment : Fragment() {
         return rootView
     }
 
+    private fun fetchCategoriesFromStorage() {
+        getCSVContentFromStorage(
+            onSuccess = { csvContent ->
+                val categories = parseCategoriesFromCSV(csvContent)
+                categoryAdapter.clear()
+                categoryAdapter.addAll(categories)
+                categoryAdapter.notifyDataSetChanged()
+            },
+            onFailure = {
+                Toast.makeText(requireContext(), "Failed to fetch CSV file", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 
+    private fun parseCategoriesFromCSV(csvContent: String): List<String> {
+        val categories = mutableListOf<String>()
+        val rows = csvContent.split("|")
+        for (row in rows) {
+            val columns = row.split(";")
+            if (columns.size >= 5) { // Ensure that the category column exists
+                categories.add(columns[4]) // Add the category to the list
+            }
+        }
+        return categories.toSet().toList()
+    }
 
     private fun parseScholarshipNamesFromCSV(csvContent: String): List<String> {
         val scholarshipNames = mutableListOf<String>()
@@ -204,7 +238,8 @@ class AdminFragment : Fragment() {
                 shortDescriptionEditText.setText(scholarshipData.getOrNull(1) ?: "")
                 longDescriptionEditText.setText(scholarshipData.getOrNull(2) ?: "")
                 linkEditText.setText(scholarshipData.getOrNull(3) ?: "")
-                categoryEditText.setText(scholarshipData.getOrNull(4) ?: "")
+                categorySpinner.setSelection(categoryAdapter.getPosition(scholarshipData.getOrNull(4) ?: ""))
+
                 cityEditText.setText(scholarshipData.getOrNull(5) ?: "")
             },
             onFailure = {
@@ -253,7 +288,8 @@ class AdminFragment : Fragment() {
         val shortDescription = shortDescriptionEditText.text.toString()
         val longDescription = longDescriptionEditText.text.toString()
         val link = linkEditText.text.toString()
-        val category = categoryEditText.text.toString()
+        val category = categorySpinner.selectedItem.toString()
+
         val city = cityEditText.text.toString()
 
         // Check if the scholarship name already exists
@@ -308,7 +344,8 @@ class AdminFragment : Fragment() {
                         updatedContent.append(shortDescriptionEditText.text.toString()).append(";")
                         updatedContent.append(longDescriptionEditText.text.toString()).append(";")
                         updatedContent.append(linkEditText.text.toString()).append(";")
-                        updatedContent.append(categoryEditText.text.toString()).append(";")
+                        updatedContent.append(categorySpinner.selectedItem.toString()).append(";")
+
                         updatedContent.append(cityEditText.text.toString()).append("|")
                     } else {
                         // Keep the other rows unchanged
@@ -425,7 +462,7 @@ class AdminFragment : Fragment() {
         shortDescriptionEditText.text.clear()
         longDescriptionEditText.text.clear()
         linkEditText.text.clear()
-        categoryEditText.text.clear()
+        categorySpinner.setSelection(0)
         cityEditText.text.clear()
 
         // Clear the selected scholarship when clearing input fields

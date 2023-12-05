@@ -21,22 +21,6 @@
         android:layout_height="520dp"
         android:layout_gravity="center_horizontal|center_vertical">
 
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="153dp"
-            android:layout_height="41dp"
-            android:background="@drawable/rounded_button"
-            android:fontFamily="@font/dm_sans"
-            android:text="SUBMIT"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.966" />
-
         <EditText
             android:id="@+id/feedbackInput"
             android:layout_width="292dp"
@@ -47,11 +31,24 @@
             android:inputType="textMultiLine"
             android:maxLength="1000"
             android:paddingTop="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/submitButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
+            android:text="SUBMIT"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feedbackInput"
+            app:layout_constraintVertical_bias="0.296" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

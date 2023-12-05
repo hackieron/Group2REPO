@@ -28,7 +28,8 @@ class AdminProgram : Fragment() {
     private val storage = Firebase.storage
     private val storageRef = storage.reference
     private lateinit var programTitleEditText: EditText
-    private lateinit var categoryEditText: EditText
+    private lateinit var categorySpinner: Spinner
+    private lateinit var categoryAdapter: ArrayAdapter<String>
     private lateinit var shortDescriptionEditText: EditText
     private lateinit var fullDescriptionEditText: EditText
     private lateinit var subjectsEditText: EditText
@@ -46,7 +47,11 @@ class AdminProgram : Fragment() {
         rootView = inflater.inflate(R.layout.fragment_adminprogram, container, false)
 
         programTitleEditText = rootView.findViewById(R.id.programTitleEditText)
-        categoryEditText = rootView.findViewById(R.id.categoryEditText)
+        categorySpinner = rootView.findViewById(R.id.categorySpinner)
+        categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, mutableListOf())
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categorySpinner.adapter = categoryAdapter
+
         shortDescriptionEditText = rootView.findViewById(R.id.shortDescriptionEditText)
         fullDescriptionEditText = rootView.findViewById(R.id.fullDescriptionEditText)
         subjectsEditText = rootView.findViewById(R.id.subjectsEditText)
@@ -57,7 +62,7 @@ class AdminProgram : Fragment() {
         addRowButton = rootView.findViewById(R.id.addRowButton)
         updateRowButton = rootView.findViewById(R.id.updateRowButton)
         deleteRowButton = rootView.findViewById(R.id.deleteRowButton)
-
+        fetchCategoriesFromStorage()
         // Set up click listener for CSV upload button
         uploadCsvButton.setOnClickListener {
             clearInputFields()
@@ -146,19 +151,13 @@ class AdminProgram : Fragment() {
     private fun setupProgramDropdown(programTitles: List<String>) {
         val programDropdown = rootView.findViewById<Spinner>(R.id.programDropdown)
 
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programTitles)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, programTitles)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         programDropdown.adapter = adapter
 
         programDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedProgram = programTitles[position]
                 displayProgramDetails(selectedProgram)
                 programTitleEditText.isEnabled = false
@@ -170,6 +169,33 @@ class AdminProgram : Fragment() {
         }
     }
 
+    // Fetch categories from storage function
+    private fun fetchCategoriesFromStorage() {
+        getCSVContentFromStorage(
+            fileRef = fileRef,
+            onSuccess = { csvContent ->
+                val categories = parseCategoriesFromCSV(csvContent)
+                categoryAdapter.clear()
+                categoryAdapter.addAll(categories)
+                categoryAdapter.notifyDataSetChanged()
+            },
+            onFailure = {
+                Toast.makeText(requireContext(), "Failed to fetch CSV file", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+    private fun parseCategoriesFromCSV(csvContent: String): List<String> {
+        val categories = mutableListOf<String>()
+        val lines = csvContent.split('|')
+        for (line in lines) {
+            val columns = line.split(";")
+            if (columns.size >= 2) { // Ensure that the category column exists
+                categories.add(columns[1]) // Add the category to the list
+            }
+        }
+        return categories.toSet().toList()
+    }
+
     private fun displayProgramDetails(selectedProgram: String) {
         getCSVContentFromStorage(
             fileRef = fileRef,
@@ -177,7 +203,7 @@ class AdminProgram : Fragment() {
                 val programData = getProgramDataByName(selectedProgram, csvContent)
 
                 programTitleEditText.setText(programData.getOrNull(0) ?: "")
-                categoryEditText.setText(programData.getOrNull(1) ?: "")
+                categorySpinner.setSelection(categoryAdapter.getPosition(programData.getOrNull(1) ?: ""))
                 shortDescriptionEditText.setText(programData.getOrNull(2) ?: "")
                 fullDescriptionEditText.setText(programData.getOrNull(3) ?: "")
                 subjectsEditText.setText(programData.getOrNull(4) ?: "")
@@ -246,7 +272,7 @@ class AdminProgram : Fragment() {
 
     private fun addRowToCsv() {
         val programTitle = programTitleEditText.text.toString()
-        val category = categoryEditText.text.toString()
+        val category = categorySpinner.selectedItem.toString()
         val shortDescription = shortDescriptionEditText.text.toString()
         val fullDescription = fullDescriptionEditText.text.toString()
         val subjects = subjectsEditText.text.toString()
@@ -292,7 +318,7 @@ class AdminProgram : Fragment() {
                     val columns = line.split(";")
                     if (columns.isNotEmpty() && columns[0] == selectedProgram) {
                         updatedContent.append("$selectedProgram").append(";")
-                        updatedContent.append(categoryEditText.text.toString()).append(";")
+                        updatedContent.append(categorySpinner.selectedItem.toString()).append(";")
                         updatedContent.append(shortDescriptionEditText.text.toString()).append(";")
                         updatedContent.append(fullDescriptionEditText.text.toString()).append(";")
                         updatedContent.append(subjectsEditText.text.toString()).append(";")
@@ -359,7 +385,7 @@ class AdminProgram : Fragment() {
 
     private fun clearInputFields() {
         programTitleEditText.text.clear()
-        categoryEditText.text.clear()
+        categorySpinner.setSelection(0)
         shortDescriptionEditText.text.clear()
         fullDescriptionEditText.text.clear()
         subjectsEditText.text.clear()
