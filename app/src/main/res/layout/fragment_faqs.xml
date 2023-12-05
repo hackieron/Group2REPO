@@ -52,7 +52,7 @@ android:gravity="center|center_horizontal">
         android:id="@+id/FAQsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:scrollbars="vertical"
         android:clipToPadding="false"
         android:padding="8dp" />
 
