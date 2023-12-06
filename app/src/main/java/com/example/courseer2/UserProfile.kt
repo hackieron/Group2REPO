@@ -200,7 +200,10 @@ class UserProfile : Fragment() {
 
                 // Set top margin for all items except the first one
                 if (count >= 0) {
-                    layoutParams.setMargins(10,10,10,10)
+                    layoutParams.setMargins(40,40,40,40)
+                    if (count == 2) {
+                        layoutParams.setMargins(40,40,40,90)
+                    }
                 }
 
                 // Set layout parameters for the score item view

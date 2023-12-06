@@ -226,10 +226,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/careerChips"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
 
                 android:orientation="horizontal"
-                android:padding="10dp"
                 tools:visibility="visible">
 
                 <LinearLayout
@@ -237,9 +235,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_margin="2dp"
                     android:orientation="vertical"
-                    android:padding="10dp"
+                    android:padding="20dp"
                     tools:visibility="visible"></LinearLayout>
             </LinearLayout>
         </RelativeLayout>
