@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import java.io.InputStreamReader
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
+import java.io.FileReader
 
 
 class SavedProgram : Fragment() {
@@ -48,7 +50,7 @@ class SavedProgram : Fragment() {
         searchView = rootView.findViewById(R.id.searchView)
         recyclerView = rootView.findViewById(R.id.programRecyclerView)
 
-        val csvData = readCSVFileFromAssets(requireContext())
+        val csvData = readCSVFileFromInternalStorage(requireContext())
         programs = parseCSVData(csvData)
         allPrograms = parseCSVData(csvData)
         filteredPrograms = allPrograms
@@ -70,26 +72,25 @@ class SavedProgram : Fragment() {
     }
 
 
-    private fun readCSVFileFromAssets(context: Context): String {
+    private fun readCSVFileFromInternalStorage(context: Context): String {
         val fileName = "savedPrograms.csv"
-        val inputStream = context.assets.open(fileName)
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
+        val internalStorageDir = context.filesDir
+        val file = File(internalStorageDir, fileName)
         val stringBuilder = StringBuilder()
-        var line: String?
 
         try {
+            val bufferedReader = BufferedReader(FileReader(file))
+            var line: String?
+
             while (bufferedReader.readLine().also { line = it } != null) {
                 stringBuilder.append(line)
                 stringBuilder.append('\n')
             }
+
+            bufferedReader.close()
         } catch (e: IOException) {
             e.printStackTrace()
-        } finally {
-            try {
-                inputStream.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
+            Log.d("pogi na ako", "$e")
         }
 
         return stringBuilder.toString()
@@ -102,7 +103,7 @@ class SavedProgram : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            }, requireContext()
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -120,7 +121,9 @@ class SavedProgram : Fragment() {
                 val shortDescription = columns[2]
                 val fullDescription = columns[3]
                 val subcar = columns[4]
-                val program = Program(title, category, shortDescription, fullDescription, subcar)
+                val strand = columns[5]
+                val keywords = columns[6]
+                val program = Program(title, category, shortDescription, fullDescription, subcar, strand, keywords)
                 programs.add(program)
             }
         }
@@ -134,7 +137,7 @@ class SavedProgram : Fragment() {
     private fun filterPrograms(query: String?): List<Program> {
         return programs.filter { program ->
             program.title.contains(query.orEmpty(), ignoreCase = true) ||
-                    program.fullDescription.contains(query.orEmpty(), ignoreCase = true) || program.category.contains(query.orEmpty(), ignoreCase = true) || program.subcar.contains(query.orEmpty(), ignoreCase = true) || program.shortDescription.contains(query.orEmpty(), ignoreCase = true )
+                    program.fullDescription.contains(query.orEmpty(), ignoreCase = true) || program.category.contains(query.orEmpty(), ignoreCase = true) || program.subcar.contains(query.orEmpty(), ignoreCase = true) || program.shortDescription.contains(query.orEmpty(), ignoreCase = true) || program.strand.contains(query.orEmpty(), ignoreCase = true ) || program.keywords.contains(query.orEmpty(), ignoreCase = true )
         }
     }
 }
@@ -144,7 +147,8 @@ class SavedProgram : Fragment() {
 
 class CategoryProgramAdapter(
     private var programsByCategory: Map<String, List<Program>>,
-    private val itemClickListener: SavedProgramAdapter.OnItemClickListener
+    private val itemClickListener: SavedProgramAdapter.OnItemClickListener,
+    private val context: Context
 ) : RecyclerView.Adapter<CategoryProgramAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -162,7 +166,7 @@ class CategoryProgramAdapter(
         val category = programsByCategory.keys.toList()[position]
         holder.categoryName.text = category
         val SavedProgramAdapter =
-            SavedProgramAdapter(programsByCategory[category] ?: emptyList(), itemClickListener)
+            SavedProgramAdapter(programsByCategory[category] ?: emptyList(), itemClickListener, context)
         holder.programRecyclerView.adapter = SavedProgramAdapter
         holder.programRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
     }

@@ -28,12 +28,7 @@
         android:theme="@style/Theme.CourSeer2"
         tools:overrideLibrary="com.android.car.ui"
         tools:targetApi="34">
-        <activity
-            android:name=".GuideUserView"
-            android:exported="false" />
-        <activity
-            android:name=".GuideUserCreate"
-            android:exported="false" />
+
         <activity
             android:name=".FullDescriptionActivity"
             android:exported="false" />

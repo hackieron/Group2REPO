@@ -20,7 +20,11 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            app:iconifiedByDefault="false"
+            android:clickable="true"
+            app:queryHint="Search Scholarship"
+            style="@style/SearchViewStyle"  />
     </androidx.cardview.widget.CardView>
 
     <!-- Add a bottom margin to the CardView to adjust its position -->
@@ -31,9 +35,9 @@
         android:layout_below="@id/searchCardView"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:foregroundGravity="center_horizontal"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="8dp"
@@ -44,8 +48,8 @@
             android:id="@+id/scholarshipRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/programbg"
             android:clipToPadding="false"
+            android:scrollbars="vertical"
             android:padding="8dp">
 
         </androidx.recyclerview.widget.RecyclerView>

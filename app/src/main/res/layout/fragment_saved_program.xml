@@ -21,7 +21,11 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:iconifiedByDefault="false"
+            android:clickable="true"
+            app:queryHint="Search Programs"
+            style="@style/SearchViewStyle"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -34,6 +38,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
+        android:layout_marginBottom="60dp"
         android:foregroundGravity="center_horizontal"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="8dp"
@@ -42,10 +47,10 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/programRecyclerView"
-            android:background="@drawable/programbg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
+            android:scrollbars="vertical"
             android:clipToPadding="false"
             android:padding="8dp" />
 

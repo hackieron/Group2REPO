@@ -58,7 +58,7 @@ class Aptitude : Fragment() {
         if(dbHelper.getCurrentQuestionIndex() != 0){
             view.findViewById<Button>(R.id.proceedButton).text = "CONTINUE"
         }
-        if (itemnumber == 40) {
+        if (itemnumber == 10) {
             // Display results since the test is done
             view.findViewById<View>(R.id.startScreen).visibility = View.GONE
             view.findViewById<View>(R.id.questionScreen).visibility = View.GONE
@@ -247,7 +247,7 @@ class Aptitude : Fragment() {
 
 // Animate progress to 100 in 1 second
         val animator = ObjectAnimator.ofInt(progressBar, "progress", 100)
-        animator.duration = 1000 // 1000 milliseconds (1 second)
+        animator.duration = 300 // 1000 milliseconds (1 second)
         animator.start()
 
 // Delay for 1 second before displaying the next question
@@ -265,7 +265,7 @@ class Aptitude : Fragment() {
 
             // Log keywords for debugging or additional actions
             logKeywords()
-        }, 1000) // 1000 milliseconds delay
+        }, 300) // 1000 milliseconds delay
 // 1000 milliseconds delay
 
         // 1000 milliseconds delay

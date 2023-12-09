@@ -29,6 +29,7 @@ class Scholarship : Fragment() {
     private lateinit var scholarship: List<Scholarships1>
     private lateinit var allScholarships: List<Scholarships1>
     private var filteredScholarships: List<Scholarships1> = emptyList()
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +58,8 @@ class Scholarship : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            },requireContext()
+
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -153,7 +155,8 @@ class Scholarship : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            }, requireContext()
+
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -183,9 +186,17 @@ class Scholarship : Fragment() {
     }
 
     private fun filterScholarships(query: String?): List<Scholarships1> {
-        return scholarship.filter { scholarship ->
-            scholarship.title.contains(query.orEmpty(), ignoreCase = true) ||
-                    scholarship.longDescription.contains(query.orEmpty(), ignoreCase = true) ||scholarship.link.contains(query.orEmpty(), ignoreCase = true) || scholarship.category.contains(query.orEmpty(), ignoreCase = true) || scholarship.city.contains(query.orEmpty(), ignoreCase = true) || scholarship.shortDescription.contains(query.orEmpty(), ignoreCase = true )
+        return if (::scholarship.isInitialized) {
+            scholarship.filter { scholarship ->
+                scholarship.title.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.longDescription.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.link.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.category.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.city.contains(query.orEmpty(), ignoreCase = true) ||
+                        scholarship.shortDescription.contains(query.orEmpty(), ignoreCase = true)
+            }
+        } else {
+            emptyList()
         }
     }
 }
@@ -202,7 +213,9 @@ data class Scholarships1(
 
 class CategorySAdapter(
     private var scholarshipByCategory: Map<String, List<Scholarships1>>,
-    private val itemClickListener: ScholarshipAdapter.OnItemClickListener
+    private val itemClickListener: ScholarshipAdapter.OnItemClickListener,
+    private val context: Context,
+
 ) : RecyclerView.Adapter<CategorySAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -220,7 +233,7 @@ class CategorySAdapter(
         val category = scholarshipByCategory.keys.toList()[position]
         holder.categoryName.text = category
         val scholarshipAdapter =
-            ScholarshipAdapter(scholarshipByCategory[category] ?: emptyList(), itemClickListener)
+            ScholarshipAdapter(scholarshipByCategory[category] ?: emptyList(), itemClickListener, context)
         holder.scholarshipRecyclerView.adapter = scholarshipAdapter
         holder.scholarshipRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
     }

@@ -21,7 +21,6 @@
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0">
@@ -109,15 +108,17 @@
                     android:id="@+id/imageView3"
                     android:layout_width="124dp"
                     android:layout_height="128dp"
-
-                    android:src="@drawable/account"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pfp1"
                     app:civ_border_color="#FFFFFF"
                     app:civ_border_width="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.496"
+                    app:layout_constraintHorizontal_bias="0.497"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+
+                    app:civ_border_overlay="true"
                     app:layout_constraintVertical_bias="0.065" />
 
                 <TextView
@@ -127,6 +128,7 @@
                     android:fontFamily="@font/dm_sans"
                     android:gravity="center"
                     android:text="@string/username"
+                    android:textColor="@color/black"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -139,8 +141,10 @@
                     android:id="@+id/strand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans"
                     android:gravity="center"
                     android:text="@string/userstrand"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -222,7 +226,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/careerChips"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
 
                 android:orientation="horizontal"
                 tools:visibility="visible">
@@ -232,8 +235,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginLeft="6dp"
                     android:orientation="vertical"
+                    android:padding="20dp"
                     tools:visibility="visible"></LinearLayout>
             </LinearLayout>
         </RelativeLayout>

@@ -1,5 +1,20 @@
-<ScrollView
+<androidx.cardview.widget.CardView
+    app:cardCornerRadius="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app1="http://schemas.android.com/apk/res-auto"
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:app3="http://schemas.android.com/apk/res-auto"
+    xmlns:app4="http://schemas.android.com/apk/res-auto"
+    xmlns:app5="http://schemas.android.com/apk/res-auto"
+    xmlns:app6="http://schemas.android.com/apk/res-auto"
+    xmlns:app7="http://schemas.android.com/apk/res-auto">
+<ScrollView
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
    >
@@ -9,50 +24,119 @@
     android:orientation="vertical"
     android:layout_margin="10dp">
 
-    <Spinner
-        android:id="@+id/scholarshipDropdown"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:prompt="@string/select_scholarship_prompt"
-        android:layout_marginBottom="16dp"/>
+        android:layout_gravity="center|center_vertical"
+        android:layout_margin="8dp"
 
+        android:foregroundGravity="center"
 
+        app1:cardCornerRadius="20dp">
+
+        <Spinner
+            android:id="@+id/scholarshipDropdown"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:padding="15dp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:prompt="@string/select_scholarship_prompt" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        app2:cardCornerRadius="20dp"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
     <EditText
         android:id="@+id/scholarshipNameEditText"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content"
-
+        android:padding="15dp"
+        android:fontFamily="@font/dm_sans"
         android:hint="Scholarship Name" />
-
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        app3:cardCornerRadius="20dp"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <EditText
         android:id="@+id/shortDescriptionEditText"
         android:layout_width="match_parent"
+        android:padding="15dp"
         android:layout_height="wrap_content"
-        android:hint="Short Description"/>
-
+        android:background="@color/white"
+        android:fontFamily="@font/dm_sans"
+        android:hint="Short Description" />
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        app4:cardCornerRadius="20dp"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <EditText
         android:id="@+id/longDescriptionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Long Description"/>
-
+        android:background="@color/white"
+        android:padding="15dp"
+        android:fontFamily="@font/dm_sans"
+        android:hint="Long Description" />
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        app5:cardCornerRadius="20dp"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <EditText
         android:id="@+id/linkEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Link"/>
-
-    <EditText
-        android:id="@+id/categoryEditText"
+        android:fontFamily="@font/dm_sans"
+        android:padding="15dp"
+        android:background="@color/white"
+        android:hint="Link" />
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        app6:cardCornerRadius="20dp"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Category"/>
+        >
 
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:fontFamily="@font/dm_sans"
+            android:hint="Category" />
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        app7:cardCornerRadius="20dp"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <EditText
         android:id="@+id/cityEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="City"/>
+        android:padding="15dp"
+        android:background="@color/white"
+        android:fontFamily="@font/dm_sans"
+        android:hint="City" />
+    </androidx.cardview.widget.CardView>
 
     <!-- Button to add a new row -->
     <RelativeLayout
@@ -62,44 +146,54 @@
 
         <Button
             android:id="@+id/addRowButton"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:text="Add Row" />
+            android:fontFamily="@font/dm_sans"
+            android:text="Add"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/uploadCsvButton"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="-3dp"
-            android:text="clear text" />
+            android:fontFamily="@font/dm_sans"
+            android:text="clear text"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/updateRowButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/addRowButton"
+            android:layout_alignEnd="@+id/addRowButton"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="0dp"
             android:layout_marginBottom="6dp"
-            android:text="Update Row" />
+            android:fontFamily="@font/dm_sans"
+            android:text="Update"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/deleteRowButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/uploadCsvButton"
+            android:layout_alignStart="@+id/uploadCsvButton"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="242dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="6dp"
-            android:text="Delete Row" />
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/dm_sans"
+            android:text="Delete"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
 </LinearLayout>
 
 </ScrollView>
+</androidx.cardview.widget.CardView>

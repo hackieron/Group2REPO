@@ -5,15 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.helper.widget.Layer
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg10" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,7 +27,7 @@
                 android:layout_margin="2dp"
                 android:clickable="true"
                 android:scaleType="centerCrop"
-                app:backgroundTint="#F3C64A"
+                app:backgroundTint="@color/gold"
                 app:srcCompat="@drawable/baseline_close_24"
                 app:useCompatPadding="false" />
 
@@ -52,7 +43,7 @@
                 android:gravity="right"
                 android:text="Bachelor of Science in Computer Engineering"
                 android:textAlignment="textStart"
-                android:textColor="#7A6A00"
+                android:textColor="@color/black"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -67,8 +58,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/dm_sans"
                 android:text="auosghfquioashd ioahd dhawd ahw awhdio ad aiowdh aihdio abd iqwyhd Dhjfh weofwefh weohf sdhfsdf d"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <TextView
@@ -77,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 tools:text="asdasdw aw dasgd wg uiawgduia wgda igwiags uigsai guaisudg aisg duiasgd uiasgd iuasg iagsdgh qaosugdo asg duioagsd uiagsog asoig asgd auiosgd ioaghsio agd iaslidug alsiud agsdluasd" />
 
@@ -87,7 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="asd asd as a \nasd asd as da as das\n asda dasdasda asd asd\n" />
@@ -101,7 +95,8 @@
                 android:autoLink="web"
                 android:fontFamily="@font/dm_sans"
                 android:linksClickable="true"
-                android:textColorLink="#002742"
+                android:textColor="@color/black"
+                android:textColorLink="@color/gold"
                 android:textSize="18sp"
                 tools:text="m.google.com" />
 
@@ -111,7 +106,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
 
 

@@ -19,7 +19,11 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:iconifiedByDefault="false"
+            android:clickable="true"
+            app:queryHint="Search Programs"
+            style="@style/SearchViewStyle"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -40,12 +44,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/programRecyclerView"
-            android:background="@drawable/programbg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:clipToPadding="false"
-            android:padding="8dp" />
+            android:padding="8dp"
+
+            android:scrollbars="vertical" /> <!-- Add this line for vertical scrollbar -->
+
 
 
     </androidx.cardview.widget.CardView>

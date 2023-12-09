@@ -505,7 +505,7 @@ class DataBaseHandler(context: Context) :
         val bitmap = user.image
 
         if (bitmap != null) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 40, byteArrayOutputStream)
         }
         val imageByteArray = byteArrayOutputStream.toByteArray()
 

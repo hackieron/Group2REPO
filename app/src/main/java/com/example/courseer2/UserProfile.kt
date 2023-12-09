@@ -178,8 +178,7 @@ class UserProfile : Fragment() {
     private fun addScoreItemsToLayout(scoreLayout: ViewGroup) {
         val db = dataBaseHandler.readableDatabase
 
-        val query =
-            "SELECT $COLUMN_WORD, $COLUMN_FSCORE, $COLUMN_DESCRIPTION FROM $TABLE_FSCORES"
+        val query = "SELECT $COLUMN_WORD, $COLUMN_FSCORE, $COLUMN_DESCRIPTION FROM $TABLE_FSCORES"
         val cursor = db.rawQuery(query, null)
 
         var count = 0
@@ -188,11 +187,27 @@ class UserProfile : Fragment() {
             do {
                 val word = cursor.getString(cursor.getColumnIndex(COLUMN_WORD))
                 val fscore = cursor.getInt(cursor.getColumnIndex(COLUMN_FSCORE))
-                val interpretation =
-                    cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION))
+                val interpretation = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION))
 
                 // Create the score item view
                 val scoreItemView = createScoreItem(word, fscore, interpretation)
+
+                // Set layout parameters with margins
+                val layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+                // Set top margin for all items except the first one
+                if (count >= 0) {
+                    layoutParams.setMargins(40,40,40,40)
+                    if (count == 2) {
+                        layoutParams.setMargins(40,40,40,90)
+                    }
+                }
+
+                // Set layout parameters for the score item view
+                scoreItemView.layoutParams = layoutParams
 
                 // Add the score item view to the layout
                 scoreLayout.addView(scoreItemView)

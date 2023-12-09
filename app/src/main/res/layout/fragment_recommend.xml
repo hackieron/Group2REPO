@@ -19,8 +19,11 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true" />
+            android:layout_height="match_parent"
+            app:iconifiedByDefault="false"
+            android:clickable="true"
+            app:queryHint="Search Programs"
+            style="@style/SearchViewStyle"  />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -43,8 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="30dp"
-            android:background="@drawable/programbg"
+            android:scrollbars="vertical"
             android:clipToPadding="false"
+
             android:padding="8dp"></androidx.recyclerview.widget.RecyclerView>
 
         <SeekBar
@@ -56,7 +60,7 @@
             android:layout_marginEnd="16dp"
             android:max="8"
             android:padding="15dp"
-            android:progress="5"
+            android:progress="1"
             android:progressDrawable="@drawable/custom_track"
             android:thumb="@drawable/custom_thumb" />
 
@@ -66,9 +70,11 @@
             style="@style/Widget.AppCompat.TextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
             android:gravity="center"
             android:labelFor="@id/seekBar"
-            android:text="NEUTRAL" />
+            android:text="NEUTRAL"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/noItems"

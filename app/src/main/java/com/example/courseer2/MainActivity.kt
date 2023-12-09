@@ -17,7 +17,9 @@ import android.content.IntentFilter
 import android.media.Image
 import android.net.ConnectivityManager
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,11 +44,12 @@ class MainActivity : AppCompatActivity() {
                 preloadActivities()
                 // Delay for 2 seconds
                 if (isFirstRun || isCalledByIntent) {
-                    redirectToGuide()
+                    setDataSavedToFirestore(false)
+                    redirectToUserCreate()
                 } else {
                     if (highest < 3) {
                         dbHelper.clearAllData()
-                        redirectToGuide()
+                        redirectToUserCreate()
                     } else {
                         redirectToUserView()
                     }
@@ -61,8 +64,8 @@ class MainActivity : AppCompatActivity() {
         return networkInfo?.isConnectedOrConnecting == true
     }
 
-    private fun redirectToGuide() {
-        val redirectIntent = Intent(this, GuideUserCreate::class.java)
+    private fun redirectToUserCreate() {
+        val redirectIntent = Intent(this, UserCreate::class.java)
         startActivity(redirectIntent)
         finish()
     }
@@ -95,13 +98,24 @@ class MainActivity : AppCompatActivity() {
     private suspend fun preloadActivities() {
         withContext(Dispatchers.Main) {
             progressBar.visibility = View.VISIBLE // Show the progress bar
+         // Show the horizontal progress bar
         }
 
         // Simulate a delay (replace with your actual preload logic)
-        delay(2000)
+        for (progress in 0..100 step 2) {
+            delay(10) // Adjust the delay time as needed
+            updateProgressBar(progress)
+        }
 
         withContext(Dispatchers.Main) {
             progressBar.visibility = View.GONE // Hide the progress bar
+            // Hide the horizontal progress bar
+        }
+    }
+
+    private fun updateProgressBar(progress: Int) {
+        runOnUiThread {
+            progressBar.progress = progress
         }
     }
 
@@ -114,11 +128,26 @@ class MainActivity : AppCompatActivity() {
     private fun isFirstRun(): Boolean {
         val prefs: SharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val isFirstRun = prefs.getBoolean(KEY_FIRST_RUN, true)
+
+        // If it's the first run, set isDataSavedToFirestore to false
+        val isDataSavedToFirestore = !isFirstRun
+        setDataSavedToFirestore(isDataSavedToFirestore)
+
         if (isFirstRun) {
             // Set the firstRun flag to false after the first run
             prefs.edit().putBoolean(KEY_FIRST_RUN, false).apply()
         }
+
         return isFirstRun
+    }
+    private fun isDataSavedToFirestore(): Boolean {
+        val prefs: SharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getBoolean(KEY_DATA_SAVED, false)
+    }
+
+    private fun setDataSavedToFirestore(value: Boolean) {
+        val prefs: SharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putBoolean(KEY_DATA_SAVED, value).apply()
     }
 
 
@@ -126,5 +155,6 @@ class MainActivity : AppCompatActivity() {
         private const val PREFS_NAME = "MyPrefs"
         private const val KEY_FIRST_RUN = "firstRun"
         const val EXTRA_FIRST_RUN = "extraFirstRun"
+        private const val KEY_DATA_SAVED = "isDataSavedToFirestore"
     }
-}
+    }

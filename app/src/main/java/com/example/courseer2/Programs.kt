@@ -20,6 +20,7 @@ import java.io.InputStreamReader
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
+import java.util.Locale
 
 
 class Programs : Fragment() {
@@ -124,7 +125,7 @@ class Programs : Fragment() {
                 override fun onItemClick(position: Int) {
                     // Handle item click if needed
                 }
-            }
+            }, requireContext()
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -160,7 +161,9 @@ class Programs : Fragment() {
                 val shortDescription = columns[2]
                 val fullDescription = columns[3]
                 val subcar = columns[4]
-                val program = Program(title, category, shortDescription, fullDescription, subcar)
+                val strand = columns[5]
+                val keywords = columns[6]
+                val program = Program(title, category, shortDescription, fullDescription, subcar, strand, keywords)
                 programs.add(program)
             }
         }
@@ -186,9 +189,16 @@ class Programs : Fragment() {
     }
 
     private fun filterPrograms(query: String?): List<Program> {
+        val lowercaseQuery = query.orEmpty().lowercase(Locale.ROOT)
+
         return programs.filter { program ->
-            program.title.contains(query.orEmpty(), ignoreCase = true) ||
-                    program.fullDescription.contains(query.orEmpty(), ignoreCase = true) || program.category.contains(query.orEmpty(), ignoreCase = true) || program.subcar.contains(query.orEmpty(), ignoreCase = true) || program.shortDescription.contains(query.orEmpty(), ignoreCase = true )
+            program.title.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.fullDescription.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.category.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.subcar.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.shortDescription.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.strand.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true) ||
+                    program.keywords.lowercase(Locale.ROOT).contains(lowercaseQuery, ignoreCase = true)
         }
     }
 }
@@ -198,13 +208,16 @@ data class Program(
     val category: String,
     val shortDescription: String,
     val fullDescription: String,
-    val subcar:String
+    val subcar:String,
+    val strand:String,
+    val keywords:String
 )
 
 
 class CategoryAdapter(
     private var programsByCategory: Map<String, List<Program>>,
-    private val itemClickListener: ProgramAdapter.OnItemClickListener
+    private val itemClickListener: ProgramAdapter.OnItemClickListener,
+    private val context: Context
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -222,7 +235,7 @@ class CategoryAdapter(
         val category = programsByCategory.keys.toList()[position]
         holder.categoryName.text = category
         val programAdapter =
-            ProgramAdapter(programsByCategory[category] ?: emptyList(), itemClickListener)
+            ProgramAdapter(programsByCategory[category] ?: emptyList(), itemClickListener, context)
         holder.programRecyclerView.adapter = programAdapter
         holder.programRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
     }

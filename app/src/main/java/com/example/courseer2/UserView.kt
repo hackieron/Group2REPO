@@ -101,7 +101,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         toggle.syncState()
         toggle.drawerArrowDrawable.setDirection(DrawerArrowDrawable.ARROW_DIRECTION_END)
 
-        toggle.drawerArrowDrawable.color = getResources().getColor(R.color.textgray)
+        toggle.drawerArrowDrawable.color = getResources().getColor(R.color.white)
 
         binding.navigationDrawer.setNavigationItemSelectedListener(this)
         val navigationView = findViewById<NavigationView>(R.id.navigation_drawer)
@@ -228,11 +228,6 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                 openFragment(FAQs())
                 selectedNavItem = R.id.nav_faqs
                 setTitleForFragment(FAQs()) // Set the title for FAQs fragment
-            }
-            R.id.nav_admin -> {
-                selectedNavItem = R.id.nav_admin
-                showAdminLoginDialog()
-                setTitleForFragment(AdminFragment())
             }
             R.id.menu_item_close_app -> {
                 finishAffinity()
@@ -378,42 +373,11 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             is Scholarship -> "Scholarship" // Add this line for Scholarship fragment
             is Feedback -> "Feedback" // Add this line for Feedback fragment
             is FAQs -> "FAQs"
-            is CombinedFragment -> "Admin"// Add this line for FAQs fragment
+
             else -> "Default Title" // Default title for unknown fragments
         }
 
         supportActionBar?.title = title
-    }
-    private fun showAdminLoginDialog() {
-        val builder = AlertDialog.Builder(this)
-        val inflater = layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_admin_login, null)
-
-        // Initialize UI elements in the dialogView
-        val usernameEditText = dialogView.findViewById<EditText>(R.id.usernameEditText)
-        val passwordEditText = dialogView.findViewById<EditText>(R.id.passwordEditText)
-
-        builder.setView(dialogView)
-            .setTitle("Admin Login")
-            .setPositiveButton("Login") { _, _ ->
-                val username = usernameEditText.text.toString()
-                val password = passwordEditText.text.toString()
-
-                // Perform your admin login validation here
-                if (isValidAdminLogin(username, password)) {
-                    // If login is successful, open AdminFragment
-                    openFragment(CombinedFragment())
-                    selectedNavItem = R.id.nav_admin
-                } else {
-                    // Show an error message or handle invalid login
-                    Toast.makeText(this, "Invalid admin credentials", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
     }
     private fun isValidAdminLogin(username: String, password: String): Boolean {
         // Implement your admin login validation logic here
@@ -431,3 +395,4 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
 
 }
+   

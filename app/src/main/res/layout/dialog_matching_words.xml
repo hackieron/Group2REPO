@@ -11,8 +11,10 @@
         android:id="@+id/textViewDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/dm_sans"
         android:gravity="center"
-        android:text="Select Related Keyword"
+        android:text="Select related keyword"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 

@@ -119,8 +119,10 @@ class Careers : AppCompatActivity() {
 
         skipButton.setOnClickListener {
             dbHelper.increaseCount()
-            val intent = Intent(this, GuideUserView::class.java)
+            dbHelper.copyKeywordsToPreferences()
+            val intent = Intent(this, UserView::class.java)
             startActivity(intent)
+
         }
 
         buttonAddTag.setOnClickListener {
@@ -199,8 +201,9 @@ class Careers : AppCompatActivity() {
                         .show()
                     dataBaseHandler.copyKeywordsToPreferences()
                     dbHelper.increaseCount()
-                    val intent = Intent(this, GuideUserView::class.java)
+                    val intent = Intent(this, UserView::class.java)
                     startActivity(intent)
+
                 } else {
                     Toast.makeText(this, "Failed to insert tags", Toast.LENGTH_SHORT).show()
                 }
@@ -301,7 +304,6 @@ class Careers : AppCompatActivity() {
             chipGroup.addView(chip)
             displayedTags.add(tag)
         }
-
         hideLoadingDialog()
     }
 
@@ -486,10 +488,17 @@ class Careers : AppCompatActivity() {
         // Add selected tags last
         for (tag in selectedTagsList) {
             val chip = createChip(tag)
-            chip?.isChecked = false
+            chip?.isChecked = true
+            chip?.isCheckedIconVisible = false
+            chip?.setTextColor(ContextCompat.getColor(this, R.color.black))
+            chip?.setChipBackgroundColorResource(R.color.gold)
+            chip?.chipStrokeWidth = resources.getDimension(R.dimen.chip_stroke_not)
+            // Remove the chip from its current parent (chipGroup) before adding it to chipGroupSelectedTags
+            val parent = chip?.parent as? ViewGroup
+            parent?.removeView(chip)
+
             chipGroupSelectedTags.addView(chip)
         }
-
     }
 
 
@@ -636,7 +645,15 @@ class Careers : AppCompatActivity() {
         for (word in matchingWords) {
             // Check if the word is not already in the selected chip group
             if (!selectedTags.contains(word)) {
-                val chip = createChip(word, true) // true indicates it's a database tag
+                val chip = createChip(word, true)
+                if (chip != null) {
+                    chip.setTextColor(ContextCompat.getColor(this, R.color.black))
+                    chip.setChipBackgroundColorResource(R.color.white)
+                    chip.chipStrokeWidth =
+                        resources.getDimension(R.dimen.chip_stroke) // Set stroke width
+                    chip.setChipStrokeColorResource(R.color.gray)
+                }
+                // true indicates it's a database tag
                 chipGroup.addView(chip)
             }
         }

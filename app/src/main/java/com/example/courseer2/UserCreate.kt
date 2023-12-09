@@ -23,11 +23,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetSequence
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 @Suppress("DEPRECATION")
 class UserCreate : AppCompatActivity() {
-
 
 
     private lateinit var option: Spinner
@@ -40,16 +42,29 @@ class UserCreate : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_create)
         val dbHelper = DataBaseHandler(this)
+        showPromptsSequentially()
         option = findViewById(R.id.strands)
-        val strands = arrayOf("STEM", "ABM", "HUMMS", "GAS", "Arts and Design", "ICT", "Industrial Arts", "Agri-Fisheries", "Sports")
+        val strands = arrayOf(
+            "STEM",
+            "ABM",
+            "HUMMS",
+            "GAS",
+            "Arts and Design",
+            "ICT",
+            "Industrial Arts",
+            "Agri-Fisheries",
+            "Sports"
+        )
         option.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, strands)
-
+        val guide = findViewById<FloatingActionButton>(R.id.guidebtn)
         val submit = findViewById<Button>(R.id.submit1)
         val name = findViewById<TextView>(R.id.userName)
 
         val strand = findViewById<Spinner>(R.id.strands)
         val context = this
-
+        guide.setOnClickListener {
+            showPromptsSequentially()
+        }
         submit.setOnClickListener {
 
             Log.i("CLICKED", "CLICKED button")
@@ -80,11 +95,13 @@ class UserCreate : AppCompatActivity() {
                     // Compress the image before saving
                     val compressedBitmap = compressBitmap(bitmap)
 
-                    val user = User(name.text.toString(), compressedBitmap, strand.selectedItem.toString())
+                    val user =
+                        User(name.text.toString(), compressedBitmap, strand.selectedItem.toString())
                     val db = DataBaseHandler(context)
                     db.insertData(user)
                 } else {
-                    Toast.makeText(context, "Please select a proper image", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please select a proper image", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
                 redirectToInterests()
@@ -101,11 +118,48 @@ class UserCreate : AppCompatActivity() {
 
 
     }
+    private fun showPromptsSequentially() {
+        val prompts = listOf(
+            TapTarget.forView(findViewById(R.id.selectImgButton), "Add a Profile Picture", "This is optional")
+                .targetCircleColor(R.color.gold)
+                .outerCircleAlpha(0.7f)// Customize the circle color
+                .transparentTarget(true), // Set to true to have a transparent circle
+            TapTarget.forView(findViewById(R.id.userName), "Enter Your Name", "A nickname will do")
+                .targetCircleColor(R.color.gold)
+                .outerCircleAlpha(0.7f)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.strands), "Strands", "Your SHS Strand")
+                .targetCircleColor(R.color.gold)
+                .outerCircleAlpha(0.7f)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.submit1), "Save and Submit", "Proceed to the next page")
+                .targetCircleColor(R.color.gold)
+                .outerCircleAlpha(0.7f)
+                .transparentTarget(true)
+        )
+
+        TapTargetSequence(this)
+            .targets(prompts)
+            .listener(object : TapTargetSequence.Listener {
+                override fun onSequenceFinish() {
+                    // Handle sequence finish
+                }
+
+                override fun onSequenceStep(lastTarget: TapTarget?, targetClicked: Boolean) {
+                    // Handle each step of the sequence
+                }
+
+                override fun onSequenceCanceled(lastTarget: TapTarget?) {
+                    // Handle sequence cancellation
+                }
+            })
+            .start()    }
     private fun compressBitmap(originalBitmap: Bitmap): Bitmap {
         val stream = ByteArrayOutputStream()
-        originalBitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream)
+        originalBitmap.compress(Bitmap.CompressFormat.PNG, 20, stream)
         return BitmapFactory.decodeStream(ByteArrayInputStream(stream.toByteArray()))
     }
+
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, pickedimage)
@@ -131,10 +185,10 @@ class UserCreate : AppCompatActivity() {
             }
         }
     }
+
     private fun redirectToInterests() {
         val interestsIntent = Intent(this, Interests::class.java)
         startActivity(interestsIntent)
-        finish()
     }
 
 }

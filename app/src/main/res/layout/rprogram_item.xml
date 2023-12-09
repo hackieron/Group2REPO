@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginVertical="-20dp"
     android:foregroundGravity="center|center_horizontal"
     android:gravity="center_horizontal"
@@ -16,16 +17,39 @@
         android:layout_margin="8dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="9dp"
-        app:cardElevation="5dp">
+        app:cardElevation="2dp">
 
         <TextView
             android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:layout_marginEnd="40dp"
+            android:padding="15dp"
             android:text="Title"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ToggleButton
+                android:id="@+id/saveButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/save"
+                android:backgroundTint="@color/toggle_button_colors"
+                android:checked="false"
+                android:textOn=""
+                android:textOff=""
+                android:scaleType="fitCenter"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#EFF1F3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <!-- Short Description TextView without top border -->
@@ -40,15 +64,17 @@
         android:foregroundGravity="center_horizontal"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="4dp"
-        app:cardElevation="3dp">
+        app:cardElevation="1dp">
 
         <TextView
             android:id="@+id/shortDescriptionTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Short Description"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="10dp"
+            android:text="Short Description"
+            android:padding="5dp"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
 
