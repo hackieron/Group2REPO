@@ -60,7 +60,7 @@
             android:layout_marginEnd="16dp"
             android:max="8"
             android:padding="15dp"
-            android:progress="5"
+            android:progress="1"
             android:progressDrawable="@drawable/custom_track"
             android:thumb="@drawable/custom_thumb" />
 

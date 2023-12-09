@@ -2,10 +2,12 @@ package com.example.courseer2
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +16,12 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +32,11 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 class Recommend : Fragment() {
+
     companion object {
+        private const val PREFS_NAME = "MyPrefs"
+        private const val KEY_DATA_SAVED = "isDataSavedToFirestore"
+
         fun newInstance(strandBased: Boolean): Recommend {
             val fragment = Recommend()
             val args = Bundle()
@@ -37,8 +45,11 @@ class Recommend : Fragment() {
             return fragment
         }
     }
-    private var THRESHOLD = 5
+    private var THRESHOLD = 2
     private lateinit var loadingProgressBar: ProgressBar
+    private var isDataSavedToFirestore = false
+
+
 
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
@@ -59,7 +70,7 @@ class Recommend : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_recommend, container, false)
         noItemsTextView = rootView.findViewById(R.id.noItems)
-
+        isDataSavedToFirestore = getDataSavedToFirestore(requireContext())
         loadingProgressBar = rootView.findViewById(R.id.loadingProgressBar)
         seekBarLabel = rootView.findViewById<TextView>(R.id.seekBarLabel)
         seekBar = rootView.findViewById<SeekBar>(R.id.seekBar)
@@ -76,6 +87,7 @@ class Recommend : Fragment() {
                     progress > 3 && progress <= 7 -> seekBarLabel.text = "NEUTRAL"
                     progress > 7 -> seekBarLabel.text = "NARROW"
                 }
+                setDataSavedToFirestore(true)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -86,7 +98,10 @@ class Recommend : Fragment() {
                 // Handle stop tracking touch if needed
             }
         })
+
+
         lifecycleScope.launch {
+
             val csvData = withContext(Dispatchers.IO) {
                 readCSVFileFromAssets(requireContext())
             }
@@ -107,7 +122,6 @@ class Recommend : Fragment() {
                             program.strand.contains(value, ignoreCase = true)
                         } != null
             }
-
             adapter = RProgramAdapter(
                 localFilteredPrograms as MutableList<RProgram>,
                 object : RProgramAdapter.OnItemClickListener {
@@ -142,6 +156,7 @@ class Recommend : Fragment() {
             })
 
         }
+
         if (isInternetAvailable(requireContext())) {
             // If internet is available, download the CSV from Firebase Storage
             downloadCSVFromFirebase()
@@ -151,6 +166,93 @@ class Recommend : Fragment() {
         }
         return rootView
     }
+    private fun getDataSavedToFirestore(context: Context): Boolean {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getBoolean(KEY_DATA_SAVED, false)
+    }
+
+    private fun fetchDataFromSQLite(): List<Pair<String, String>> {
+        val data = mutableListOf<Pair<String, String>>()
+
+        // Replace with your actual SQLiteOpenHelper or SQLiteDatabase instance
+        val dbHelper = DataBaseHandler(requireContext())
+        val db = dbHelper.readableDatabase
+
+        // Replace with your actual query and column names
+        val projection = arrayOf(COL_NAME, COL_STRAND)
+        val cursor = db.query(TABLE_NAME, projection, null, null, null, null, null)
+
+        // Iterate through cursor and add values to the 'data' list
+        while (cursor.moveToNext()) {
+            val name = cursor.getString(cursor.getColumnIndexOrThrow(COL_NAME))
+            val strand = cursor.getString(cursor.getColumnIndexOrThrow(COL_STRAND))
+            data.add(name to strand)
+        }
+
+        // Close the cursor and database
+        cursor.close()
+        db.close()
+
+        return data
+    }
+
+
+    private fun fetchKeywordsFromSQLite(tableName: String, columnName: String): List<String> {
+        val keywords = mutableListOf<String>()
+
+        // Replace with your actual SQLiteOpenHelper or SQLiteDatabase instance
+        val dbHelper = DataBaseHandler(requireContext())
+        val db = dbHelper.readableDatabase
+
+        // Replace with your actual query and column names
+        val projection = arrayOf(columnName)
+        val cursor = db.query(tableName, projection, null, null, null, null, null)
+
+        // Iterate through cursor and add values to the 'keywords' list
+        while (cursor.moveToNext()) {
+            val keyword = cursor.getString(cursor.getColumnIndexOrThrow(columnName))
+            keywords.add(keyword)
+        }
+
+        // Close the cursor and database
+        cursor.close()
+        db.close()
+
+        return keywords
+    }
+
+    private fun saveDataToFirestore(data: List<Pair<String, String>>, filteredPrograms: List<RProgram>) {
+        val db = FirebaseFirestore.getInstance()
+
+        for ((name, strand) in data) {
+            val interests = fetchKeywordsFromSQLite(TABLE_KEYWORDS, COL_KEY_NAME).joinToString(",")
+            val careers = fetchKeywordsFromSQLite(TABLE_KEYWORDS1, COL_KEY_NAME1).joinToString(",")
+
+            val filteredProgramsNames = filteredPrograms.map { it.title }.joinToString(",")
+            val report = hashMapOf(
+                "name" to name,
+                "strand" to strand,
+                "interests" to interests,
+                "careers" to careers,
+                "filteredPrograms" to filteredProgramsNames
+            )
+
+            // Add a new document with a generated ID
+            db.collection("transaction_reports")
+                .add(report)
+                .addOnSuccessListener { documentReference ->
+                    // Log success using Log.d
+                    Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    // Log failure using Log.d
+                    Log.d("Firestore", "Error adding document: $e")
+                }
+        }
+    }
+
+// Inside your onCreateView or wherever appropriate
+
     private fun downloadCSVFromFirebase() {
         loadingProgressBar.visibility = View.VISIBLE
         val storage = Firebase.storage
@@ -334,6 +436,11 @@ class Recommend : Fragment() {
 
 
     private fun filterPrograms(query: String?): List<RProgram> {
+        if (!::programs.isInitialized) {
+            // Handle the case when programs is not initialized
+            return emptyList()
+        }
+
         // Filter programs based on title or fullDescription containing the query and the first value of basisValues
         return programs.filter { program ->
             program.title.contains(query.orEmpty(), ignoreCase = true) ||
@@ -354,14 +461,32 @@ class Recommend : Fragment() {
         }.sortedByDescending { program ->
             calculateProgramScore(program)
         }
+        val firestorePrograms = filteredList.filter { program ->
+            calculateProgramScore(program) >= THRESHOLD
+        }.sortedByDescending { program ->
+            calculateProgramScore(program)
+        }
         if (sortedList.isEmpty()) {
             noItemsTextView.visibility = View.VISIBLE
         } else {
             noItemsTextView.visibility = View.GONE
         }
-        adapter.updatePrograms(sortedList)
-    }
 
+        // Check if data is not already saved to Firestore
+        if (!isDataSavedToFirestore && sortedList.isNotEmpty()) {
+            Log.d("Recommend", "Before setting to true: $isDataSavedToFirestore")
+            val sqliteData = fetchDataFromSQLite()
+            saveDataToFirestore(sqliteData, firestorePrograms)
+            isDataSavedToFirestore = true
+            Log.d("Recommend", "After setting to true: $isDataSavedToFirestore")
+        }
+        adapter.updatePrograms(sortedList)
+
+    }
+    private fun setDataSavedToFirestore(value: Boolean) {
+        val prefs: SharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putBoolean(KEY_DATA_SAVED, value).apply()
+    }
 }
 data class RProgram(
     val title: String,
@@ -372,3 +497,4 @@ data class RProgram(
     val strand: String,
     val keywords: String
 )
+
