@@ -21,19 +21,35 @@
         android:layout_height="520dp"
         android:layout_gravity="center_horizontal|center_vertical">
 
-        <EditText
-            android:id="@+id/feedbackInput"
-            android:layout_width="292dp"
-            android:layout_height="425dp"
-            android:background="@drawable/rounded_edittext_background"
-            android:gravity="center|top"
-            android:hint="Write your feedback/suggestions/comment about the app. Max of 1000 characters."
-            android:inputType="textMultiLine"
-            android:maxLength="1000"
-            android:paddingTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/feedbackInput"
+                android:layout_width="292dp"
+                android:layout_height="425dp"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/rounded_edittext_background"
+                android:gravity="center|top"
+                android:hint="Write your feedback/suggestions/comment about the app. Max of 1000 characters."
+                android:inputType="textMultiLine"
+                android:maxLength="1000"
+                android:paddingTop="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="-1dp" />
+
+            <TextView
+                android:id="@+id/characterCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:fontFamily="@font/dm_sans"
+                android:text="0/1000"
+                android:textColor="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="-1dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/submitButton"
@@ -51,4 +67,5 @@
             app:layout_constraintVertical_bias="0.296" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

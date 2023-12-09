@@ -2,12 +2,15 @@ package com.example.courseer2
 
 import android.os.AsyncTask
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import java.util.Properties
@@ -22,6 +25,7 @@ class Feedback : Fragment() {
     private lateinit var submitButton: Button
     private lateinit var textBox: EditText
     private lateinit var rootview: View
+    private lateinit var characterCount: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +34,22 @@ class Feedback : Fragment() {
         rootview = inflater.inflate(R.layout.fragment_feedback, container, false)
         submitButton = rootview.findViewById(R.id.submitButton)
         textBox = rootview.findViewById(R.id.feedbackInput)
+        characterCount = rootview.findViewById(R.id.characterCount)
+
+        textBox.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Not needed in this case
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val currentCount = s?.length ?: 0
+                characterCount.text = "$currentCount/1000"
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Not needed in this case
+            }
+        })
 
         submitButton.setOnClickListener {
             val feedbackMail: String = textBox.text.toString()
