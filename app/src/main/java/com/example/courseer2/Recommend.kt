@@ -242,6 +242,7 @@ class Recommend : Fragment() {
                 .add(report)
                 .addOnSuccessListener { documentReference ->
                     // Log success using Log.d
+
                     Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
                 }
                 .addOnFailureListener { e ->
@@ -473,13 +474,17 @@ class Recommend : Fragment() {
         }
 
         // Check if data is not already saved to Firestore
-        if (!isDataSavedToFirestore) {
+        if (!isDataSavedToFirestore && firestorePrograms.isNotEmpty()) {
             Log.d("Recommend", "Before setting to true: $isDataSavedToFirestore")
             val sqliteData = fetchDataFromSQLite()
             saveDataToFirestore(sqliteData, firestorePrograms)
             isDataSavedToFirestore = true
             setDataSavedToFirestore(true)
             Log.d("Recommend", "After setting to true: $isDataSavedToFirestore")
+        }
+        if (firestorePrograms.isEmpty()){
+            isDataSavedToFirestore = false
+            setDataSavedToFirestore(false)
         }
         adapter.updatePrograms(sortedList)
 
