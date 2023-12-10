@@ -2,8 +2,6 @@
     <string name="app_name">CourSeer</string>
     <string name="nav_open">CourSeer</string>
     <string name="nav_close">CourSeer</string>
-    <string name="select_scholarship_prompt">Select Scholarship</string>
-    <string name="select_program">Select Scholarship</string>
 
     <string name="userName">Name</string>
     <string name="next">NEXT</string>
