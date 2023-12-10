@@ -87,7 +87,7 @@ class Recommend : Fragment() {
                     progress > 3 && progress <= 7 -> seekBarLabel.text = "NEUTRAL"
                     progress > 7 -> seekBarLabel.text = "NARROW"
                 }
-                setDataSavedToFirestore(true)
+
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -462,7 +462,7 @@ class Recommend : Fragment() {
             calculateProgramScore(program)
         }
         val firestorePrograms = filteredList.filter { program ->
-            calculateProgramScore(program) >= THRESHOLD
+            calculateProgramScore(program) >= 3
         }.sortedByDescending { program ->
             calculateProgramScore(program)
         }
@@ -473,11 +473,12 @@ class Recommend : Fragment() {
         }
 
         // Check if data is not already saved to Firestore
-        if (!isDataSavedToFirestore && sortedList.isNotEmpty()) {
+        if (!isDataSavedToFirestore) {
             Log.d("Recommend", "Before setting to true: $isDataSavedToFirestore")
             val sqliteData = fetchDataFromSQLite()
             saveDataToFirestore(sqliteData, firestorePrograms)
             isDataSavedToFirestore = true
+            setDataSavedToFirestore(true)
             Log.d("Recommend", "After setting to true: $isDataSavedToFirestore")
         }
         adapter.updatePrograms(sortedList)
