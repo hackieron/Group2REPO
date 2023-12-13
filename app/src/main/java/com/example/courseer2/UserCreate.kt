@@ -120,21 +120,30 @@ class UserCreate : AppCompatActivity() {
     }
     private fun showPromptsSequentially() {
         val prompts = listOf(
-            TapTarget.forView(findViewById(R.id.selectImgButton), "Add a Profile Picture", "This is optional")
-                .targetCircleColor(R.color.gold)
-                .outerCircleAlpha(0.7f)// Customize the circle color
+            TapTarget.forView(findViewById(R.id.selectImgButton), "Add a Profile Picture", "Click the button to add a profile picture. This part is optional.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)// Customize the circle color
                 .transparentTarget(true), // Set to true to have a transparent circle
-            TapTarget.forView(findViewById(R.id.userName), "Enter Your Name", "A nickname will do")
-                .targetCircleColor(R.color.gold)
-                .outerCircleAlpha(0.7f)
+            TapTarget.forView(findViewById(R.id.userName), "Enter Your Name", "You may input your preferred profile name here.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
                 .transparentTarget(true),
-            TapTarget.forView(findViewById(R.id.strands), "Strands", "Your SHS Strand")
-                .targetCircleColor(R.color.gold)
-                .outerCircleAlpha(0.7f)
+            TapTarget.forView(findViewById(R.id.strands), "Strands", "Click the drop-down button and choose your senior high strand.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
                 .transparentTarget(true),
-            TapTarget.forView(findViewById(R.id.submit1), "Save and Submit", "Proceed to the next page")
-                .targetCircleColor(R.color.gold)
-                .outerCircleAlpha(0.7f)
+            TapTarget.forView(findViewById(R.id.submit1), "Save and Submit", "After providing the following, you may proceed to your preferences.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.guidebtn), "Guide", "In case you forget, click this button to see guide again.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
                 .transparentTarget(true)
         )
 

@@ -44,6 +44,14 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetSequence
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.content.SharedPreferences
+import kotlin.math.max
+
+
+
 
 class Interests : AppCompatActivity() {
     private lateinit var loadingDialog: AlertDialog
@@ -67,6 +75,9 @@ class Interests : AppCompatActivity() {
     private var initialChipCount = 0
     private lateinit var searchProgressBar: ProgressBar
     private var searchJob: Job? = null
+    private val PREFS_NAME = "MyPrefsFile"
+    private val PREF_FIRST_TIME = "isFirstTime"
+
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
@@ -98,6 +109,15 @@ class Interests : AppCompatActivity() {
         nextButton = findViewById<Button>(R.id.next)
         skipButton = findViewById<Button>(R.id.skip)
 
+        if (isFirstTime()) {
+            showPromptsSequentially()
+        }
+
+        val guide = findViewById<FloatingActionButton>(R.id.guidebtn)
+        val context = this
+        guide.setOnClickListener {
+            showPromptsSequentially()
+        }
 
         readCsvFile(csvFileRef) { tags ->
             lifecycleScope.launch {
@@ -209,6 +229,79 @@ class Interests : AppCompatActivity() {
 
 
     }
+
+    private fun isFirstTime(): Boolean {
+        val prefs: SharedPreferences = getSharedPreferences(PREFS_NAME, 0)
+        return prefs.getBoolean(PREF_FIRST_TIME, true)
+    }
+
+    private fun setNotFirstTime() {
+        val prefs: SharedPreferences = getSharedPreferences(PREFS_NAME, 0)
+        val editor: SharedPreferences.Editor = prefs.edit()
+        editor.putBoolean(PREF_FIRST_TIME, false)
+        editor.apply()
+    }
+
+    private fun showPromptsSequentially() {
+
+        val prompts = listOf(
+            TapTarget.forView(findViewById(R.id.horizontalScrollView), "Choose Interest", "Click the given keywords/chips that refers to your interest.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)// Customize the circle color
+                .targetRadius(105)
+                .transparentTarget(true), // Set to true to have a transparent circle
+            TapTarget.forView(findViewById(R.id.tagProgressBar), "Choose up to 5 Interest", "Show the number of keywords you selected. The maximum number is five(5).")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.chipGroupSelectedTags), "See Your Interest Here", "Show all the keywords you selected. You may click the given keywords to remove it from the list.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
+                .targetRadius(105)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.searchView), "Search Keywords", "Search your interest here.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.buttonAddTag), "Search Related Chips", "If the keywords are unavailable input here the related words to your interest and click Add Tag button.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.next), "Click Next", "After choosing selected tags, you may now proceed to preferred career.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
+                .transparentTarget(true),
+            TapTarget.forView(findViewById(R.id.skip), "Skip for Now", "If still undecided, you may skip this step.")
+                .targetCircleColor(R.color.blue)
+                .outerCircleColor(R.color.blue) // Change this line
+                .outerCircleAlpha(0.95f)
+                .transparentTarget(true)
+        )
+
+        TapTargetSequence(this)
+            .targets(prompts)
+            .listener(object : TapTargetSequence.Listener {
+                override fun onSequenceFinish() {
+                    // Handle sequence finish
+                }
+
+                override fun onSequenceStep(lastTarget: TapTarget?, targetClicked: Boolean) {
+                    // Handle each step of the sequence
+                }
+
+                override fun onSequenceCanceled(lastTarget: TapTarget?) {
+                    // Handle sequence cancellation
+                }
+            })
+            .start()    }
+
+
 
     private fun readCsvFile(csvFileRef: StorageReference, callback: (List<String>) -> Unit) {
         csvFileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->

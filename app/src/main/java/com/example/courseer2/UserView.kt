@@ -38,11 +38,28 @@ import com.google.android.material.navigation.NavigationBarView
 
 
 import android.content.Context
+import android.graphics.Rect
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
 import androidx.appcompat.app.AlertDialog
+
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetSequence
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.view.Gravity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.FrameLayout.LayoutParams
+import androidx.cardview.widget.CardView
+import kotlin.math.max
+import androidx.recyclerview.widget.RecyclerView
+
 
 
 class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -63,6 +80,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerConnectivityReceiver()
@@ -106,13 +124,14 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         binding.navigationDrawer.setNavigationItemSelectedListener(this)
         val navigationView = findViewById<NavigationView>(R.id.navigation_drawer)
         val displayMetrics = resources.displayMetrics
-        val width = (displayMetrics.widthPixels * 0.7).toInt()
+        val width = (displayMetrics.widthPixels * 0.95).toInt()
 
 
         val params = navigationView.layoutParams as DrawerLayout.LayoutParams
         params.width = width
         navigationView.layoutParams = params
-        bottomNavigationView.itemIconSize = resources.getDimensionPixelSize(R.dimen.bottom_nav_icon_size)
+        bottomNavigationView.itemIconSize =
+            resources.getDimensionPixelSize(R.dimen.bottom_nav_icon_size)
         bottomNavigationView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_LABELED
         binding.bottomNavigation.background = null
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -185,7 +204,21 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         bottomNavigationView.itemIconTintList = iconTintList
 
+        val isFirstLaunch = getSharedPreferences("PREFS_NAME", Context.MODE_PRIVATE)
+            .getBoolean("is_first_launch", true)
+
+        // Show the guide button or sequence based on whether it's the first launch
+        if (isFirstLaunch) {
+            showGuideSequence(getGuideTargets())
+            markGuideAsShown()
+        }
+
+        // Always show the guide button
+        showGuideButton()
+
     }
+
+
     private fun registerConnectivityReceiver() {
         val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         registerReceiver(connectivityReceiver, filter)
@@ -205,6 +238,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         startActivity(intent)
 
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         clearBottomNavigationSelection()
 
@@ -214,21 +248,25 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
                 selectedNavItem = R.id.nav_programs
                 setTitleForFragment(Programs()) // Set the title for Programs fragment
             }
+
             R.id.nav_scholarship -> {
                 openFragment(Scholarship())
                 selectedNavItem = R.id.nav_scholarship
                 setTitleForFragment(Scholarship()) // Set the title for Scholarship fragment
             }
+
             R.id.nav_feedback -> {
                 openFragment(Feedback())
                 selectedNavItem = R.id.nav_feedback
                 setTitleForFragment(Feedback()) // Set the title for Feedback fragment
             }
+
             R.id.nav_faqs -> {
                 openFragment(FAQs())
                 selectedNavItem = R.id.nav_faqs
                 setTitleForFragment(FAQs()) // Set the title for FAQs fragment
             }
+
             R.id.menu_item_close_app -> {
                 finishAffinity()
             }
@@ -239,6 +277,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         return true
     }
+
     private fun isInternetAvailable(): Boolean {
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -379,6 +418,7 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         supportActionBar?.title = title
     }
+
     private fun isValidAdminLogin(username: String, password: String): Boolean {
         // Implement your admin login validation logic here
 
@@ -391,8 +431,292 @@ class UserView : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     }
 
 
+    private fun showGuideButton() {
+        val guideButton = findViewById<FloatingActionButton>(R.id.guidebtn)
+
+        // If the guide button is already defined in XML, update its properties
+        if (guideButton != null) {
+            guideButton.setImageResource(R.drawable.guide)
+            guideButton.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.gold))
+            guideButton.setOnClickListener {
+                // Show the guide sequence when the button is clicked
+                showGuideSequence(getGuideTargets())
+            }
+
+            guideButton.visibility = View.VISIBLE
+        }
+    }
+
+    private fun calculateTargetRadius(view: View): Int {
+        // Calculate the radius based on the size of the view
+        val width = view.width
+        val height = view.height
+        return max(width, height) / 2
+    }
 
 
+    // Define your specific TapTargets for UserView
+    private fun getGuideTargets(): List<TapTarget> {
+        val targets = mutableListOf<TapTarget>()
+
+
+        val view1 = findViewById<View>(R.id.constraintLayout4)
+        if (view1 != null) {
+            val radius = calculateTargetRadius(view1)
+            targets.add(
+                TapTarget.forView(view1, "Welcome to CourSeer!", "You successfully created your Profile. Here is your user information and preferences. ")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+                    .targetRadius(385)
+            )
+        }
+
+        val view2 = findViewById<View>(R.id.tabLayout)
+        if (view2 != null) {
+            targets.add(
+                TapTarget.forView(view2, "Click Based on Given Criteria", "To avoid confusion, we separated the Strand Based and Non-Strand Based Recommendations and even the Program and Scholarship.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view3 = findViewById<View>(R.id.seekBar)
+        if (view3 != null) {
+            targets.add(
+                TapTarget.forView(view3, "Slide to See Different Recommendations", "This controls the amount of given recommendation based on your given preferences and aptitude examination result.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+
+
+        val view4 = findViewById<View>(R.id.categoryName)
+        if (view4 != null) {
+            targets.add(
+                TapTarget.forView(view4, "Categories", "The following are separated according to category based on criteria and fields.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view5 = findViewById<View>(R.id.titleTextView)
+        if (view5 != null) {
+            targets.add(
+                TapTarget.forView(view5, "Tap the Title to See Description", "Click the title to see previews of the following program, scholarship, and FAQ's.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+
+        val view6 = findViewById<View>(R.id.shortDescriptionTextView)
+        if (view6 != null && view6.visibility == View.VISIBLE) {
+            targets.add(
+                TapTarget.forView(view6, "Tap to View Full Description", "Click here to see the full details regarding each program and scholarship.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue)
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+                    .targetRadius(85)
+            )
+        }
+
+        val view7 = findViewById<View>(R.id.saveButton)
+        if (view7 != null) {
+            targets.add(
+                TapTarget.forView(view7, "Tap the Star Icon", "Tap to add as Favorite and tap again to remove from list")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val cardView = findViewById<CardView>(R.id.searchCardView)
+        if (cardView != null) {
+            targets.add(
+                TapTarget.forView(cardView, "Search Here", "Search words related to any programs, scholarships, or general inquiries.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue)
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view10 = findViewById<View>(R.id.characterCount)
+        if (view10 != null) {
+            targets.add(
+                TapTarget.forView(view10, "Word Count", "Check the number of words being input.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view11 = findViewById<View>(R.id.submitButton)
+        if (view11 != null) {
+            targets.add(
+                TapTarget.forView(view11, "Save and Submit", "After creating your feedback, click here to send us your comments and suggestions.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view12 = findViewById<View>(R.id.interpretation)
+        if (view12 != null) {
+            targets.add(
+                TapTarget.forView(view12, "Career Aptitude Result", "See the result of your career aptitude exam and their interpretations.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .targetRadius(60)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view13 = findViewById<View>(R.id.progressBar)
+        if (view13 != null) {
+            targets.add(
+                TapTarget.forView(view13, "Percentage Score", "View how many percentage does each category have in your result.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view14 = findViewById<View>(R.id.bottom_prof)
+        if (view14 != null) {
+            targets.add(
+                TapTarget.forView(view14, "User Profile", "Contains general information you provided and your aptitude examination.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view15 = findViewById<View>(R.id.bottom_apt)
+        if (view15 != null) {
+            targets.add(
+                TapTarget.forView(view15, "Career Interest Test", "Serve as a comprehensive way to assess your preferences and what careers they correspond to.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view16 = findViewById<View>(R.id.bottom_recom)
+        if (view16 != null) {
+            targets.add(
+                TapTarget.forView(view16, "Program Recommendation", "Contains all recommendations based on your given preferences and career-interest test once available")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view17 = findViewById<View>(R.id.bottom_fav)
+        if (view17 != null) {
+            targets.add(
+                TapTarget.forView(view17, "Favorite", "Contain the list of programs and scholarship saved by you.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view18 = findViewById<View>(R.id.reset)
+        if (view18 != null) {
+            targets.add(
+                TapTarget.forView(view18, "Reset Button", "You may reset your profile anytime if you think your preferences changed overtime")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view19 = findViewById<View>(R.id.toolbar)
+        if (view19 is Toolbar) {
+            targets.add(
+                TapTarget.forToolbarNavigationIcon(view19, "Menu", "Discover other features of CourSeer by tapping this icon.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        val view21 = findViewById<View>(R.id.guidebtn)
+        if (view21 != null) {
+            targets.add(
+                TapTarget.forView(view21, "Guide", "Click here anytime to navigate the application.")
+                    .targetCircleColor(R.color.blue)
+                    .outerCircleColor(R.color.blue) // Change this line
+                    .outerCircleAlpha(0.95f)
+                    .transparentTarget(true)
+            )
+        }
+
+        return targets
+    }
+
+
+
+
+    private fun showGuideSequence(targets: List<TapTarget>) {
+        val sequence = TapTargetSequence(this)
+            .targets(targets)
+            .listener(object : TapTargetSequence.Listener {
+                override fun onSequenceFinish() {
+                    // Handle sequence finish if needed
+                    // Make the guide button visible after all prompts are done
+                    showGuideButton()
+                }
+
+                override fun onSequenceStep(lastTarget: TapTarget?, targetClicked: Boolean) {
+                    // Handle each step of the sequence
+                }
+
+                override fun onSequenceCanceled(lastTarget: TapTarget?) {
+                    // Handle sequence cancellation if needed
+                }
+            })
+
+        sequence.start()
+    }
+
+    private fun markGuideAsShown() {
+        // Mark that the guide has been shown
+        getSharedPreferences("PREFS_NAME", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("is_first_launch", false)
+            .apply()
+    }
+
+    fun onGuideButtonClick(view: View) {
+        showGuideSequence(getGuideTargets())
+    }
 
 }
-   
+
+
