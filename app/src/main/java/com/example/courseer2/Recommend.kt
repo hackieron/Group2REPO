@@ -30,6 +30,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
+import com.google.firebase.Timestamp
 
 class Recommend : Fragment() {
 
@@ -87,7 +88,7 @@ class Recommend : Fragment() {
                     progress > 3 && progress <= 7 -> seekBarLabel.text = "NEUTRAL"
                     progress > 7 -> seekBarLabel.text = "NARROW"
                 }
-                setDataSavedToFirestore(true)
+
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -227,14 +228,15 @@ class Recommend : Fragment() {
         for ((name, strand) in data) {
             val interests = fetchKeywordsFromSQLite(TABLE_KEYWORDS, COL_KEY_NAME).joinToString(",")
             val careers = fetchKeywordsFromSQLite(TABLE_KEYWORDS1, COL_KEY_NAME1).joinToString(",")
-
+            val timestamp = Timestamp.now()
             val filteredProgramsNames = filteredPrograms.map { it.title }.joinToString(",")
             val report = hashMapOf(
                 "name" to name,
                 "strand" to strand,
                 "interests" to interests,
                 "careers" to careers,
-                "filteredPrograms" to filteredProgramsNames
+                "filteredPrograms" to filteredProgramsNames,
+                "timestamp" to timestamp  // Add the timestamp here
             )
 
             // Add a new document with a generated ID
@@ -462,7 +464,7 @@ class Recommend : Fragment() {
             calculateProgramScore(program)
         }
         val firestorePrograms = filteredList.filter { program ->
-            calculateProgramScore(program) >= THRESHOLD
+            calculateProgramScore(program) >= 3
         }.sortedByDescending { program ->
             calculateProgramScore(program)
         }
@@ -473,12 +475,17 @@ class Recommend : Fragment() {
         }
 
         // Check if data is not already saved to Firestore
-        if (!isDataSavedToFirestore && sortedList.isNotEmpty()) {
+        if (!isDataSavedToFirestore && firestorePrograms.isNotEmpty()) {
             Log.d("Recommend", "Before setting to true: $isDataSavedToFirestore")
             val sqliteData = fetchDataFromSQLite()
             saveDataToFirestore(sqliteData, firestorePrograms)
             isDataSavedToFirestore = true
+            setDataSavedToFirestore(true)
             Log.d("Recommend", "After setting to true: $isDataSavedToFirestore")
+        }
+        if (firestorePrograms.isEmpty()){
+            isDataSavedToFirestore = false
+            setDataSavedToFirestore(false)
         }
         adapter.updatePrograms(sortedList)
 

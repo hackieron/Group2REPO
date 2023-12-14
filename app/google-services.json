@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:260565852017:android:b0b08d6fcb7890d24120d0",
+        "android_client_info": {
+          "package_name": "com.courseer.courseeradmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "260565852017-kj8vpf2oejko9pa1t558vfc07e5jh8fu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdVbWnSwPeof2-lcU8R-gpIe8aOSoekWA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "260565852017-kj8vpf2oejko9pa1t558vfc07e5jh8fu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:260565852017:android:a1b52564b9652a4c4120d0",
         "android_client_info": {
           "package_name": "com.example.courseer2"
