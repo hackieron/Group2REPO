@@ -119,16 +119,18 @@ class Programs : Fragment() {
     }
 
     private fun initializeAdapter() {
-        adapter = CategoryAdapter(
-            groupProgramsByCategory(filteredPrograms),
-            object : ProgramAdapter.OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    // Handle item click if needed
-                }
-            }, requireContext()
-        )
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        if (isAdded) { // Check if the fragment is attached to a context
+            adapter = CategoryAdapter(
+                groupProgramsByCategory(filteredPrograms),
+                object : ProgramAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        // Handle item click if needed
+                    }
+                }, requireContext()
+            )
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
     }
     private fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager =

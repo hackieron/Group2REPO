@@ -10,8 +10,4 @@
     <dimen name="chip_stroke_not">0dp</dimen>
     <dimen name="chip_space">5dp</dimen>
 
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="icon_size">24dp</dimen>
-    <dimen name="outer_circle_radius">100dp</dimen>
-
 </resources>

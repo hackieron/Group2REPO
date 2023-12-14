@@ -20,6 +20,7 @@ import javax.mail.Session
 import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
+import android.content.Context
 
 class Feedback : Fragment() {
     private lateinit var submitButton: Button
@@ -53,14 +54,14 @@ class Feedback : Fragment() {
 
         submitButton.setOnClickListener {
             val feedbackMail: String = textBox.text.toString()
-            SendEmailTask().execute(feedbackMail)
-
+            SendEmailTask(requireContext()).execute(feedbackMail)
         }
 
         return rootview
     }
 
-    private inner class SendEmailTask : AsyncTask<String, Void, Boolean>() {
+    private inner class SendEmailTask(private val context: Context) : AsyncTask<String, Void, Boolean>() {
+
 
         override fun doInBackground(vararg params: String): Boolean {
             val feedback = params[0]
@@ -104,10 +105,9 @@ class Feedback : Fragment() {
         override fun onPostExecute(result: Boolean) {
             if (result) {
                 textBox.text.clear()
-                Toast.makeText(requireContext(), "Email sent successfully.", Toast.LENGTH_LONG).show()
-
+                Toast.makeText(context, "Email sent successfully.", Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(requireContext(), "Failed to send an email", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Failed to send an email", Toast.LENGTH_LONG).show()
             }
         }
     }

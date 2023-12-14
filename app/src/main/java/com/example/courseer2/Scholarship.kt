@@ -149,17 +149,19 @@ class Scholarship : Fragment() {
         return stringBuilder.toString()
     }
     private fun initializeAdapter() {
-        adapter = CategorySAdapter(
-            groupScholarshipsByCategory(filteredScholarships),
-            object : ScholarshipAdapter.OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    // Handle item click if needed
-                }
-            }, requireContext()
+        if (isAdded) {
+            adapter = CategorySAdapter(
+                groupScholarshipsByCategory(filteredScholarships),
+                object : ScholarshipAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        // Handle item click if needed
+                    }
+                }, requireContext()
 
-        )
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            )
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
     private fun parseCSVData(csvData: String): List<Scholarships1> {
