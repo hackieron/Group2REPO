@@ -52,25 +52,27 @@
                 android:foregroundGravity="center_vertical|center|center_horizontal"
                 android:gravity="center|center_vertical"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/alata"
-                    android:text="TEST COMPLETE"
+                    android:fontFamily="@font/dm_sans"
+                    android:text="Test complete\n\n"
                     android:textAlignment="center"
+                    android:textColor="@color/blue"
                     android:textSize="34sp"
                     android:textStyle="bold"
                     android:typeface="sans" />
 
                 <ImageView
                     android:id="@+id/imageView4"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="150dp"
+                    android:layout_height="120dp"
                     app:srcCompat="@drawable/check_icon"
-                    tools:visibility="gone" />
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -80,7 +82,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center|top"
                 android:orientation="vertical"
-                tools:visibility="visible">
+                tools:visibility="gone">
                 <!-- Use an ImageView to display the background drawable -->
 
                 <!-- Add your start screen UI elements here -->
