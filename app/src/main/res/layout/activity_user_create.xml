@@ -208,7 +208,9 @@
             app:backgroundTint="@color/gold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/guide" />
+            app:srcCompat="@drawable/guide"
+            app:maxImageSize="24dp"
+            app:fabSize="mini"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

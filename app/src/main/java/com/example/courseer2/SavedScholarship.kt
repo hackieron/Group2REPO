@@ -22,7 +22,7 @@ import java.io.InputStreamReader
 
 class SavedScholarship : Fragment() {
     companion object {
-        fun newInstance2(program: Boolean): SavedScholarship {
+        fun newInstance2(program: Boolean): SavedScholarship{
             val fragment = SavedScholarship()
             val args = Bundle()
             args.putBoolean("scholarship", program)
